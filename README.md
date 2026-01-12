@@ -221,3 +221,7 @@ MVPでは以下の機能を優先で実装します。
 | 交代担当の自動割り当て | Rails Service Object       | 直近ログから次担当を決定           |
 | 通知機能        | Active Job + Action Mailer | 未実行家事のリマインド            |
 | 招待コード参加     | SecureRandom               | URLまたはコードで世帯参加         |
+
+
+## 画面遷移図
+Figma: https://www.figma.com/design/SRDbYkKRLm6Y2Mv7HRPuek/Untitled?node-id=0-1&t=6pr88GUg2BDF6VuE-1
