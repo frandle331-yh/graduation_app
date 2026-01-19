@@ -224,4 +224,9 @@ MVPでは以下の機能を優先で実装します。
 
 
 ## 画面遷移図
-Figma: https://www.figma.com/design/SRDbYkKRLm6Y2Mv7HRPuek/Untitled?node-id=0-1&t=3wupgnAaxwRG0xw1-1
+- Figma: https://www.figma.com/design/SRDbYkKRLm6Y2Mv7HRPuek/Untitled?node-id=0-1&t=3wupgnAaxwRG0xw1-1
+
+
+## ER図
+
+- ER図URL:[![Image from Gyazo](https://i.gyazo.com/aa0f0d30020110f626ed885b137456bd.png)](https://gyazo.com/aa0f0d30020110f626ed885b137456bd)
