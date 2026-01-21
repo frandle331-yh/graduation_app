@@ -229,4 +229,4 @@ MVPでは以下の機能を優先で実装します。
 
 ## ER図
 
-- ER図URL:[![Image from Gyazo](https://i.gyazo.com/aa0f0d30020110f626ed885b137456bd.png)](https://gyazo.com/aa0f0d30020110f626ed885b137456bd)
+- ER図URL:[![Image from Gyazo](https://i.gyazo.com/4dd80f3df700b39be7795a6f61f7dfc0.png)](https://gyazo.com/4dd80f3df700b39be7795a6f61f7dfc0)
