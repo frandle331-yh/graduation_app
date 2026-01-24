@@ -1,10 +1,14 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
 
 development:
   primary:
+    <<: *default
+    database: graduation_app_development
+
+  cache:
     <<: *default
     database: graduation_app_development
 
@@ -21,6 +25,10 @@ test:
     <<: *default
     database: graduation_app_test
 
+  cache:
+    <<: *default
+    database: graduation_app_test
+
   queue:
     <<: *default
     database: graduation_app_test
@@ -28,13 +36,16 @@ test:
   cable:
     <<: *default
     database: graduation_app_test
-
 
 production:
   primary:
     <<: *default
     url: <%= ENV["DATABASE_URL"] %>
 
+  cache:
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
+
   queue:
     <<: *default
     url: <%= ENV["DATABASE_URL"] %>
@@ -42,4 +53,3 @@ production:
   cable:
     <<: *default
     url: <%= ENV["DATABASE_URL"] %>
-
