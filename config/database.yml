@@ -7,6 +7,11 @@ development:
   primary:
     <<: *default
     database: graduation_app_development
+
+  queue:
+    <<: *default
+    database: graduation_app_development
+
   cable:
     <<: *default
     database: graduation_app_development
@@ -15,15 +20,26 @@ test:
   primary:
     <<: *default
     database: graduation_app_test
+
+  queue:
+    <<: *default
+    database: graduation_app_test
+
   cable:
     <<: *default
     database: graduation_app_test
+
 
 production:
   primary:
     <<: *default
     url: <%= ENV["DATABASE_URL"] %>
 
+  queue:
+    <<: *default
+    url: <%= ENV["DATABASE_URL"] %>
+
   cable:
     <<: *default
     url: <%= ENV["DATABASE_URL"] %>
+
