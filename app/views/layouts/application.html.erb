@@ -24,6 +24,22 @@
   </head>
 
   <body>
-    <%= yield %>
-  </body>
+  <% flash.each do |type, message| %>
+    <div class="flash <%= type %>">
+      <%= message %>
+    </div>
+  <% end %>
+
+  <header>
+    <% if user_signed_in? %>
+      <%= button_to "ログアウト", destroy_user_session_path, method: :delete %>
+    <% else %>
+      <%= link_to "ログイン", new_user_session_path %>
+      <%= link_to "新規登録", new_user_registration_path %>
+    <% end %>
+  </header>
+
+  <%= yield %>
+</body>
+
 </html>
