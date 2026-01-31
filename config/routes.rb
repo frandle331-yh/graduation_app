@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users
+
+  resource :profile, only: [:edit, :update]
+
   get "home/index"
   # アプリのトップページ
   root "home#index"
