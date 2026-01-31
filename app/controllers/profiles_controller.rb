@@ -20,4 +20,11 @@ class ProfilesController < ApplicationController
   def profile_params
     params.require(:user).permit(:nickname)
   end
+
+  def withdraw
+    current_user.update_columns(is_deleted: true, updated_at: Time.current)
+    sign_out current_user
+    redirect_to root_path, notice: "退会しました"
+  end
+
 end

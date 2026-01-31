@@ -4,4 +4,12 @@ validates :nickname, presence: true, length: { maximum: 20 }
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
+  def active_for_authentication?
+    super && !is_deleted
+  end
+
+  def inactive_message
+    is_deleted ? :deleted_account : super
+  end
 end
