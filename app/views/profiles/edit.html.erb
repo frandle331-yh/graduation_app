@@ -1,0 +1,27 @@
+<h2>プロフィール編集</h2>
+
+<% if @user.errors.any? %>
+  <div class="error-box">
+    <p><%= @user.errors.count %>件のエラーがあります</p>
+    <ul>
+      <% @user.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: @user, url: profile_path, method: :patch do |f| %>
+  <div class="field">
+    <%= f.label :nickname, "ニックネーム" %><br>
+    <%= f.text_field :nickname %>
+
+    <% if @user.errors[:nickname].present? %>
+      <div class="field-error"><%= @user.errors.full_messages_for(:nickname).first %></div>
+    <% end %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "更新する" %>
+  </div>
+<% end %>
