@@ -4,6 +4,37 @@ ja:
       invalid: "メールアドレスまたはパスワードが違います。"
       not_found_in_database: "メールアドレスまたはパスワードが違います。"
       unauthenticated: "ログインしてください。"
+      unconfirmed: "メールアドレスの確認が必要です。"
+      timeout: "セッションの有効期限が切れました。もう一度ログインしてください。"
       deleted_account: "このアカウントは退会済みです。"
       user:
         deleted_account: "このアカウントは退会済みです。"
+
+    sessions:
+      signed_in: "ログインしました。"
+      signed_out: "ログアウトしました。"
+
+    registrations:
+      signed_up: "アカウント登録が完了しました。"
+      updated: "アカウント情報を更新しました。"
+      destroyed: "アカウントを削除しました。"
+
+  errors:
+    messages:
+      not_saved:
+        one: "1件のエラーにより%{resource}を保存できませんでした。"
+        other: "%{count}件のエラーにより%{resource}を保存できませんでした。"
+
+  activerecord:
+    errors:
+      messages:
+        blank: "を入力してください"
+        taken: "はすでに使用されています"
+        invalid: "は不正な値です"
+
+    attributes:
+      user:
+        email: "メールアドレス"
+        nickname: "ニックネーム"
+        password: "パスワード"
+        password_confirmation: "パスワード（確認）"
