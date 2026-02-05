@@ -25,3 +25,16 @@
     <%= f.submit "更新する" %>
   </div>
 <% end %>
+
+<hr>
+
+<div class="danger-zone">
+  <h3>退会</h3>
+  <p>退会するとログインできなくなります。</p>
+
+  <%= button_to "退会する",
+        profile_path,
+        method: :delete,
+        data: { turbo_confirm: "本当に退会しますか？" } %>
+</div>
+
