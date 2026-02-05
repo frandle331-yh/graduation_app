@@ -22,8 +22,32 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
+    <body>
+    <header class="app-header">
+      <nav class="app-nav">
+        <%= link_to "Home", root_path, class: "app-logo" %>
+        <div class="app-nav-links">
+          <% if user_signed_in? %>
+            <%= link_to "プロフィール", edit_profile_path %>
+            <%= link_to "ログアウト", destroy_user_session_path, data: { turbo_method: :delete } %>
+          <% else %>
+            <%= link_to "ログイン", new_user_session_path %>
+            <%= link_to "新規登録", new_user_registration_path %>
+          <% end %>
+        </div>
+      </nav>
+    </header>
 
-  <body>
-    <%= yield %>
+    <% flash.each do |type, message| %>
+      <div class="flash <%= type %>"><%= message %></div>
+    <% end %>
+
+    <main class="app-main">
+      <%= yield %>
+    </main>
+
+    <footer class="app-footer">
+      <small>© <%= Time.current.year %> KAJILOG</small>
+    </footer>
   </body>
 </html>
