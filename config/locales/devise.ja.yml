@@ -1,0 +1,9 @@
+ja:
+  devise:
+    failure:
+      invalid: "メールアドレスまたはパスワードが違います。"
+      not_found_in_database: "メールアドレスまたはパスワードが違います。"
+      unauthenticated: "ログインしてください。"
+      deleted_account: "このアカウントは退会済みです。"
+      user:
+        deleted_account: "このアカウントは退会済みです。"
