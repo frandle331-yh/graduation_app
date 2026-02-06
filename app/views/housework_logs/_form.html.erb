@@ -17,7 +17,7 @@
   <%= f.date_field :performed_on %><br>
 
   <%= f.label :minutes %><br>
-  <%= f.number_field :minutes %><br>
+  <%= f.number_field :minutes, min: 0, max: 1440, step: 1 %>
 
   <%= f.label :memo %><br>
   <%= f.text_area :memo %><br>
