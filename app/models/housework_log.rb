@@ -11,5 +11,14 @@ class HouseworkLog < ApplicationRecord
     less_than_or_equal_to: 1440
   }, allow_blank: true
 
+  enum :category, {
+  cleaning: 0,
+  laundry: 1,
+  cooking: 2,
+  dishwashing: 3,
+  shopping: 4,
+  childcare: 5,
+  other: 99
+}
 
 end

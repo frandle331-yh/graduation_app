@@ -12,3 +12,14 @@ ja:
         memo: "メモ"
       user:
         nickname: "ニックネーム"
+  enums:
+    housework_log:
+      category:
+        cleaning: "掃除"
+        laundry: "洗濯"
+        cooking: "料理"
+        dishwashing: "食器洗い"
+        shopping: "買い物"
+        childcare: "育児"
+        other: "その他"
+
