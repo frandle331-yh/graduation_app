@@ -1,0 +1,12 @@
+<h2>家事ログ一覧</h2>
+
+<%= link_to "新規登録", new_housework_log_path %>
+
+<ul>
+  <% @housework_logs.each do |log| %>
+    <li>
+      <strong><%= log.title %></strong>
+      (<%= log.performed_on %>, <%= log.minutes %>分)
+    </li>
+  <% end %>
+</ul>
