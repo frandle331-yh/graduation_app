@@ -1,0 +1,14 @@
+ja:
+  activerecord:
+    models:
+      housework_log: "家事ログ"
+      user: "ユーザー"
+    attributes:
+      housework_log:
+        title: "タイトル"
+        category: "カテゴリ"
+        performed_on: "実施日"
+        minutes: "時間"
+        memo: "メモ"
+      user:
+        nickname: "ニックネーム"
