@@ -7,6 +7,7 @@
     <li>
       <strong><%= log.title %></strong>
       (<%= log.performed_on %>, <%= log.minutes %>分)
+      <%= link_to "詳細", housework_log_path(log) %>
     </li>
   <% end %>
 </ul>

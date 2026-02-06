@@ -18,6 +18,29 @@ class HouseworkLogsController < ApplicationController
     end
   end
 
+  def show
+    @housework_log = current_user.housework_logs.find(params[:id])
+  end
+
+  def edit
+    @housework_log = current_user.housework_logs.find(params[:id])
+  end
+
+  def update
+    @housework_log = current_user.housework_logs.find(params[:id])
+    if @housework_log.update(housework_log_params)
+      redirect_to housework_log_path(@housework_log), notice: "家事ログを更新しました"
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    housework_log = current_user.housework_logs.find(params[:id])
+    housework_log.destroy
+    redirect_to housework_logs_path, notice: "家事ログを削除しました"
+  end
+
   private
 
   def housework_log_params
