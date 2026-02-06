@@ -6,8 +6,11 @@
   <% @housework_logs.each do |log| %>
     <li>
       <strong><%= log.title %></strong>
-      (<%= log.performed_on %>, <%= log.minutes %>分)
+      （<%= t("enums.housework_log.category.#{log.category}") %>）
+      <%= log.minutes %>分
+      <%= log.performed_on %>
       <%= link_to "詳細", housework_log_path(log) %>
     </li>
+
   <% end %>
 </ul>

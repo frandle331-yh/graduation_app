@@ -11,13 +11,16 @@
   <%= f.text_field :title %><br>
 
   <%= f.label :category %><br>
-  <%= f.number_field :category %><br>
+  <%= f.select :category,
+      HouseworkLog.categories.keys.map { |k| [t("enums.housework_log.category.#{k}"), k] },
+      { include_blank: "選択してください" } %><br>
+
 
   <%= f.label :performed_on %><br>
   <%= f.date_field :performed_on %><br>
 
   <%= f.label :minutes %><br>
-  <%= f.number_field :minutes %><br>
+  <%= f.number_field :minutes, min: 0, max: 1440, step: 1 %>
 
   <%= f.label :memo %><br>
   <%= f.text_area :memo %><br>

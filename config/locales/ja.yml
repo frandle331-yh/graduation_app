@@ -1,0 +1,25 @@
+ja:
+  activerecord:
+    models:
+      housework_log: "家事ログ"
+      user: "ユーザー"
+    attributes:
+      housework_log:
+        title: "タイトル"
+        category: "カテゴリ"
+        performed_on: "実施日"
+        minutes: "時間"
+        memo: "メモ"
+      user:
+        nickname: "ニックネーム"
+  enums:
+    housework_log:
+      category:
+        cleaning: "掃除"
+        laundry: "洗濯"
+        cooking: "料理"
+        dishwashing: "食器洗い"
+        shopping: "買い物"
+        childcare: "育児"
+        other: "その他"
+
