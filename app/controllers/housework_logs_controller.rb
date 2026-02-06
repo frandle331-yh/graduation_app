@@ -35,6 +35,11 @@ class HouseworkLogsController < ApplicationController
     end
   end
 
+  def destroy
+    housework_log = current_user.housework_logs.find(params[:id])
+    housework_log.destroy
+    redirect_to housework_logs_path, notice: "家事ログを削除しました"
+  end
 
   private
 

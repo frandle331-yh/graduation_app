@@ -8,3 +8,7 @@
 
 <%= link_to "編集", edit_housework_log_path(@housework_log) %>
 <%= link_to "一覧に戻る", housework_logs_path %>
+<%= button_to "削除",
+      housework_log_path(@housework_log),
+      method: :delete,
+      data: { turbo_confirm: "削除しますか？" } %>
