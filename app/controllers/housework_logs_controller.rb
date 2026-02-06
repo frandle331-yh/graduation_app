@@ -18,6 +18,10 @@ class HouseworkLogsController < ApplicationController
     end
   end
 
+  def show
+    @housework_log = current_user.housework_logs.find(params[:id])
+  end
+
   private
 
   def housework_log_params

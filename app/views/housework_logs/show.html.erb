@@ -1,0 +1,9 @@
+<h2>家事ログ詳細</h2>
+
+<p>タイトル：<%= @housework_log.title %></p>
+<p>カテゴリ：<%= @housework_log.category %></p>
+<p>実施日：<%= @housework_log.performed_on %></p>
+<p>時間：<%= @housework_log.minutes %>分</p>
+<p>メモ：<%= @housework_log.memo %></p>
+
+<%= link_to "一覧に戻る", housework_logs_path %>

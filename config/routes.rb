@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get "profiles/update"
   devise_for :users
   resource :profile, only: [:edit, :update, :destroy]
-  resources :housework_logs, only: [:index, :new, :create]
+  resources :housework_logs, only: [:index, :new, :create, :show]
   get "home/index"
   # アプリのトップページ
   root "home#index"
