@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::Base
-  # allow_browser versions: :modern
-  # stale_when_importmap_changes
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   protected
@@ -10,4 +8,11 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:nickname])
   end
 
+  def after_sign_in_path_for(resource)
+    stored_location_for(resource) || housework_logs_path
+  end
+
+  def after_sign_out_path_for(_resource_or_scope)
+    root_path
+  end
 end
