@@ -57,7 +57,16 @@
   <% end %>
 </ul>
 
-<h3>日別合計時間（直近7日）</h3>
+<h3>日別合計時間（<%= @daily_mode == "all" ? "全表示" : "直近7日" %>）</h3>
+
+<% if @daily_mode == "all" %>
+  <%= link_to "直近7日に戻す",
+      housework_logs_path(category: @selected_category.presence, period: @period, daily: nil) %>
+<% else %>
+  <%= link_to "全表示",
+      housework_logs_path(category: @selected_category.presence, period: @period, daily: "all") %>
+<% end %>
+
 <ul>
   <% @daily_summaries.each do |date, total_minutes| %>
     <li><%= l(date) %>： <%= total_minutes %> 分</li>
