@@ -22,4 +22,7 @@ ja:
         shopping: "買い物"
         childcare: "育児"
         other: "その他"
+  date:
+    formats:
+      default: "%Y-%m-%d"
 
