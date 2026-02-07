@@ -57,7 +57,7 @@
   <% end %>
 </ul>
 
-<h3>日別合計時間</h3>
+<h3>日別合計時間（直近7日）</h3>
 <ul>
   <% @daily_summaries.each do |date, total_minutes| %>
     <li><%= l(date) %>： <%= total_minutes %> 分</li>
