@@ -1,5 +1,17 @@
 <h2>家事ログ一覧</h2>
 
+<h3>期間</h3>
+<ul>
+  <li><%= link_to "全期間", housework_logs_path(category: @selected_category.presence, period: "all") %></li>
+  <li><%= link_to "今週",   housework_logs_path(category: @selected_category.presence, period: "week") %></li>
+  <li><%= link_to "今月",   housework_logs_path(category: @selected_category.presence, period: "month") %></li>
+</ul>
+
+<% if @period.present? && @period != "all" %>
+  <p>期間：<%= @period == "week" ? "今週" : "今月" %></p>
+<% end %>
+
+
 <%= link_to "新規登録", new_housework_log_path %>
 <%= form_with url: housework_logs_path, method: :get, local: true do %>
   <%= select_tag :category,
