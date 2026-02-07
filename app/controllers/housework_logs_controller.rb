@@ -3,6 +3,7 @@ class HouseworkLogsController < ApplicationController
 
   def index
     base_scope = current_user.housework_logs
+    daily = base_scope.group(:performed_on).sum(:minutes)
 
     # --- 期間フィルタ（最初に適用） ---
     @period = params[:period].presence || "all"
@@ -31,7 +32,8 @@ class HouseworkLogsController < ApplicationController
 
     @housework_logs = base_scope.order(performed_on: :desc, created_at: :desc)
     @category_summaries = base_scope.group(:category).sum(:minutes)
-    @daily_summaries = base_scope.group(:performed_on).sum(:minutes).sort_by { |date, _| date }.reverse.to_h
+    @daily_summaries = daily.sort_by { |date, _| date }.reverse.first(7).to_h
+
   end
 
 
