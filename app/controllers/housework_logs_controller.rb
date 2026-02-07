@@ -2,8 +2,20 @@ class HouseworkLogsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @housework_logs = current_user.housework_logs.order(performed_on: :desc)
+    scope = current_user.housework_logs.order(performed_on: :desc, created_at: :desc)
+
+    if params[:category].present? && HouseworkLog.categories.key?(params[:category])
+      scope = scope.where(category: HouseworkLog.categories[params[:category]])
+      @selected_category = params[:category]
+    else
+      @selected_category = ""
+    end
+
+
+    @housework_logs = scope
+    @selected_category = params[:category]
   end
+
 
   def new
     @housework_log = HouseworkLog.new

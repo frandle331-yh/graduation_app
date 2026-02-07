@@ -1,6 +1,20 @@
 <h2>家事ログ一覧</h2>
 
 <%= link_to "新規登録", new_housework_log_path %>
+<%= form_with url: housework_logs_path, method: :get, local: true do %>
+  <%= select_tag :category,
+      options_for_select(
+        [["すべて", ""]] + HouseworkLog.categories.keys.map { |k| [t("enums.housework_log.category.#{k}"), k] },
+        @selected_category
+      ) %>
+  <%= submit_tag "絞り込む" %>
+<% end %>
+
+<% if @selected_category.present? %>
+  <p>表示中：<%= t("enums.housework_log.category.#{@selected_category}") %></p>
+<% end %>
+
+<%= link_to "絞り込み解除", housework_logs_path %>
 
 <ul>
   <% @housework_logs.each do |log| %>
