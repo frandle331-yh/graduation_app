@@ -32,6 +32,8 @@
   <% end %>
 </ul>
 
+
+
 <h3>カテゴリ別合計時間</h3>
 <ul>
   <% @category_summaries.each do |category_key_or_value, total_minutes| %>
@@ -40,5 +42,12 @@
     <li>
       <%= t("enums.housework_log.category.#{category_key}") %>： <%= total_minutes %> 分
     </li>
+  <% end %>
+</ul>
+
+<h3>日別合計時間</h3>
+<ul>
+  <% @daily_summaries.each do |date, total_minutes| %>
+    <li><%= l(date) %>： <%= total_minutes %> 分</li>
   <% end %>
 </ul>

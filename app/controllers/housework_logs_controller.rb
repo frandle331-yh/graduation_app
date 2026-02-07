@@ -13,6 +13,7 @@ class HouseworkLogsController < ApplicationController
 
     @housework_logs = base_scope.order(performed_on: :desc, created_at: :desc)
     @category_summaries = base_scope.group(:category).sum(:minutes)
+    @daily_summaries = base_scope.group(:performed_on).sum(:minutes).sort_by { |date, _| date }.reverse.to_h
   end
 
 
