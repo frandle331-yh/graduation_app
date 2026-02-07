@@ -4,6 +4,24 @@ class HouseworkLogsController < ApplicationController
   def index
     base_scope = current_user.housework_logs
 
+    # --- 期間フィルタ（最初に適用） ---
+    @period = params[:period].presence || "all"
+    today = Time.zone.today
+
+    case @period
+    when "week"
+      from = today.beginning_of_week
+      to   = today.end_of_week
+      base_scope = base_scope.where(performed_on: from..to)
+    when "month"
+      from = today.beginning_of_month
+      to   = today.end_of_month
+      base_scope = base_scope.where(performed_on: from..to)
+    else
+      @period = "all"
+    end
+
+    # --- カテゴリフィルタ（次に適用） ---
     if params[:category].present? && HouseworkLog.categories.key?(params[:category])
       base_scope = base_scope.where(category: HouseworkLog.categories[params[:category]])
       @selected_category = params[:category]
