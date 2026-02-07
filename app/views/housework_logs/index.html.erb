@@ -16,6 +16,9 @@
 
 <%= link_to "絞り込み解除", housework_logs_path %>
 
+
+
+
 <ul>
   <% @housework_logs.each do |log| %>
     <li>
@@ -26,5 +29,16 @@
       <%= link_to "詳細", housework_log_path(log) %>
     </li>
 
+  <% end %>
+</ul>
+
+<h3>カテゴリ別合計時間</h3>
+<ul>
+  <% @category_summaries.each do |category_key_or_value, total_minutes| %>
+    <% category_key =
+         category_key_or_value.is_a?(String) ? category_key_or_value : HouseworkLog.categories.key(category_key_or_value) %>
+    <li>
+      <%= t("enums.housework_log.category.#{category_key}") %>： <%= total_minutes %> 分
+    </li>
   <% end %>
 </ul>
