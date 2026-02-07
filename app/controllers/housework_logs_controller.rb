@@ -2,48 +2,13 @@ class HouseworkLogsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    base_scope = current_user.housework_logs
+    base_scope = filtered_scope
 
-    # --- 期間フィルタ（最初に適用） ---
-    @period = params[:period].presence || "all"
-    today = Time.zone.today
-
-    case @period
-    when "week"
-      from = today.beginning_of_week
-      to   = today.end_of_week
-      base_scope = base_scope.where(performed_on: from..to)
-    when "month"
-      from = today.beginning_of_month
-      to   = today.end_of_month
-      base_scope = base_scope.where(performed_on: from..to)
-    else
-      @period = "all"
-    end
-
-    # --- カテゴリフィルタ（次に適用） ---
-    if params[:category].present? && HouseworkLog.categories.key?(params[:category])
-      base_scope = base_scope.where(category: HouseworkLog.categories[params[:category]])
-      @selected_category = params[:category]
-    else
-      @selected_category = ""
-    end
-
-    @housework_logs = base_scope.order(performed_on: :desc, created_at: :desc)
+    @housework_logs     = base_scope.order(performed_on: :desc, created_at: :desc)
     @category_summaries = base_scope.group(:category).sum(:minutes)
-
-    daily_hash   = base_scope.group(:performed_on).sum(:minutes)
-    daily_sorted = daily_hash.sort_by { |date, _| date }.reverse
-
-    @daily_mode = params[:daily].presence || "top7"
-    @daily_summaries =
-    if @daily_mode == "all"
-      daily_sorted.to_h
-    else
-      daily_sorted.first(7).to_h
-    end
-
+    @daily_summaries    = build_daily_summaries(base_scope)
   end
+
 
 
   def new
@@ -87,4 +52,49 @@ class HouseworkLogsController < ApplicationController
   def housework_log_params
     params.require(:housework_log).permit(:title, :category, :performed_on, :minutes, :memo)
   end
+
+  def filtered_scope
+    scope = current_user.housework_logs
+    scope = apply_period(scope)
+    scope = apply_category(scope)
+    scope
+  end
+
+  def apply_period(scope)
+    @period = params[:period].presence || "all"
+    today = Time.zone.today
+
+    case @period
+    when "week"
+      scope.where(performed_on: today.beginning_of_week..today.end_of_week)
+    when "month"
+      scope.where(performed_on: today.beginning_of_month..today.end_of_month)
+    else
+      @period = "all"
+      scope
+    end
+  end
+
+  def apply_category(scope)
+    if params[:category].present? && HouseworkLog.categories.key?(params[:category])
+      @selected_category = params[:category]
+      scope.where(category: HouseworkLog.categories[@selected_category])
+    else
+      @selected_category = ""
+      scope
+    end
+  end
+
+  def build_daily_summaries(scope)
+    daily_hash   = scope.group(:performed_on).sum(:minutes)
+    daily_sorted = daily_hash.sort_by { |date, _| date }.reverse
+
+    @daily_mode = params[:daily].presence || "top7"
+    if @daily_mode == "all"
+      daily_sorted.to_h
+    else
+      daily_sorted.first(7).to_h
+    end
+  end
+
 end
