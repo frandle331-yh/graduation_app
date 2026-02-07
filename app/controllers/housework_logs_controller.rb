@@ -4,7 +4,10 @@ class HouseworkLogsController < ApplicationController
   def index
     base_scope = filtered_scope
 
-    @housework_logs     = base_scope.order(performed_on: :desc, created_at: :desc)
+    @housework_logs = base_scope
+      .order(performed_on: :desc, created_at: :desc)
+      .page(params[:page])
+      .per(10)
     @category_summaries = base_scope.group(:category).sum(:minutes)
     @daily_summaries    = build_daily_summaries(base_scope)
   end
