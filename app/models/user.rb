@@ -2,8 +2,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  scope :active, -> { where(is_deleted: false) }
-
   validates :nickname, presence: true, length: { maximum: 20 }
 
   has_many :household_members, dependent: :destroy
@@ -11,11 +9,14 @@ class User < ApplicationRecord
   has_many :housework_logs, dependent: :destroy
 
 
+  scope :active, -> { where(withdrawn_at: nil) }
+
   def active_for_authentication?
-    super && !is_deleted
+    super && withdrawn_at.nil?
   end
 
   def inactive_message
-    is_deleted ? :deleted_account : super
+    withdrawn_at.present? ? :deleted_account : super
   end
+
 end
