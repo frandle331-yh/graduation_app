@@ -60,3 +60,47 @@
   padding: 10px 16px;
   border-bottom: 1px solid #eee;
 }
+
+/* --- Dashboard --- */
+.dashboard-section {
+  margin-bottom: 28px;
+}
+
+.dashboard-section h2 {
+  margin: 16px 0 8px;
+}
+
+.dashboard-total {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 8px 0 0;
+}
+
+.dashboard-section ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.dashboard-section li {
+  margin: 6px 0;
+}
+
+/* --- Header --- */
+
+.app-nav-primary {
+  padding: 6px 10px;
+  border: 1px solid #999;
+  border-radius: 6px;
+}
+.app-nav-links form button {
+  border: none;
+  background: transparent;
+  padding: 6px 8px;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.app-nav-links form button:hover {
+  opacity: 1.0;
+  text-decoration: underline;
+}
