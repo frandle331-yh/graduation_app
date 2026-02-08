@@ -4,10 +4,23 @@ class HouseworkLogsController < ApplicationController
   def index
     base_scope = filtered_scope
 
+    @sort = params[:sort].presence || "performed_desc"
+
+    order_clause =
+      case @sort
+      when "created_desc"
+        { created_at: :desc }
+      when "performed_asc"
+        { performed_on: :asc, created_at: :asc }
+      else # "performed_desc"
+        { performed_on: :desc, created_at: :desc }
+      end
+
     @housework_logs = base_scope
-      .order(performed_on: :desc, created_at: :desc)
+      .order(order_clause)
       .page(params[:page])
       .per(10)
+
     @category_summaries = base_scope.group(:category).sum(:minutes)
     @daily_summaries    = build_daily_summaries(base_scope)
   end
