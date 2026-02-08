@@ -4,13 +4,19 @@ class User < ApplicationRecord
 
   validates :nickname, presence: true, length: { maximum: 20 }
 
+  has_many :household_members, dependent: :destroy
+  has_many :households, through: :household_members
   has_many :housework_logs, dependent: :destroy
 
+
+  scope :active, -> { where(withdrawn_at: nil) }
+
   def active_for_authentication?
-    super && !is_deleted
+    super && withdrawn_at.nil?
   end
 
   def inactive_message
-    is_deleted ? :deleted_account : super
+    withdrawn_at.present? ? :deleted_account : super
   end
+
 end

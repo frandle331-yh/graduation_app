@@ -17,7 +17,7 @@ class ProfilesController < ApplicationController
 
   def destroy
     user = current_user
-    user.update!(is_deleted: true)
+    user.update!(withdrawn_at: Time.current)
     sign_out user
     redirect_to root_path, notice: "退会処理が完了しました"
   end

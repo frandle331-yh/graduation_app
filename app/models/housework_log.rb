@@ -1,5 +1,7 @@
 class HouseworkLog < ApplicationRecord
   belongs_to :user
+  belongs_to :household, optional: true
+
 
   validates :title, presence: true, length: { maximum: 50 }
   validates :category, presence: true
