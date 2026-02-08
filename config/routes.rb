@@ -9,6 +9,11 @@ Rails.application.routes.draw do
   resource :profile, only: [:edit, :update, :destroy]
   resources :housework_logs, only: [:index, :new, :create, :show, :edit, :update, :destroy]
   resource :dashboard, only: [:show]
+  resource :household, only: [:new, :create, :show] do
+    get  :join,  on: :collection
+    post :join,  on: :collection
+  end
+
   get "home/index"
   # アプリのトップページ
   root "home#index"

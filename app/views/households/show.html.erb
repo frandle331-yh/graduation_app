@@ -1,0 +1,11 @@
+<h1>世帯</h1>
+
+<p><strong>世帯名：</strong><%= @household.name %></p>
+<p><strong>招待コード：</strong><%= @household.invitation_code %></p>
+
+<h2>メンバー</h2>
+<ul>
+  <% @household.household_members.includes(:user).each do |m| %>
+    <li><%= m.user.nickname.presence || m.user.email %>（<%= m.role %>）</li>
+  <% end %>
+</ul>

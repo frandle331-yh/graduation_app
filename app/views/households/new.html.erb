@@ -1,0 +1,16 @@
+<h1>世帯作成</h1>
+
+<%= form_with model: @household, url: household_path do |f| %>
+  <div>
+    <%= f.label :name, "世帯名" %><br>
+    <%= f.text_field :name, required: true %>
+  </div>
+
+  <div style="margin-top: 12px;">
+    <%= f.submit "世帯を作成する" %>
+  </div>
+<% end %>
+
+<p style="margin-top: 16px;">
+  すでに招待コードがある方は <%= link_to "招待コードで参加", join_household_path %>
+</p>
