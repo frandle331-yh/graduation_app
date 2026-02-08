@@ -7,14 +7,14 @@
 
       <% if user_signed_in? %>
 
-        <%= link_to "ダッシュボード", dashboard_path %>
+        <%= link_to "ダッシュボード", dashboard_path%>
 
         <%= link_to "家事を記録", new_housework_log_path, class: "app-nav-primary" %>
 
-        <%= link_to "家事ログ", housework_logs_path %>
+        <%= link_to "家事ログ", housework_logs_path%>
 
         <% if respond_to?(:edit_profile_path) %>
-          <%= link_to "プロフィール", edit_profile_path %>
+          <%= link_to "プロフィール", edit_profile_path%>
         <% end %>
 
         <span class="app-user">
@@ -26,8 +26,8 @@
               method: :delete,
               form: { class: "inline-form" } %>
       <% else %>
-        <%= link_to "ログイン", new_user_session_path %>
-        <%= link_to "新規登録", new_user_registration_path %>
+        <%= link_to "ログイン", new_user_session_path, class: "app-nav-primary" %>
+        <%= link_to "新規登録", new_user_registration_path, class: "app-nav-primary" %>
       <% end %>
     </nav>
   </div>
