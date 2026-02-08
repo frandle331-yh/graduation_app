@@ -6,6 +6,7 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+
 module GraduationApp
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -17,6 +18,8 @@ module GraduationApp
     config.autoload_lib(ignore: %w[assets tasks])
 
     config.i18n.default_locale = :ja
+
+    config.time_zone = "Tokyo"
 
     # Configuration for the application, engines, and railties goes here.
     #
