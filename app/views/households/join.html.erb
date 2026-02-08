@@ -1,0 +1,16 @@
+<h1>招待コードで参加</h1>
+
+<%= form_with url: join_household_path, method: :post do |f| %>
+  <div>
+    <%= label_tag :invitation_code, "招待コード" %><br>
+    <%= text_field_tag :invitation_code, params[:invitation_code], required: true %>
+  </div>
+
+  <div style="margin-top: 12px;">
+    <%= submit_tag "参加する" %>
+  </div>
+<% end %>
+
+<p style="margin-top: 16px;">
+  <%= link_to "世帯を作成する", new_household_path %>
+</p>
