@@ -1,5 +1,17 @@
 <h2>家事ログ一覧</h2>
 
+<h2>最近の家事</h2>
+<ul>
+  <% @recent_logs.each do |log| %>
+    <li style="margin-bottom: 8px;">
+      <strong><%= log.title %></strong>
+      （<%= log.performed_on %>）
+      <%= button_to "今日やった", quick_create_housework_logs_path(source_id: log.id), method: :post %>
+    </li>
+  <% end %>
+</ul>
+
+
 <h3>期間</h3>
 <ul>
   <li><%= link_to "全期間", housework_logs_path(category: @selected_category.presence, period: "all") %></li>

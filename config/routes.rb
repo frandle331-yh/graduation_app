@@ -7,7 +7,9 @@ Rails.application.routes.draw do
   get "profiles/update"
   devise_for :users
   resource :profile, only: [:edit, :update, :destroy]
-  resources :housework_logs, only: [:index, :new, :create, :show, :edit, :update, :destroy]
+  resources :housework_logs, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
+    post :quick_create, on: :collection
+  end
   resource :dashboard, only: [:show]
   resource :household, only: [:new, :create, :show] do
     get  :join,  on: :collection

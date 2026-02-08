@@ -21,6 +21,18 @@ class HouseworkLogsController < ApplicationController
       .page(params[:page])
       .per(10)
 
+    @recent_logs =
+      if current_household
+        HouseworkLog
+          .where(household_id: [current_household.id, nil])
+          .order(created_at: :desc)
+          .limit(5)
+      else
+        current_user.housework_logs.order(created_at: :desc).limit(5)
+      end
+
+
+
     @category_summaries = base_scope.group(:category).sum(:minutes)
     @daily_summaries    = build_daily_summaries(base_scope)
   end
@@ -33,6 +45,7 @@ class HouseworkLogsController < ApplicationController
 
   def create
     @housework_log = current_user.housework_logs.build(housework_log_params)
+    @housework_log.household = current_household
     if @housework_log.save
       redirect_to housework_logs_path, notice: "家事ログを登録しました"
     else
@@ -62,6 +75,41 @@ class HouseworkLogsController < ApplicationController
     housework_log.destroy
     redirect_to housework_logs_path, notice: "家事ログを削除しました"
   end
+
+  def quick_create
+    source = HouseworkLog.find(params.require(:source_id))
+
+    # 自分のログ or 同じ世帯のログのみ複製可
+    if current_household
+      unless source.household_id == current_household.id
+        redirect_to housework_logs_path, alert: "この家事ログは複製できません"
+        return
+      end
+    else
+      unless source.user_id == current_user.id
+        redirect_to housework_logs_path, alert: "この家事ログは複製できません"
+        return
+      end
+    end
+
+    new_log = HouseworkLog.new(
+      title: source.title,
+      category: source.category,
+      minutes: source.minutes,
+      memo: source.memo,
+      performed_on: Time.zone.today,
+      user: current_user,
+      household: current_household
+    )
+
+    new_log.save!
+    redirect_to housework_logs_path, notice: "ワンタップで家事を記録しました"
+  rescue ActiveRecord::RecordNotFound
+    redirect_to housework_logs_path, alert: "元の家事ログが見つかりません"
+  rescue ActiveRecord::RecordInvalid => e
+    redirect_to housework_logs_path, alert: e.record.errors.full_messages.to_sentence
+  end
+
 
   private
 
