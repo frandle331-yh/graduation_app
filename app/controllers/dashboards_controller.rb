@@ -4,7 +4,7 @@ class DashboardsController < ApplicationController
   def show
     @household = current_household
     unless @household
-      redirect_to new_household_path, alert: "世帯に参加していません"
+      # 世帯がない場合は誘導だけ表示して、家事ログは使える設計
       return
     end
 

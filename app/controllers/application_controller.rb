@@ -16,6 +16,11 @@ class ApplicationController < ActionController::Base
     root_path
   end
 
+  def after_sign_in_path_for(_resource)
+    dashboard_path
+  end
+
+
   helper_method :current_household
 
   def current_household
