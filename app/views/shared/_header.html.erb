@@ -4,16 +4,22 @@
 
     <nav class="app-nav-links">
 
-      <%= link_to "家事ログ", housework_logs_path %>
 
       <% if user_signed_in? %>
-        <span class="app-user">
-          <%= current_user.nickname.presence || "User" %>
-        </span>
+
+        <%= link_to "ダッシュボード", dashboard_path %>
+
+        <%= link_to "家事を記録", new_housework_log_path, class: "app-nav-primary" %>
+
+        <%= link_to "家事ログ", housework_logs_path %>
 
         <% if respond_to?(:edit_profile_path) %>
           <%= link_to "プロフィール", edit_profile_path %>
         <% end %>
+
+        <span class="app-user">
+          <%= current_user.nickname.presence || "User" %>
+        </span>
 
         <%= button_to "ログアウト",
               destroy_user_session_path,

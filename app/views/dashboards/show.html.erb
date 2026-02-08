@@ -1,0 +1,36 @@
+<h1>ダッシュボード</h1>
+
+<p>家事ログを集計して、今週の傾向を確認できます。</p>
+
+<section>
+  <h2>今週の合計</h2>
+  <p><%= @weekly_total_minutes %> 分</p>
+</section>
+
+<section>
+  <h2>カテゴリ別（今週）</h2>
+
+  <% if @category_summaries.present? %>
+    <ul>
+      <% @category_summaries.each do |category, minutes| %>
+        <li><%= HouseworkLog.categories_i18n[category] %>：<%= minutes.to_i %> 分</li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>今週の家事ログがまだありません。</p>
+  <% end %>
+</section>
+
+<section>
+  <h2>直近7日</h2>
+
+  <% if @daily_summaries.present? %>
+    <ul>
+      <% @daily_summaries.each do |date, minutes| %>
+        <li><%= l(date) %>：<%= minutes.to_i %> 分</li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>直近7日分の家事ログがまだありません。</p>
+  <% end %>
+</section>

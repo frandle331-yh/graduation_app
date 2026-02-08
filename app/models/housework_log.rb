@@ -21,4 +21,11 @@ class HouseworkLog < ApplicationRecord
   other: 99
 }
 
+  def self.categories_i18n
+    categories.keys.index_with do |key|
+      I18n.t("enums.housework_log.category.#{key}")
+    end
+  end
+
+
 end

@@ -36,7 +36,7 @@
 
 
 
-<%= link_to "新規登録", new_housework_log_path %>
+<%= link_to "家事を記録", new_housework_log_path %>
 <%= form_with url: housework_logs_path, method: :get, local: true do %>
   <%= select_tag :category,
       options_for_select(
