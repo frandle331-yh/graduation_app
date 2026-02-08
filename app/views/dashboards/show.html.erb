@@ -1,36 +1,71 @@
 <h1>ダッシュボード</h1>
+<p><strong>世帯名：</strong><%= @household.name %></p>
 
-<p>家事ログを集計して、今週の傾向を確認できます。</p>
+<hr>
 
-<section>
-  <h2>今週の合計</h2>
-  <p class="dashboard-total"><%= @weekly_total_minutes.to_i %> 分</p>
-</section>
+<h2>今週の貢献度（世帯）</h2>
 
-<section class="dashboard-section">
-  <h2>カテゴリ別（今週）</h2>
+<% if @weekly_total_count.zero? %>
+  <p>今週の家事記録がありません。</p>
+<% else %>
+  <p>
+    <strong>今週の総回数：</strong><%= @weekly_total_count %> 回 /
+    <strong>時間：</strong><%= @weekly_total_minutes.to_i %> 分
+  </p>
 
-  <% if @category_summaries.present? %>
-    <ul>
-      <% @category_summaries.each do |category, minutes| %>
-        <li><%= HouseworkLog.categories_i18n[category] %>：<%= minutes.to_i %> 分</li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p>今週の家事ログがまだありません。</p>
-  <% end %>
-</section>
+  <table border="1" cellpadding="8">
+    <tr>
+      <th>ユーザー</th>
+      <th>回数</th>
+      <th>回数割合</th>
+      <th>時間</th>
+      <th>時間割合</th>
+    </tr>
 
-<section class="dashboard-section">
-  <h2>直近7日（合計時間）</h2>
+    <% (@weekly_counts_by_user.keys | @weekly_minutes_by_user.keys).each do |user| %>
+      <tr>
+        <td><%= user.nickname.presence || user.email %></td>
+        <td><%= @weekly_counts_by_user[user].to_i %> 回</td>
+        <td><%= @weekly_count_rates_by_user[user].to_f %> %</td>
+        <td><%= @weekly_minutes_by_user[user].to_i %> 分</td>
+        <td><%= @weekly_minutes_rates_by_user[user].to_f %> %</td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
 
-  <% if @daily_summaries.present? %>
-    <ul>
-      <% @daily_summaries.each do |date, minutes| %>
-        <li><%= l(date) %>：<%= minutes.to_i %> 分</li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p>直近7日分の家事ログがまだありません。</p>
-  <% end %>
-</section>
+<hr>
+
+<h2>あなたの今週</h2>
+<p>
+  <strong><%= @my_weekly_count %></strong> 回
+  （<%= @my_weekly_minutes.to_i %> 分）
+</p>
+
+<h3>カテゴリ別（今週）</h3>
+<% if @my_category_counts.blank? %>
+  <p>今週のカテゴリ集計がありません。</p>
+<% else %>
+  <ul>
+    <% @my_category_counts.each do |category, count| %>
+      <% minutes = @my_category_minutes[category].to_i %>
+      <li>
+        <%= HouseworkLog.category_label(category) %>：<strong><%= count %></strong> 回（<%= minutes %> 分）
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<h3>直近7日</h3>
+<% if @my_daily_counts.blank? %>
+  <p>直近7日の記録がありません。</p>
+<% else %>
+  <ul>
+    <% @my_daily_counts.each do |date, count| %>
+      <% minutes = @my_daily_minutes[date].to_i %>
+      <li>
+        <%= date %>：<strong><%= count %></strong> 回（<%= minutes %> 分）
+      </li>
+    <% end %>
+  </ul>
+<% end %>
