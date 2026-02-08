@@ -1,8 +1,62 @@
-.app-header, .app-footer { padding: 12px 16px; border-bottom: 1px solid #ddd; }
-.app-footer { border-top: 1px solid #ddd; border-bottom: none; margin-top: 24px; text-align: center; }
-.app-main { padding: 16px; }
+.app-header {
+  border-bottom: 1px solid #ddd;
+  padding: 12px 16px;
+}
 
-.app-nav { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
-.app-nav-links a { margin-left: 12px; text-decoration: none; }
-.inline-form { display: inline; margin-left: 12px; }
-.flash { padding: 10px 12px; margin: 12px 16px; border: 1px solid #ddd; }
+.app-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.app-logo {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.app-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app-user {
+  opacity: 0.8;
+}
+
+.inline-form {
+  display: inline;
+}
+
+/* main area */
+.app-main {
+  padding: 16px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* basic link/button */
+.app-nav-links a {
+  text-decoration: none;
+}
+
+.app-nav-primary {
+  padding: 6px 10px;
+  border: 1px solid #999;
+  border-radius: 6px;
+}
+
+.app-nav-links form button {
+  padding: 6px 10px;
+  border: 1px solid #999;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* flash */
+.flash {
+  padding: 10px 16px;
+  border-bottom: 1px solid #eee;
+}
