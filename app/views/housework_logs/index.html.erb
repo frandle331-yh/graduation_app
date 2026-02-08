@@ -32,13 +32,6 @@
       ) %>
   |
 
-  <%= link_to "作成日（新しい順）",
-      housework_logs_path(
-        period: @period,
-        category: @selected_category.presence,
-        daily: (@daily_mode == "all" ? "all" : nil),
-        sort: "created_desc"
-      ) %>
 </div>
 
 
