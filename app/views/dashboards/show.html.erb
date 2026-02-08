@@ -4,10 +4,10 @@
 
 <section>
   <h2>今週の合計</h2>
-  <p><%= @weekly_total_minutes %> 分</p>
+  <p class="dashboard-total"><%= @weekly_total_minutes.to_i %> 分</p>
 </section>
 
-<section>
+<section class="dashboard-section">
   <h2>カテゴリ別（今週）</h2>
 
   <% if @category_summaries.present? %>
@@ -21,8 +21,8 @@
   <% end %>
 </section>
 
-<section>
-  <h2>直近7日</h2>
+<section class="dashboard-section">
+  <h2>直近7日（合計時間）</h2>
 
   <% if @daily_summaries.present? %>
     <ul>
