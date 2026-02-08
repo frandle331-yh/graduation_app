@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "dashboards/show"
   get "housework_logs/index"
   get "housework_logs/new"
   get "housework_logs/create"
@@ -7,6 +8,7 @@ Rails.application.routes.draw do
   devise_for :users
   resource :profile, only: [:edit, :update, :destroy]
   resources :housework_logs, only: [:index, :new, :create, :show, :edit, :update, :destroy]
+  resource :dashboard, only: [:show]
   get "home/index"
   # アプリのトップページ
   root "home#index"

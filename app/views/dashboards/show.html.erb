@@ -1,0 +1,24 @@
+<h1>ダッシュボード</h1>
+
+<section>
+  <h2>今週の合計</h2>
+  <p><%= @weekly_total_minutes %> 分</p>
+</section>
+
+<section>
+  <h2>カテゴリ別</h2>
+  <ul>
+    <% @category_summaries.each do |category, minutes| %>
+      <li><%= HouseworkLog.categories_i18n[category] %>：<%= minutes %> 分</li>
+    <% end %>
+  </ul>
+</section>
+
+<section>
+  <h2>直近7日</h2>
+  <ul>
+    <% @daily_summaries.each do |date, minutes| %>
+      <li><%= l(date) %>：<%= minutes %> 分</li>
+    <% end %>
+  </ul>
+</section>
