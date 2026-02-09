@@ -7,80 +7,44 @@
     <%= link_to "招待コードで参加する", join_household_path %>
   </p>
 
-  <p style="margin-top: 12px;">
-    先に個人で記録したい方はこちら：
-    <%= link_to "家事ログへ", housework_logs_path %>
-  </p>
+  <hr style="margin: 16px 0;">
+  <p>※ いまは個人の家事ログを元に分析を表示しています。</p>
 <% else %>
-  <h1>ダッシュボード</h1>
   <p><strong>世帯名：</strong><%= @household.name %></p>
-
-  <hr>
-
-  <h2>今週の貢献度（世帯）</h2>
-
-  <% if @weekly_total_count.zero? %>
-    <p>今週の家事記録がありません。</p>
-  <% else %>
-    <p>
-      <strong>今週の総回数：</strong><%= @weekly_total_count %> 回 /
-      <strong>時間：</strong><%= @weekly_total_minutes.to_i %> 分
-    </p>
-
-    <table border="1" cellpadding="8">
-      <tr>
-        <th>ユーザー</th>
-        <th>回数</th>
-        <th>回数割合</th>
-        <th>時間</th>
-        <th>時間割合</th>
-      </tr>
-
-    <% (@weekly_counts_by_user.keys | @weekly_minutes_by_user.keys).each do |user| %>
-      <tr>
-        <td><%= user.nickname.presence || user.email %></td>
-        <td><%= @weekly_counts_by_user[user].to_i %> 回</td>
-        <td><%= @weekly_count_rates_by_user[user].to_f %> %</td>
-        <td><%= @weekly_minutes_by_user[user].to_i %> 分</td>
-        <td><%= @weekly_minutes_rates_by_user[user].to_f %> %</td>
-      </tr>
-    <% end %>
-  </table>
 <% end %>
 
-<hr>
+<h2>今週の合計</h2>
+<p><%= @weekly_total_minutes %> 分</p>
 
-<h2>あなたの今週</h2>
-<p>
-  <strong><%= @my_weekly_count %></strong> 回
-  （<%= @my_weekly_minutes.to_i %> 分）
+<% if @household && @weekly_minutes_by_user.present? %>
+  <h2>メンバー別（今週）</h2>
+  <ul>
+    <% @weekly_minutes_by_user.each do |user, minutes| %>
+      <li>
+        <%= user.nickname.presence || user.email %>：
+        <%= minutes %> 分（<%= @weekly_minutes_rates_by_user[user] %>%）
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+
+<h2>カテゴリ別（今週）</h2>
+<ul>
+  <% @category_summaries.each do |category_key_or_value, total_minutes| %>
+    <% category_key =
+         category_key_or_value.is_a?(String) ? category_key_or_value : HouseworkLog.categories.key(category_key_or_value) %>
+    <li><%= t("enums.housework_log.category.#{category_key}") %>： <%= total_minutes %> 分</li>
+  <% end %>
+</ul>
+
+<h2>直近7日（今週）</h2>
+<ul>
+  <% @daily_summaries.each do |date, total_minutes| %>
+    <li><%= l(date) %>： <%= total_minutes %> 分</li>
+  <% end %>
+</ul>
+
+<p style="margin-top: 16px;">
+  <%= link_to "家事ログ一覧へ", housework_logs_path %>
 </p>
-
-<h3>カテゴリ別（今週）</h3>
-<% if @my_category_counts.blank? %>
-  <p>今週のカテゴリ集計がありません。</p>
-<% else %>
-  <ul>
-    <% @my_category_counts.each do |category, count| %>
-      <% minutes = @my_category_minutes[category].to_i %>
-      <li>
-        <%= HouseworkLog.category_label(category) %>：<strong><%= count %></strong> 回（<%= minutes %> 分）
-      </li>
-    <% end %>
-  </ul>
-<% end %>
-
-<h3>直近7日</h3>
-<% if @my_daily_counts.blank? %>
-  <p>直近7日の記録がありません。</p>
-<% else %>
-  <ul>
-    <% @my_daily_counts.each do |date, count| %>
-      <% minutes = @my_daily_minutes[date].to_i %>
-      <li>
-        <%= date %>：<strong><%= count %></strong> 回（<%= minutes %> 分）
-      </li>
-    <% end %>
-  </ul>
-<% end %>
-<% end %>

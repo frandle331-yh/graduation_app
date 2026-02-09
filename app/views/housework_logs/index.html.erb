@@ -18,10 +18,11 @@
       <% end %>
     </ul>
   <% else %>
-    <p style="margin-top: 8px;">最近の家事はまだありません。まずは「家事を記録」から登録してみてください。</p>
+    <p style="margin-top: 8px;">
+      最近の家事はまだありません。まずは「家事を記録」から登録してみてください。
+    </p>
   <% end %>
 </details>
-
 
 <details style="margin-bottom: 16px;">
   <summary>絞り込み・並び替え</summary>
@@ -29,9 +30,9 @@
   <div style="margin-top: 8px;">
     <h3>期間</h3>
     <ul>
-      <li><%= link_to "全期間", housework_logs_path(category: @selected_category.presence, period: "all", sort: @sort, daily: (@daily_mode == "all" ? "all" : nil)) %></li>
-      <li><%= link_to "今週",   housework_logs_path(category: @selected_category.presence, period: "week", sort: @sort, daily: (@daily_mode == "all" ? "all" : nil)) %></li>
-      <li><%= link_to "今月",   housework_logs_path(category: @selected_category.presence, period: "month", sort: @sort, daily: (@daily_mode == "all" ? "all" : nil)) %></li>
+      <li><%= link_to "全期間", housework_logs_path(category: @selected_category.presence, period: "all", sort: @sort) %></li>
+      <li><%= link_to "今週",   housework_logs_path(category: @selected_category.presence, period: "week", sort: @sort) %></li>
+      <li><%= link_to "今月",   housework_logs_path(category: @selected_category.presence, period: "month", sort: @sort) %></li>
     </ul>
 
     <% if @period.present? && @period != "all" %>
@@ -42,7 +43,6 @@
     <%= form_with url: housework_logs_path, method: :get, local: true do %>
       <%= hidden_field_tag :period, @period %>
       <%= hidden_field_tag :sort, @sort %>
-      <%= hidden_field_tag :daily, (@daily_mode == "all" ? "all" : nil) %>
 
       <%= select_tag :category,
           options_for_select(
@@ -54,16 +54,16 @@
 
     <% if @selected_category.present? %>
       <p>表示中：<%= t("enums.housework_log.category.#{@selected_category}") %></p>
-      <%= link_to "絞り込み解除", housework_logs_path(period: @period, sort: @sort, daily: (@daily_mode == "all" ? "all" : nil)) %>
+      <%= link_to "絞り込み解除", housework_logs_path(period: @period, sort: @sort) %>
     <% end %>
 
     <h3>並び替え</h3>
     <div class="logs-toolbar">
       <%= link_to "実施日（新しい順）",
-          housework_logs_path(period: @period, category: @selected_category.presence, daily: (@daily_mode == "all" ? "all" : nil), sort: "performed_desc") %>
+        housework_logs_path(period: @period, category: @selected_category.presence, sort: "performed_desc") %>
       <span style="margin: 0 8px;">/</span>
       <%= link_to "実施日（古い順）",
-          housework_logs_path(period: @period, category: @selected_category.presence, daily: (@daily_mode == "all" ? "all" : nil), sort: "performed_asc") %>
+        housework_logs_path(period: @period, category: @selected_category.presence, sort: "performed_asc") %>
     </div>
   </div>
 </details>
@@ -87,40 +87,10 @@
     params: {
       period: @period,
       category: @selected_category.presence,
-      daily: (@daily_mode == "all" ? "all" : nil),
       sort: @sort
     } %>
 </div>
 
-<details style="margin-top: 16px;">
-  <summary>集計</summary>
-
-  <div style="margin-top: 8px;">
-    <h3>カテゴリ別合計時間</h3>
-    <ul>
-      <% @category_summaries.each do |category_key_or_value, total_minutes| %>
-        <% category_key =
-             category_key_or_value.is_a?(String) ? category_key_or_value : HouseworkLog.categories.key(category_key_or_value) %>
-        <li>
-          <%= t("enums.housework_log.category.#{category_key}") %>： <%= total_minutes %> 分
-        </li>
-      <% end %>
-    </ul>
-
-    <h3>日別合計時間（<%= @daily_mode == "all" ? "全表示" : "直近7日" %>）</h3>
-
-    <% if @daily_mode == "all" %>
-      <%= link_to "直近7日に戻す",
-          housework_logs_path(category: @selected_category.presence, period: @period, sort: @sort, daily: nil) %>
-    <% else %>
-      <%= link_to "全表示",
-          housework_logs_path(category: @selected_category.presence, period: @period, sort: @sort, daily: "all") %>
-    <% end %>
-
-    <ul>
-      <% @daily_summaries.each do |date, total_minutes| %>
-        <li><%= l(date) %>： <%= total_minutes %> 分</li>
-      <% end %>
-    </ul>
-  </div>
-</details>
+<p style="margin-top: 16px;">
+  分析は <%= link_to "ダッシュボード", dashboard_path %> で確認できます。
+</p>
