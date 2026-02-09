@@ -13,6 +13,13 @@
 
         <%= link_to "家事ログ", housework_logs_path%>
 
+        <% if current_household %>
+          <%= link_to "世帯", household_path %> |
+        <% else %>
+          <%= link_to "世帯を作成", new_household_path %> |
+          <%= link_to "招待コードで参加", join_household_path %> |
+        <% end %>
+
         <% if respond_to?(:edit_profile_path) %>
           <%= link_to "プロフィール", edit_profile_path%>
         <% end %>

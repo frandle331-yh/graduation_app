@@ -1,3 +1,19 @@
+<% unless @household %>
+  <h1>ダッシュボード</h1>
+  <p>世帯を作成または参加すると、貢献度の可視化や分析が使えます。</p>
+
+  <p>
+    <%= link_to "世帯を作成する", new_household_path %> /
+    <%= link_to "招待コードで参加する", join_household_path %>
+  </p>
+
+  <p style="margin-top: 12px;">
+    先に個人で記録したい方はこちら：
+    <%= link_to "家事ログへ", housework_logs_path %>
+  </p>
+  <% return %>
+<% end %>
+
 <h1>ダッシュボード</h1>
 <p><strong>世帯名：</strong><%= @household.name %></p>
 
