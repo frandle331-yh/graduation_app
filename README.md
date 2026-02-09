@@ -231,3 +231,9 @@ MVPでは以下の機能を優先で実装します。
 
 - ER図URL:[![Image from Gyazo](https://i.gyazo.com/4dd80f3df700b39be7795a6f61f7dfc0.png)](https://gyazo.com/4dd80f3df700b39be7795a6f61f7dfc0)
 - MVP向け修正版: [![Image from Gyazo](https://i.gyazo.com/ea8fa4768a2a5aa4203b0dc0afc22168.png)](https://gyazo.com/ea8fa4768a2a5aa4203b0dc0afc22168)
+
+
+### 世帯機能の導線
+本アプリは、世帯に参加していなくても個人で家事ログを記録できます。  
+世帯を作成または招待コードで参加すると、ダッシュボードで世帯内の貢献度（回数・分数）や集計が表示されます。  
+ログイン後はダッシュボードを起点に、ヘッダーから「世帯作成/参加」「家事ログ」「世帯ページ」へ遷移できます。
