@@ -1,71 +1,74 @@
-<h2>家事ログ一覧</h2>
+<h1>家事ログ</h1>
 
-<h2>最近の家事</h2>
-<ul>
-  <% @recent_logs.each do |log| %>
-    <li style="margin-bottom: 8px;">
-      <strong><%= log.title %></strong>
-      （<%= log.performed_on %>）
-      <%= button_to "今日やった", quick_create_housework_logs_path(source_id: log.id), method: :post %>
-    </li>
-  <% end %>
-</ul>
-
-
-<h3>期間</h3>
-<ul>
-  <li><%= link_to "全期間", housework_logs_path(category: @selected_category.presence, period: "all") %></li>
-  <li><%= link_to "今週",   housework_logs_path(category: @selected_category.presence, period: "week") %></li>
-  <li><%= link_to "今月",   housework_logs_path(category: @selected_category.presence, period: "month") %></li>
-</ul>
-
-<% if @period.present? && @period != "all" %>
-  <p>期間：<%= @period == "week" ? "今週" : "今月" %></p>
-<% end %>
-
-<div class="logs-toolbar">
-  <span>並び替え：</span>
-
-  <%= link_to "実施日（新しい順）",
-      housework_logs_path(
-        period: @period,
-        category: @selected_category.presence,
-        daily: (@daily_mode == "all" ? "all" : nil),
-        sort: "performed_desc"
-      ) %>
-  |
-
-  <%= link_to "実施日（古い順）",
-      housework_logs_path(
-        period: @period,
-        category: @selected_category.presence,
-        daily: (@daily_mode == "all" ? "all" : nil),
-        sort: "performed_asc"
-      ) %>
-  |
-
+<div class="logs-header" style="margin-bottom: 12px;">
+  <%= link_to "家事を記録", new_housework_log_path, class: "app-nav-primary" %>
 </div>
 
+<details open style="margin-bottom: 16px;">
+  <summary>最近の家事（ワンタップ）</summary>
+
+  <% if @recent_logs.present? %>
+    <ul style="margin-top: 8px;">
+      <% @recent_logs.each do |log| %>
+        <li style="margin-bottom: 8px;">
+          <strong><%= log.title %></strong>
+          （<%= l(log.performed_on) %>）
+          <%= button_to "今日やった", quick_create_housework_logs_path(source_id: log.id), method: :post %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p style="margin-top: 8px;">最近の家事はまだありません。まずは「家事を記録」から登録してみてください。</p>
+  <% end %>
+</details>
 
 
-<%= link_to "家事を記録", new_housework_log_path %>
-<%= form_with url: housework_logs_path, method: :get, local: true do %>
-  <%= select_tag :category,
-      options_for_select(
-        [["すべて", ""]] + HouseworkLog.categories.keys.map { |k| [t("enums.housework_log.category.#{k}"), k] },
-        @selected_category
-      ) %>
-  <%= submit_tag "絞り込む" %>
-<% end %>
+<details style="margin-bottom: 16px;">
+  <summary>絞り込み・並び替え</summary>
 
-<% if @selected_category.present? %>
-  <p>表示中：<%= t("enums.housework_log.category.#{@selected_category}") %></p>
-<% end %>
+  <div style="margin-top: 8px;">
+    <h3>期間</h3>
+    <ul>
+      <li><%= link_to "全期間", housework_logs_path(category: @selected_category.presence, period: "all", sort: @sort, daily: (@daily_mode == "all" ? "all" : nil)) %></li>
+      <li><%= link_to "今週",   housework_logs_path(category: @selected_category.presence, period: "week", sort: @sort, daily: (@daily_mode == "all" ? "all" : nil)) %></li>
+      <li><%= link_to "今月",   housework_logs_path(category: @selected_category.presence, period: "month", sort: @sort, daily: (@daily_mode == "all" ? "all" : nil)) %></li>
+    </ul>
 
-<%= link_to "絞り込み解除", housework_logs_path %>
+    <% if @period.present? && @period != "all" %>
+      <p>期間：<%= @period == "week" ? "今週" : "今月" %></p>
+    <% end %>
 
+    <h3>カテゴリ</h3>
+    <%= form_with url: housework_logs_path, method: :get, local: true do %>
+      <%= hidden_field_tag :period, @period %>
+      <%= hidden_field_tag :sort, @sort %>
+      <%= hidden_field_tag :daily, (@daily_mode == "all" ? "all" : nil) %>
 
+      <%= select_tag :category,
+          options_for_select(
+            [["すべて", ""]] + HouseworkLog.categories.keys.map { |k| [t("enums.housework_log.category.#{k}"), k] },
+            @selected_category
+          ) %>
+      <%= submit_tag "絞り込む" %>
+    <% end %>
 
+    <% if @selected_category.present? %>
+      <p>表示中：<%= t("enums.housework_log.category.#{@selected_category}") %></p>
+      <%= link_to "絞り込み解除", housework_logs_path(period: @period, sort: @sort, daily: (@daily_mode == "all" ? "all" : nil)) %>
+    <% end %>
+
+    <h3>並び替え</h3>
+    <div class="logs-toolbar">
+      <%= link_to "実施日（新しい順）",
+          housework_logs_path(period: @period, category: @selected_category.presence, daily: (@daily_mode == "all" ? "all" : nil), sort: "performed_desc") %>
+      <span style="margin: 0 8px;">/</span>
+      <%= link_to "実施日（古い順）",
+          housework_logs_path(period: @period, category: @selected_category.presence, daily: (@daily_mode == "all" ? "all" : nil), sort: "performed_asc") %>
+    </div>
+  </div>
+</details>
+
+<h2>ログ一覧</h2>
 
 <ul>
   <% @housework_logs.each do |log| %>
@@ -73,10 +76,9 @@
       <strong><%= log.title %></strong>
       （<%= t("enums.housework_log.category.#{log.category}") %>）
       <%= log.minutes %>分
-      <%= log.performed_on %>
+      <%= l(log.performed_on) %>
       <%= link_to "詳細", housework_log_path(log) %>
     </li>
-
   <% end %>
 </ul>
 
@@ -90,30 +92,35 @@
     } %>
 </div>
 
+<details style="margin-top: 16px;">
+  <summary>集計</summary>
 
-<h3>カテゴリ別合計時間</h3>
-<ul>
-  <% @category_summaries.each do |category_key_or_value, total_minutes| %>
-    <% category_key =
-         category_key_or_value.is_a?(String) ? category_key_or_value : HouseworkLog.categories.key(category_key_or_value) %>
-    <li>
-      <%= t("enums.housework_log.category.#{category_key}") %>： <%= total_minutes %> 分
-    </li>
-  <% end %>
-</ul>
+  <div style="margin-top: 8px;">
+    <h3>カテゴリ別合計時間</h3>
+    <ul>
+      <% @category_summaries.each do |category_key_or_value, total_minutes| %>
+        <% category_key =
+             category_key_or_value.is_a?(String) ? category_key_or_value : HouseworkLog.categories.key(category_key_or_value) %>
+        <li>
+          <%= t("enums.housework_log.category.#{category_key}") %>： <%= total_minutes %> 分
+        </li>
+      <% end %>
+    </ul>
 
-<h3>日別合計時間（<%= @daily_mode == "all" ? "全表示" : "直近7日" %>）</h3>
+    <h3>日別合計時間（<%= @daily_mode == "all" ? "全表示" : "直近7日" %>）</h3>
 
-<% if @daily_mode == "all" %>
-  <%= link_to "直近7日に戻す",
-      housework_logs_path(category: @selected_category.presence, period: @period, daily: nil) %>
-<% else %>
-  <%= link_to "全表示",
-      housework_logs_path(category: @selected_category.presence, period: @period, daily: "all") %>
-<% end %>
+    <% if @daily_mode == "all" %>
+      <%= link_to "直近7日に戻す",
+          housework_logs_path(category: @selected_category.presence, period: @period, sort: @sort, daily: nil) %>
+    <% else %>
+      <%= link_to "全表示",
+          housework_logs_path(category: @selected_category.presence, period: @period, sort: @sort, daily: "all") %>
+    <% end %>
 
-<ul>
-  <% @daily_summaries.each do |date, total_minutes| %>
-    <li><%= l(date) %>： <%= total_minutes %> 分</li>
-  <% end %>
-</ul>
+    <ul>
+      <% @daily_summaries.each do |date, total_minutes| %>
+        <li><%= l(date) %>： <%= total_minutes %> 分</li>
+      <% end %>
+    </ul>
+  </div>
+</details>
