@@ -55,15 +55,12 @@ a:hover { text-decoration: underline; }
   gap: 12px;
 }
 .app-logo {
-  display: flex;
-  align-items: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: -0.02em;
   text-decoration: none;
   flex-shrink: 0;
-}
-.app-logo__img {
-  height: 36px;
-  width: auto;
-  display: block;
 }
 .app-logo:hover { opacity: .85; text-decoration: none; }
 

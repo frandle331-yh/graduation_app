@@ -1,8 +1,6 @@
 <header class="app-header">
   <div class="app-nav">
-    <%= link_to root_path, class: "app-logo" do %>
-      <%= image_tag "kajilog-logo.png", alt: "KAJILOG", class: "app-logo__img" %>
-    <% end %>
+    <%= link_to "KAJILOG", root_path, class: "app-logo" %>
 
     <nav class="app-nav-links">
       <% if user_signed_in? %>
