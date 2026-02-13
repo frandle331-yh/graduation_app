@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users
   resource :profile, only: [:edit, :update, :destroy]
+  resources :housework_templates, only: [:index, :new, :create, :edit, :update, :destroy] do
+    post :use, on: :member
+  end
   resources :housework_logs, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
     post :quick_create, on: :collection
   end

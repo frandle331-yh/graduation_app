@@ -3,30 +3,39 @@
   <%= link_to "＋ 家事を記録", new_housework_log_path, class: "btn btn-primary btn-sm" %>
 </div>
 
-<%# ---- ワンタップ記録 ---- %>
-<details class="accordion" open>
+<%# ---- テンプレートからワンタップ記録 ---- %>
+<%
+  templates = current_user.housework_templates.ordered
+%>
+<details class="accordion" <%= templates.present? ? "open" : "" %>>
   <summary class="accordion__summary">
     <span>⚡ ワンタップで記録</span>
+    <% if templates.blank? %>
+      <span class="accordion__sub">テンプレートを登録するとここに表示されます</span>
+    <% end %>
   </summary>
   <div class="accordion__body">
-    <% if @recent_logs.present? %>
-      <ul class="quick-list">
-        <% @recent_logs.each do |log| %>
-          <li class="quick-item">
-            <div class="quick-item__info">
-              <span class="badge badge--<%= log.category %>"><%= t("enums.housework_log.category.#{log.category}") %></span>
-              <strong class="quick-item__title"><%= log.title %></strong>
-              <span class="quick-item__date"><%= l(log.performed_on, format: :short) %></span>
-            </div>
-            <%= button_to "今日やった ✓",
-                  quick_create_housework_logs_path(source_id: log.id),
-                  method: :post,
-                  class: "btn btn-quick" %>
-          </li>
+    <% if templates.present? %>
+      <div class="template-buttons">
+        <% templates.each do |tmpl| %>
+          <%= button_to use_housework_template_path(tmpl), method: :post,
+                class: "template-tap-btn template-tap-btn--#{tmpl.category}" do %>
+            <span class="template-tap-btn__icon"><%= category_icon(tmpl.category) %></span>
+            <span class="template-tap-btn__title"><%= tmpl.title %></span>
+            <% if tmpl.minutes.present? %>
+              <span class="template-tap-btn__minutes"><%= tmpl.minutes %>分</span>
+            <% end %>
+          <% end %>
         <% end %>
-      </ul>
+      </div>
+      <p class="template-manage-link">
+        <%= link_to "テンプレートを管理 →", housework_templates_path, class: "link-muted" %>
+      </p>
     <% else %>
-      <p class="empty-note">まずは「家事を記録」から登録してみてください。</p>
+      <div class="empty-note" style="padding: 12px 0;">
+        テンプレートを登録するとワンタップで記録できます。<br>
+        <%= link_to "テンプレートを追加する →", new_housework_template_path %>
+      </div>
     <% end %>
   </div>
 </details>

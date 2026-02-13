@@ -10,6 +10,11 @@ ja:
         performed_on: "実施日"
         minutes: "所要時間（分）"
         memo: "メモ"
+      housework_template:
+        title: "タイトル"
+        category: "カテゴリ"
+        minutes: "所要時間（分）"
+        position: "表示順"
       user:
         nickname: "ニックネーム"
   enums:
@@ -26,6 +31,9 @@ ja:
     submit:
       housework_log:
         create: "登録する"
+        update: "更新する"
+      housework_template:
+        create: "追加する"
         update: "更新する"
       user:
         update: "更新する"

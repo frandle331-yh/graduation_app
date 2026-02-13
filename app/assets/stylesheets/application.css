@@ -591,6 +591,108 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
 .feature-card strong { display: block; font-size: .9rem; margin-bottom: 4px; }
 .feature-card p { font-size: .8rem; color: var(--text-muted); line-height: 1.5; }
 
+/* ---- Template Buttons ------------------------------------ */
+.template-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 4px 0;
+}
+.template-tap-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: transform .12s, box-shadow .12s, opacity .15s;
+  min-width: 80px;
+  text-align: center;
+  background: var(--white);
+}
+.template-tap-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+.template-tap-btn:active { transform: scale(.96); }
+
+/* カテゴリ別の色 */
+.template-tap-btn--cleaning    { border-color: #bae6fd; background: #f0f9ff; }
+.template-tap-btn--laundry     { border-color: #ddd6fe; background: #f5f3ff; }
+.template-tap-btn--cooking     { border-color: #fde68a; background: #fffbeb; }
+.template-tap-btn--dishwashing { border-color: #a7f3d0; background: #ecfdf5; }
+.template-tap-btn--shopping    { border-color: #fbcfe8; background: #fdf2f8; }
+.template-tap-btn--childcare   { border-color: #fecaca; background: #fff5f5; }
+.template-tap-btn--other       { border-color: #e5e7eb; background: #f9fafb; }
+
+.template-tap-btn__icon    { font-size: 1.5rem; line-height: 1; }
+.template-tap-btn__title   { font-size: .82rem; font-weight: 600; color: var(--text); }
+.template-tap-btn__minutes { font-size: .72rem; color: var(--text-muted); }
+
+.template-manage-link { margin-top: 12px; font-size: .8rem; }
+.accordion__sub { font-size: .75rem; color: var(--text-muted); font-weight: 400; margin-left: 6px; }
+
+/* ---- Template List (管理画面) ---------------------------- */
+.template-preview {
+  background: var(--primary-light);
+  border: 1px solid #c7d2fe;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.template-preview__label {
+  font-size: .8rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.template-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.template-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+.template-row__left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+.template-row__title {
+  font-size: .9rem;
+  font-weight: 600;
+}
+.template-row__minutes {
+  font-size: .8rem;
+  color: var(--text-muted);
+}
+.template-row__actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ---- Empty State ----------------------------------------- */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+}
+.empty-state__icon  { font-size: 2.5rem; margin-bottom: 12px; }
+.empty-state__title { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+.empty-state__desc  { font-size: .875rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.7; }
+
 /* ---- Responsive ------------------------------------------ */
 @media (max-width: 640px) {
   .hero__title { font-size: 1.8rem; }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_08_191508) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_09_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -35,6 +35,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_191508) do
     t.string "name", null: false
     t.datetime "updated_at", null: false
     t.index ["invitation_code"], name: "index_households_on_invitation_code", unique: true
+  end
+
+  create_table "housework_templates", force: :cascade do |t|
+    t.bigint  "user_id",      null: false
+    t.bigint  "household_id"
+    t.string  "title",        null: false
+    t.integer "category",     null: false, default: 0
+    t.integer "minutes"
+    t.integer "position",     null: false, default: 0
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["user_id", "position"], name: "index_housework_templates_on_user_id_and_position"
+    t.index ["user_id"],             name: "index_housework_templates_on_user_id"
+    t.index ["household_id"],        name: "index_housework_templates_on_household_id"
   end
 
   create_table "housework_logs", force: :cascade do |t|
@@ -67,6 +81,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_191508) do
     t.index ["withdrawn_at"], name: "index_users_on_withdrawn_at"
   end
 
+  add_foreign_key "housework_templates", "users"
+  add_foreign_key "housework_templates", "households"
   add_foreign_key "household_members", "households"
   add_foreign_key "household_members", "users"
   add_foreign_key "households", "users", column: "created_by_id"
