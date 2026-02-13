@@ -1,29 +1,50 @@
 <% if housework_log.errors.any? %>
-  <ul>
-    <% housework_log.errors.full_messages.each do |m| %>
-      <li><%= m %></li>
-    <% end %>
-  </ul>
+  <div class="form-errors">
+    <p class="form-errors__title">⚠️ <%= housework_log.errors.count %>件のエラーがあります</p>
+    <ul>
+      <% housework_log.errors.full_messages.each do |m| %>
+        <li><%= m %></li>
+      <% end %>
+    </ul>
+  </div>
 <% end %>
 
-<%= form_with model: housework_log do |f| %>
-  <%= f.label :title %><br>
-  <%= f.text_field :title %><br>
+<%= form_with model: housework_log, class: "form-card" do |f| %>
+  <div class="form-group">
+    <%= f.label :title, class: "form-label" %>
+    <%= f.text_field :title, class: "form-input", placeholder: "例：洗濯、掃除機かけ" %>
+  </div>
 
-  <%= f.label :category %><br>
-  <%= f.select :category,
-      HouseworkLog.categories.keys.map { |k| [t("enums.housework_log.category.#{k}"), k] },
-      { include_blank: "選択してください" } %><br>
+  <div class="form-group">
+    <%= f.label :category, class: "form-label" %>
+    <%= f.select :category,
+        HouseworkLog.categories.keys.map { |k| [t("enums.housework_log.category.#{k}"), k] },
+        { include_blank: "選択してください" },
+        class: "form-select" %>
+  </div>
 
+  <div class="form-row">
+    <div class="form-group">
+      <%= f.label :performed_on, class: "form-label" %>
+      <%= f.date_field :performed_on, class: "form-input" %>
+    </div>
 
-  <%= f.label :performed_on %><br>
-  <%= f.date_field :performed_on %><br>
+    <div class="form-group">
+      <%= f.label :minutes, class: "form-label" %>
+      <div class="form-input-suffix">
+        <%= f.number_field :minutes, min: 0, max: 1440, step: 1, class: "form-input", placeholder: "30" %>
+        <span class="form-suffix">分</span>
+      </div>
+    </div>
+  </div>
 
-  <%= f.label :minutes %><br>
-  <%= f.number_field :minutes, min: 0, max: 1440, step: 1 %>
+  <div class="form-group">
+    <%= f.label :memo, class: "form-label" %>
+    <%= f.text_area :memo, class: "form-textarea", rows: 3, placeholder: "メモがあれば（任意）" %>
+  </div>
 
-  <%= f.label :memo %><br>
-  <%= f.text_area :memo %><br>
-
-  <%= f.submit %>
+  <div class="form-actions">
+    <%= f.submit class: "btn btn-primary" %>
+    <%= link_to "キャンセル", housework_logs_path, class: "btn btn-ghost" %>
+  </div>
 <% end %>

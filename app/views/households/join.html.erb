@@ -1,16 +1,19 @@
-<h1>招待コードで参加</h1>
+<div class="page-header">
+  <h1 class="page-title">招待コードで参加する</h1>
+  <p class="page-desc">パートナーから受け取った8桁の招待コードを入力してください。</p>
+</div>
 
-<%= form_with url: join_household_path, method: :post do |f| %>
-  <div>
-    <%= label_tag :invitation_code, "招待コード" %><br>
-    <%= text_field_tag :invitation_code, params[:invitation_code], required: true %>
+<%= form_with url: join_household_path, method: :post, class: "form-card" do |f| %>
+  <div class="form-group">
+    <%= label_tag :invitation_code, "招待コード", class: "form-label" %>
+    <%= text_field_tag :invitation_code, params[:invitation_code],
+          required: true, class: "form-input", placeholder: "例：AbCd1234" %>
   </div>
-
-  <div style="margin-top: 12px;">
-    <%= submit_tag "参加する" %>
+  <div class="form-actions">
+    <%= submit_tag "参加する", class: "btn btn-primary" %>
   </div>
 <% end %>
 
-<p style="margin-top: 16px;">
-  <%= link_to "世帯を作成する", new_household_path %>
+<p class="page-link-bottom">
+  世帯をお持ちでない方は <%= link_to "世帯を作成する →", new_household_path %>
 </p>

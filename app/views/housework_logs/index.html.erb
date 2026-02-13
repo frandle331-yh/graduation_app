@@ -1,96 +1,114 @@
-<h1>家事ログ</h1>
-
-<div class="logs-header" style="margin-bottom: 12px;">
-  <%= link_to "家事を記録", new_housework_log_path, class: "app-nav-primary" %>
+<div class="page-header">
+  <h1 class="page-title">家事ログ</h1>
+  <%= link_to "＋ 家事を記録", new_housework_log_path, class: "btn btn-primary btn-sm" %>
 </div>
 
-<details open style="margin-bottom: 16px;">
-  <summary>最近の家事（ワンタップ）</summary>
-
-  <% if @recent_logs.present? %>
-    <ul style="margin-top: 8px;">
-      <% @recent_logs.each do |log| %>
-        <li style="margin-bottom: 8px;">
-          <strong><%= log.title %></strong>
-          （<%= l(log.performed_on) %>）
-          <%= button_to "今日やった", quick_create_housework_logs_path(source_id: log.id), method: :post %>
-        </li>
-      <% end %>
-    </ul>
-  <% else %>
-    <p style="margin-top: 8px;">
-      最近の家事はまだありません。まずは「家事を記録」から登録してみてください。
-    </p>
-  <% end %>
+<%# ---- ワンタップ記録 ---- %>
+<details class="accordion" open>
+  <summary class="accordion__summary">
+    <span>⚡ ワンタップで記録</span>
+  </summary>
+  <div class="accordion__body">
+    <% if @recent_logs.present? %>
+      <ul class="quick-list">
+        <% @recent_logs.each do |log| %>
+          <li class="quick-item">
+            <div class="quick-item__info">
+              <span class="badge badge--<%= log.category %>"><%= t("enums.housework_log.category.#{log.category}") %></span>
+              <strong class="quick-item__title"><%= log.title %></strong>
+              <span class="quick-item__date"><%= l(log.performed_on, format: :short) %></span>
+            </div>
+            <%= button_to "今日やった ✓",
+                  quick_create_housework_logs_path(source_id: log.id),
+                  method: :post,
+                  class: "btn btn-quick" %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="empty-note">まずは「家事を記録」から登録してみてください。</p>
+    <% end %>
+  </div>
 </details>
 
-<details style="margin-bottom: 16px;">
-  <summary>絞り込み・並び替え</summary>
-
-  <div style="margin-top: 8px;">
-    <h3>期間</h3>
-    <ul>
-      <li><%= link_to "全期間", housework_logs_path(category: @selected_category.presence, period: "all", sort: @sort) %></li>
-      <li><%= link_to "今週",   housework_logs_path(category: @selected_category.presence, period: "week", sort: @sort) %></li>
-      <li><%= link_to "今月",   housework_logs_path(category: @selected_category.presence, period: "month", sort: @sort) %></li>
-    </ul>
-
-    <% if @period.present? && @period != "all" %>
-      <p>期間：<%= @period == "week" ? "今週" : "今月" %></p>
+<%# ---- 絞り込み・並び替え ---- %>
+<details class="accordion">
+  <summary class="accordion__summary">
+    <span>🔍 絞り込み・並び替え</span>
+    <% if @period != "all" || @selected_category.present? %>
+      <span class="accordion__badge">適用中</span>
     <% end %>
+  </summary>
+  <div class="accordion__body">
+    <div class="filter-grid">
+      <div class="filter-group">
+        <p class="filter-label">期間</p>
+        <div class="filter-btns">
+          <%= link_to "全期間", housework_logs_path(category: @selected_category.presence, period: "all",   sort: @sort), class: "filter-btn #{"filter-btn--active" if @period == "all"}" %>
+          <%= link_to "今週",   housework_logs_path(category: @selected_category.presence, period: "week",  sort: @sort), class: "filter-btn #{"filter-btn--active" if @period == "week"}" %>
+          <%= link_to "今月",   housework_logs_path(category: @selected_category.presence, period: "month", sort: @sort), class: "filter-btn #{"filter-btn--active" if @period == "month"}" %>
+        </div>
+      </div>
 
-    <h3>カテゴリ</h3>
-    <%= form_with url: housework_logs_path, method: :get, local: true do %>
-      <%= hidden_field_tag :period, @period %>
-      <%= hidden_field_tag :sort, @sort %>
+      <div class="filter-group">
+        <p class="filter-label">カテゴリ</p>
+        <%= form_with url: housework_logs_path, method: :get, local: true, class: "filter-form" do %>
+          <%= hidden_field_tag :period, @period %>
+          <%= hidden_field_tag :sort, @sort %>
+          <%= select_tag :category,
+              options_for_select(
+                [["すべて", ""]] + HouseworkLog.categories.keys.map { |k| [t("enums.housework_log.category.#{k}"), k] },
+                @selected_category
+              ), class: "form-select" %>
+          <%= submit_tag "絞り込む", class: "btn btn-secondary btn-sm" %>
+          <% if @selected_category.present? %>
+            <%= link_to "解除", housework_logs_path(period: @period, sort: @sort), class: "link-muted" %>
+          <% end %>
+        <% end %>
+      </div>
 
-      <%= select_tag :category,
-          options_for_select(
-            [["すべて", ""]] + HouseworkLog.categories.keys.map { |k| [t("enums.housework_log.category.#{k}"), k] },
-            @selected_category
-          ) %>
-      <%= submit_tag "絞り込む" %>
-    <% end %>
-
-    <% if @selected_category.present? %>
-      <p>表示中：<%= t("enums.housework_log.category.#{@selected_category}") %></p>
-      <%= link_to "絞り込み解除", housework_logs_path(period: @period, sort: @sort) %>
-    <% end %>
-
-    <h3>並び替え</h3>
-    <div class="logs-toolbar">
-      <%= link_to "実施日（新しい順）",
-        housework_logs_path(period: @period, category: @selected_category.presence, sort: "performed_desc") %>
-      <span style="margin: 0 8px;">/</span>
-      <%= link_to "実施日（古い順）",
-        housework_logs_path(period: @period, category: @selected_category.presence, sort: "performed_asc") %>
+      <div class="filter-group">
+        <p class="filter-label">並び替え</p>
+        <div class="filter-btns">
+          <%= link_to "新しい順", housework_logs_path(period: @period, category: @selected_category.presence, sort: "performed_desc"), class: "filter-btn #{"filter-btn--active" if @sort == "performed_desc"}" %>
+          <%= link_to "古い順",   housework_logs_path(period: @period, category: @selected_category.presence, sort: "performed_asc"),  class: "filter-btn #{"filter-btn--active" if @sort == "performed_asc"}" %>
+        </div>
+      </div>
     </div>
   </div>
 </details>
 
-<h2>ログ一覧</h2>
+<%# ---- ログ一覧 ---- %>
+<div class="section-header">
+  <h2 class="section-title">ログ一覧</h2>
+  <span class="section-meta"><%= @housework_logs.total_count %>件</span>
+</div>
 
-<ul>
-  <% @housework_logs.each do |log| %>
-    <li>
-      <strong><%= log.title %></strong>
-      （<%= t("enums.housework_log.category.#{log.category}") %>）
-      <%= log.minutes %>分
-      <%= l(log.performed_on) %>
-      <%= link_to "詳細", housework_log_path(log) %>
-    </li>
-  <% end %>
-</ul>
+<% if @housework_logs.present? %>
+  <ul class="log-list">
+    <% @housework_logs.each do |log| %>
+      <li class="log-item">
+        <div class="log-item__main">
+          <span class="badge badge--<%= log.category %>"><%= t("enums.housework_log.category.#{log.category}") %></span>
+          <strong class="log-item__title"><%= log.title %></strong>
+        </div>
+        <div class="log-item__meta">
+          <span class="log-item__minutes"><%= log.minutes %>分</span>
+          <span class="log-item__date"><%= l(log.performed_on, format: :short) %></span>
+          <%= link_to "詳細", housework_log_path(log), class: "link-detail" %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="empty-note">この期間の家事ログはありません。</p>
+<% end %>
 
 <div class="pagination">
   <%= paginate @housework_logs,
-    params: {
-      period: @period,
-      category: @selected_category.presence,
-      sort: @sort
-    } %>
+    params: { period: @period, category: @selected_category.presence, sort: @sort } %>
 </div>
 
-<p style="margin-top: 16px;">
-  分析は <%= link_to "ダッシュボード", dashboard_path %> で確認できます。
+<p class="page-link-bottom">
+  分析は <%= link_to "ダッシュボード →", dashboard_path %>
 </p>
