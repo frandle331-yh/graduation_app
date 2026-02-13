@@ -1,8 +1,11 @@
 class DashboardsController < ApplicationController
   before_action :authenticate_user!
 
+  PERIOD_LABELS = { "week" => "今週", "month" => "今月", "all" => "全期間" }.freeze
+
   def show
     @household = current_household
+    @period = params[:period].presence_in(%w[week month all]) || "week"
 
     base_scope =
       if @household
@@ -11,35 +14,39 @@ class DashboardsController < ApplicationController
         current_user.housework_logs
       end
 
-    week_range = Time.zone.today.beginning_of_week..Time.zone.today.end_of_week
-    weekly_scope = base_scope.where(performed_on: week_range)
+    today = Time.zone.today
+    period_scope = case @period
+                   when "month"
+                     base_scope.where(performed_on: today.beginning_of_month..today.end_of_month)
+                   when "all"
+                     base_scope
+                   else
+                     base_scope.where(performed_on: today.beginning_of_week..today.end_of_week)
+                   end
 
-    # ===== 共通（今週）: 分数 =====
-    @weekly_total_minutes = weekly_scope.sum(:minutes)
-    @category_summaries   = weekly_scope.group(:category).sum(:minutes)
+    @period_label      = PERIOD_LABELS[@period]
+    @total_minutes     = period_scope.sum(:minutes)
+    @total_count       = period_scope.count
+    @category_summaries = period_scope.group(:category).sum(:minutes)
 
     @daily_summaries =
-      weekly_scope
+      period_scope
         .group(:performed_on)
         .sum(:minutes)
         .sort_by { |date, _| date }
-        .last(7)
         .to_h
 
-    # ===== 世帯のみ（今週）: ユーザー別 分数 + 比率 =====
-    if @household
-      minutes_by_user_id = weekly_scope.group(:user_id).sum(:minutes)
+    return unless @household
 
-      users_by_id = User.where(id: minutes_by_user_id.keys).index_by(&:id)
+    minutes_by_user_id = period_scope.group(:user_id).sum(:minutes)
+    users_by_id = User.where(id: minutes_by_user_id.keys).index_by(&:id)
 
-      @weekly_minutes_by_user =
-        minutes_by_user_id.transform_keys { |uid| users_by_id[uid] }.compact
+    @minutes_by_user =
+      minutes_by_user_id.transform_keys { |uid| users_by_id[uid] }.compact
 
-      total = @weekly_total_minutes.to_i
-      @weekly_minutes_rates_by_user =
-        @weekly_minutes_by_user.transform_values do |minutes|
-          total.zero? ? 0 : ((minutes.to_f / total) * 100).round(1)
-        end
+    total = @total_minutes.to_i
+    @rates_by_user = @minutes_by_user.transform_values do |minutes|
+      total.zero? ? 0 : ((minutes.to_f / total) * 100).round(1)
     end
   end
 end

@@ -1,50 +1,144 @@
-<% if @household.nil? %>
-  <h1>ダッシュボード</h1>
-  <p>世帯を作成または参加すると、貢献度の可視化や分析が使えます。</p>
+<% content_for :head do %>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<% end %>
 
-  <p>
-    <%= link_to "世帯を作成する", new_household_path %> /
-    <%= link_to "招待コードで参加する", join_household_path %>
+<div class="dashboard">
+
+  <%# ---- 世帯なしの案内 ---- %>
+  <% if @household.nil? %>
+    <div class="dashboard-notice">
+      <p>世帯を作成またはパートナーの招待コードで参加すると、<strong>ふたりの貢献度比較</strong>が使えます。</p>
+      <div class="dashboard-notice__actions">
+        <%= link_to "世帯を作成する", new_household_path %>
+        <%= link_to "招待コードで参加する", join_household_path %>
+      </div>
+    </div>
+  <% else %>
+    <p class="dashboard-household">🏠 <strong><%= @household.name %></strong></p>
+  <% end %>
+
+  <%# ---- 期間切り替え ---- %>
+  <nav class="period-nav">
+    <% [["week", "今週"], ["month", "今月"], ["all", "全期間"]].each do |value, label| %>
+      <%= link_to label, dashboard_path(period: value),
+            class: "period-nav__btn #{"period-nav__btn--active" if @period == value}" %>
+    <% end %>
+  </nav>
+
+  <%# ---- サマリーカード ---- %>
+  <div class="dashboard-summary">
+    <div class="summary-card">
+      <span class="summary-card__label">合計時間</span>
+      <span class="summary-card__value"><%= @total_minutes %><span class="summary-card__unit">分</span></span>
+    </div>
+    <div class="summary-card">
+      <span class="summary-card__label">記録回数</span>
+      <span class="summary-card__value"><%= @total_count %><span class="summary-card__unit">回</span></span>
+    </div>
+  </div>
+
+  <%# ---- グラフ2カラム ---- %>
+  <div class="chart-grid">
+
+    <%# -- 日別棒グラフ -- %>
+    <div class="chart-card">
+      <h2 class="chart-card__title">日別推移（分）</h2>
+      <% if @daily_summaries.present? %>
+        <canvas id="dailyChart" height="220"></canvas>
+        <script>
+          new Chart(document.getElementById("dailyChart"), {
+            type: "bar",
+            data: {
+              labels: <%= raw @daily_summaries.keys.map { |d| l(d, format: :short) rescue d.to_s }.to_json %>,
+              datasets: [{
+                label: "所要時間（分）",
+                data: <%= raw @daily_summaries.values.to_json %>,
+                backgroundColor: "rgba(99, 132, 255, 0.7)",
+                borderRadius: 4
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: { legend: { display: false } },
+              scales: { y: { beginAtZero: true } }
+            }
+          });
+        </script>
+      <% else %>
+        <p class="chart-empty">データがありません</p>
+      <% end %>
+    </div>
+
+    <%# -- カテゴリ円グラフ -- %>
+    <div class="chart-card">
+      <h2 class="chart-card__title">カテゴリ別（分）</h2>
+      <% if @category_summaries.present? %>
+        <canvas id="categoryChart" height="220"></canvas>
+        <script>
+          new Chart(document.getElementById("categoryChart"), {
+            type: "doughnut",
+            data: {
+              labels: <%= raw @category_summaries.map { |k, _|
+                category_key = k.is_a?(String) ? k : HouseworkLog.categories.key(k)
+                t("enums.housework_log.category.#{category_key}")
+              }.to_json %>,
+              datasets: [{
+                data: <%= raw @category_summaries.values.to_json %>,
+                backgroundColor: [
+                  "#6384FF","#FF6384","#FFCE56","#4BC0C0","#9966FF","#FF9F40","#C9CBCF"
+                ]
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: { position: "bottom" }
+              }
+            }
+          });
+        </script>
+      <% else %>
+        <p class="chart-empty">データがありません</p>
+      <% end %>
+    </div>
+
+    <%# -- メンバー別 円グラフ（世帯あり） -- %>
+    <% if @household && @minutes_by_user.present? %>
+      <div class="chart-card">
+        <h2 class="chart-card__title">メンバー別の貢献度（分）</h2>
+        <canvas id="memberChart" height="220"></canvas>
+        <script>
+          new Chart(document.getElementById("memberChart"), {
+            type: "doughnut",
+            data: {
+              labels: <%= raw @minutes_by_user.keys.map { |u| u.nickname.presence || u.email }.to_json %>,
+              datasets: [{
+                data: <%= raw @minutes_by_user.values.to_json %>,
+                backgroundColor: ["#6384FF", "#FF6384", "#FFCE56", "#4BC0C0"]
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: { legend: { position: "bottom" } }
+            }
+          });
+        </script>
+        <ul class="member-list">
+          <% @minutes_by_user.each do |user, minutes| %>
+            <li>
+              <strong><%= user.nickname.presence || user.email %></strong>
+              <%= minutes %>分（<%= @rates_by_user[user] %>%）
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+  </div>
+
+  <p class="dashboard-link">
+    <%= link_to "家事ログ一覧を見る →", housework_logs_path %>
   </p>
 
-  <hr style="margin: 16px 0;">
-  <p>※ いまは個人の家事ログを元に分析を表示しています。</p>
-<% else %>
-  <p><strong>世帯名：</strong><%= @household.name %></p>
-<% end %>
+</div>
 
-<h2>今週の合計</h2>
-<p><%= @weekly_total_minutes %> 分</p>
-
-<% if @household && @weekly_minutes_by_user.present? %>
-  <h2>メンバー別（今週）</h2>
-  <ul>
-    <% @weekly_minutes_by_user.each do |user, minutes| %>
-      <li>
-        <%= user.nickname.presence || user.email %>：
-        <%= minutes %> 分（<%= @weekly_minutes_rates_by_user[user] %>%）
-      </li>
-    <% end %>
-  </ul>
-<% end %>
-
-
-<h2>カテゴリ別（今週）</h2>
-<ul>
-  <% @category_summaries.each do |category_key_or_value, total_minutes| %>
-    <% category_key =
-         category_key_or_value.is_a?(String) ? category_key_or_value : HouseworkLog.categories.key(category_key_or_value) %>
-    <li><%= t("enums.housework_log.category.#{category_key}") %>： <%= total_minutes %> 分</li>
-  <% end %>
-</ul>
-
-<h2>直近7日（今週）</h2>
-<ul>
-  <% @daily_summaries.each do |date, total_minutes| %>
-    <li><%= l(date) %>： <%= total_minutes %> 分</li>
-  <% end %>
-</ul>
-
-<p style="margin-top: 16px;">
-  <%= link_to "家事ログ一覧へ", housework_logs_path %>
-</p>
