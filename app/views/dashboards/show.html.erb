@@ -49,10 +49,10 @@
           new Chart(document.getElementById("dailyChart"), {
             type: "bar",
             data: {
-              labels: <%= raw @daily_summaries.keys.map { |d| l(d, format: :short) rescue d.to_s }.to_json %>,
+              labels: <%= raw json_escape(@daily_summaries.keys.map { |d| l(d, format: :short) rescue d.to_s }.to_json) %>,
               datasets: [{
                 label: "所要時間（分）",
-                data: <%= raw @daily_summaries.values.to_json %>,
+                data: <%= raw json_escape(@daily_summaries.values.to_json) %>,
                 backgroundColor: "rgba(99, 132, 255, 0.7)",
                 borderRadius: 4
               }]
@@ -78,12 +78,12 @@
           new Chart(document.getElementById("categoryChart"), {
             type: "doughnut",
             data: {
-              labels: <%= raw @category_summaries.map { |k, _|
+              labels: <%= raw json_escape(@category_summaries.map { |k, _|
                 category_key = k.is_a?(String) ? k : HouseworkLog.categories.key(k)
                 t("enums.housework_log.category.#{category_key}")
-              }.to_json %>,
+              }.to_json) %>,
               datasets: [{
-                data: <%= raw @category_summaries.values.to_json %>,
+                data: <%= raw json_escape(@category_summaries.values.to_json) %>,
                 backgroundColor: [
                   "#6384FF","#FF6384","#FFCE56","#4BC0C0","#9966FF","#FF9F40","#C9CBCF"
                 ]
@@ -111,9 +111,9 @@
           new Chart(document.getElementById("memberChart"), {
             type: "doughnut",
             data: {
-              labels: <%= raw @minutes_by_user.keys.map { |u| u.nickname.presence || u.email }.to_json %>,
+              labels: <%= raw json_escape(@minutes_by_user.keys.map { |u| u.nickname.presence || u.email }.to_json) %>,
               datasets: [{
-                data: <%= raw @minutes_by_user.values.to_json %>,
+                data: <%= raw json_escape(@minutes_by_user.values.to_json) %>,
                 backgroundColor: ["#6384FF", "#FF6384", "#FFCE56", "#4BC0C0"]
               }]
             },

@@ -3,40 +3,27 @@
     <%= link_to "KAJILOG", root_path, class: "app-logo" %>
 
     <nav class="app-nav-links">
-
-
       <% if user_signed_in? %>
-
-        <%= link_to "ダッシュボード", dashboard_path%>
-
+        <%= link_to "ダッシュボード", dashboard_path %>
+        <%= link_to "家事ログ", housework_logs_path %>
+        <%= link_to "テンプレート", housework_templates_path %>
+        <% if current_household %>
+          <%= link_to "世帯", household_path %>
+        <% else %>
+          <%= link_to "世帯", new_household_path %>
+        <% end %>
         <%= link_to "家事を記録", new_housework_log_path, class: "app-nav-primary" %>
 
-        <%= link_to "家事ログ", housework_logs_path%>
-
-        <%= link_to "テンプレート", housework_templates_path %>
-
-        <% if current_household %>
-          <%= link_to "世帯", household_path %> |
-        <% else %>
-          <%= link_to "世帯を作成", new_household_path %> |
-          <%= link_to "招待コードで参加", join_household_path %> |
-        <% end %>
-
-        <% if respond_to?(:edit_profile_path) %>
-          <%= link_to "プロフィール", edit_profile_path%>
-        <% end %>
-
-        <span class="app-user">
-          <%= current_user.nickname.presence || "User" %>
-        </span>
-
-        <%= button_to "ログアウト",
-              destroy_user_session_path,
-              method: :delete,
-              form: { class: "inline-form" } %>
+        <div class="app-nav-user">
+          <span class="app-user"><%= current_user.nickname.presence || "User" %></span>
+          <%= button_to "ログアウト",
+                destroy_user_session_path,
+                method: :delete,
+                form: { class: "inline-form" } %>
+        </div>
       <% else %>
         <%= link_to "ログイン", new_user_session_path, class: "app-nav-primary" %>
-        <%= link_to "新規登録", new_user_registration_path, class: "app-nav-primary" %>
+        <%= link_to "新規登録", new_user_registration_path, class: "app-nav-secondary" %>
       <% end %>
     </nav>
   </div>

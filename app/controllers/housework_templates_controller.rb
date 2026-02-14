@@ -55,6 +55,6 @@ class HouseworkTemplatesController < ApplicationController
   end
 
   def template_params
-    params.require(:housework_template).permit(:title, :category, :minutes, :position)
+    params.require(:housework_template).permit(:title, :category, :minutes)
   end
 end
