@@ -1,0 +1,60 @@
+<div class="page-header">
+  <div>
+    <h1 class="page-title">テンプレート管理</h1>
+    <p class="page-desc">よく使う家事をテンプレートに登録しておくと、ワンタップで記録できます。</p>
+  </div>
+  <%= link_to "＋ テンプレートを追加", new_housework_template_path, class: "btn btn-primary btn-sm" %>
+</div>
+
+<% if @templates.present? %>
+  <%# ---- ワンタップ記録プレビュー ---- %>
+  <div class="template-preview">
+    <p class="template-preview__label">📋 ワンタップ記録（家事ログ一覧でもこのように表示されます）</p>
+    <div class="template-buttons">
+      <% @templates.each do |tmpl| %>
+        <div class="template-btn-wrap">
+          <%= button_to use_housework_template_path(tmpl), method: :post,
+                class: "template-tap-btn template-tap-btn--#{tmpl.category}" do %>
+            <span class="template-tap-btn__icon"><%= category_icon(tmpl.category) %></span>
+            <span class="template-tap-btn__title"><%= tmpl.title %></span>
+            <% if tmpl.minutes.present? %>
+              <span class="template-tap-btn__minutes"><%= tmpl.minutes %>分</span>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%# ---- テンプレート一覧テーブル ---- %>
+  <div class="template-list">
+    <% @templates.each_with_index do |tmpl, i| %>
+      <div class="template-row">
+        <div class="template-row__left">
+          <span class="badge badge--<%= tmpl.category %>">
+            <%= t("enums.housework_log.category.#{tmpl.category}") %>
+          </span>
+          <span class="template-row__title"><%= tmpl.title %></span>
+          <% if tmpl.minutes.present? %>
+            <span class="template-row__minutes"><%= tmpl.minutes %>分</span>
+          <% end %>
+        </div>
+        <div class="template-row__actions">
+          <%= link_to "編集", edit_housework_template_path(tmpl), class: "btn btn-ghost btn-sm" %>
+          <%= button_to "削除", housework_template_path(tmpl),
+                method: :delete,
+                data: { turbo_confirm: "「#{tmpl.title}」を削除しますか？" },
+                class: "btn btn-danger btn-sm" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+<% else %>
+  <div class="empty-state">
+    <p class="empty-state__icon">📋</p>
+    <p class="empty-state__title">テンプレートがまだありません</p>
+    <p class="empty-state__desc">よく使う家事（洗濯・掃除・料理など）を登録しておくと、<br>家事ログ一覧からワンタップで記録できます。</p>
+    <%= link_to "最初のテンプレートを追加する", new_housework_template_path, class: "btn btn-primary" %>
+  </div>
+<% end %>

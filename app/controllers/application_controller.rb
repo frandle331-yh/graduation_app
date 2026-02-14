@@ -9,23 +9,18 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    stored_location_for(resource) || housework_logs_path
+    stored_location_for(resource) || dashboard_path
   end
 
   def after_sign_out_path_for(_resource_or_scope)
     root_path
   end
 
-  def after_sign_in_path_for(_resource)
-    dashboard_path
-  end
-
-
   helper_method :current_household
 
   def current_household
     return nil unless current_user
-    current_user.households.order(:id).first
+    @current_household ||= current_user.households.order(:id).first
   end
 
 end

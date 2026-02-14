@@ -1,12 +1,9 @@
 Rails.application.routes.draw do
-  get "dashboards/show"
-  get "housework_logs/index"
-  get "housework_logs/new"
-  get "housework_logs/create"
-  get "profiles/edit"
-  get "profiles/update"
   devise_for :users
   resource :profile, only: [:edit, :update, :destroy]
+  resources :housework_templates, only: [:index, :new, :create, :edit, :update, :destroy] do
+    post :use, on: :member
+  end
   resources :housework_logs, only: [:index, :new, :create, :show, :edit, :update, :destroy] do
     post :quick_create, on: :collection
   end
@@ -17,6 +14,9 @@ Rails.application.routes.draw do
   end
 
   get "home/index"
+  # ゲストログイン
+  post "guest_sign_in", to: "guests#create"
+
   # アプリのトップページ
   root "home#index"
 

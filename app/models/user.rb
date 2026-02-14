@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :household_members, dependent: :destroy
   has_many :households, through: :household_members
   has_many :housework_logs, dependent: :destroy
+  has_many :housework_templates, dependent: :destroy
 
 
   scope :active, -> { where(withdrawn_at: nil) }

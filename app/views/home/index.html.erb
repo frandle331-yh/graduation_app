@@ -1,21 +1,36 @@
-<section class="home">
-  <h1>KAJILOG</h1>
-  <p>
-    家事を記録して、どれだけやったかを見える化するアプリです。
-  </p>
+<section class="hero">
+  <div class="hero__icon">🏠</div>
+  <h1 class="hero__title">KAJILOG</h1>
+  <p class="hero__desc">ふたりの家事を、データで見える化する。<br>記録するだけで、分担の偏りが一目でわかります。</p>
 
   <% if user_signed_in? %>
-    <div class="home-actions">
-      <%= link_to "家事ログを見る", housework_logs_path, class: "btn" %>
-      <%= link_to "家事を記録", new_housework_log_path, class: "btn" %>
+    <div class="hero__actions">
+      <%= link_to "ダッシュボードを見る", dashboard_path, class: "btn btn-primary" %>
+      <%= link_to "家事を記録する", new_housework_log_path, class: "btn btn-secondary" %>
     </div>
   <% else %>
-    <div class="home-actions">
-      <%= link_to "ログイン", new_user_session_path, class: "btn" %>
-      <%= link_to "新規登録", new_user_registration_path, class: "btn" %>
+    <div class="hero__actions">
+      <%= link_to "新規登録", new_user_registration_path, class: "btn btn-primary" %>
+      <%= link_to "ログイン", new_user_session_path, class: "btn btn-secondary" %>
     </div>
-    <p class="home-note">
-      ログインすると家事ログの登録・集計ができます。
-    </p>
+    <p class="hero__note">登録不要で試せる → ログイン画面の「ゲストとしてログイン」</p>
   <% end %>
+
+  <div class="hero__features">
+    <div class="feature-card">
+      <span class="feature-card__icon">✍️</span>
+      <strong>ワンタップで記録</strong>
+      <p>入力は最小限。タップするだけで家事が記録されます。</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-card__icon">📊</span>
+      <strong>グラフで可視化</strong>
+      <p>誰がどれだけやったかを、データで冷静に確認できます。</p>
+    </div>
+    <div class="feature-card">
+      <span class="feature-card__icon">👫</span>
+      <strong>パートナーと共有</strong>
+      <p>招待コードで世帯を作成。ふたりの貢献度を比較できます。</p>
+    </div>
+  </div>
 </section>

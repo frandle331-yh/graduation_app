@@ -1,16 +1,18 @@
-<h1>世帯作成</h1>
+<div class="page-header">
+  <h1 class="page-title">世帯を作成する</h1>
+  <p class="page-desc">世帯を作成してパートナーを招待すると、ふたりの貢献度を比較できます。</p>
+</div>
 
-<%= form_with model: @household, url: household_path do |f| %>
-  <div>
-    <%= f.label :name, "世帯名" %><br>
-    <%= f.text_field :name, required: true %>
+<%= form_with model: @household, url: household_path, class: "form-card" do |f| %>
+  <div class="form-group">
+    <%= f.label :name, "世帯名", class: "form-label" %>
+    <%= f.text_field :name, required: true, class: "form-input", placeholder: "例：田中家、私たちの家" %>
   </div>
-
-  <div style="margin-top: 12px;">
-    <%= f.submit "世帯を作成する" %>
+  <div class="form-actions">
+    <%= f.submit "世帯を作成する", class: "btn btn-primary" %>
   </div>
 <% end %>
 
-<p style="margin-top: 16px;">
-  すでに招待コードがある方は <%= link_to "招待コードで参加", join_household_path %>
+<p class="page-link-bottom">
+  招待コードをお持ちの方は <%= link_to "こちらから参加 →", join_household_path %>
 </p>
