@@ -1,0 +1,9 @@
+one:
+  email: one@example.com
+  # Devise使用なら必要に応じて追加:
+  # encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+  withdrawn_at:
+two:
+  email: two@example.com
+  # encrypted_password: <%= Devise::Encryptor.digest(User, "password") %>
+  withdrawn_at:

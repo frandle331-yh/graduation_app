@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_08_191508) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_02_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -51,11 +51,24 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_191508) do
     t.index ["user_id"], name: "index_housework_logs_on_user_id"
   end
 
+  create_table "housework_templates", force: :cascade do |t|
+    t.integer "category", default: 0, null: false
+    t.datetime "created_at", null: false
+    t.bigint "household_id"
+    t.integer "minutes"
+    t.integer "position", default: 0, null: false
+    t.string "title", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["household_id"], name: "index_housework_templates_on_household_id"
+    t.index ["user_id", "position"], name: "index_housework_templates_on_user_id_and_position"
+    t.index ["user_id"], name: "index_housework_templates_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.boolean "is_deleted", default: false, null: false
     t.string "nickname"
     t.datetime "remember_created_at"
     t.datetime "reset_password_sent_at"
@@ -72,4 +85,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_08_191508) do
   add_foreign_key "households", "users", column: "created_by_id"
   add_foreign_key "housework_logs", "households"
   add_foreign_key "housework_logs", "users"
+  add_foreign_key "housework_templates", "households"
+  add_foreign_key "housework_templates", "users"
 end
