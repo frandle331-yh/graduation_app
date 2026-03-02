@@ -16,13 +16,13 @@ class DashboardsController < ApplicationController
 
     today = Time.zone.today
     period_scope = case @period
-                   when "month"
+    when "month"
                      base_scope.where(performed_on: today.beginning_of_month..today.end_of_month)
-                   when "all"
+    when "all"
                      base_scope
-                   else
+    else
                      base_scope.where(performed_on: today.beginning_of_week..today.end_of_week)
-                   end
+    end
 
     @period_label      = PERIOD_LABELS[@period]
     @total_minutes     = period_scope.sum(:minutes)

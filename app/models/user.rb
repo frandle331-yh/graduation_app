@@ -19,5 +19,4 @@ class User < ApplicationRecord
   def inactive_message
     withdrawn_at.present? ? :deleted_account : super
   end
-
 end

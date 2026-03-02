@@ -1,11 +1,10 @@
 require "test_helper"
 
 class HouseworkLogsControllerTest < ActionDispatch::IntegrationTest
-
   setup do
     sign_in users(:one)
   end
-  
+
   test "should get index" do
     get housework_logs_url
     assert_response :success
