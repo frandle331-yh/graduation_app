@@ -72,4 +72,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "shoulda-matchers"
+  gem "rspec_junit_formatter"
 end
