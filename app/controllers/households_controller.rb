@@ -41,7 +41,7 @@ class HouseholdsController < ApplicationController
 
   def join
     redirect_to household_path, notice: "すでに世帯に参加しています" if current_household
-    return if request.get?
+    return if request.get? || request.head?
 
     if current_household
       redirect_to household_path, notice: "すでに世帯に参加しています"

@@ -10,6 +10,6 @@ class CreateHouseholdMembers < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :household_members, [:household_id, :user_id], unique: true
+    add_index :household_members, [ :household_id, :user_id ], unique: true
   end
 end

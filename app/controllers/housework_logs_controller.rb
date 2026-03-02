@@ -24,7 +24,7 @@ class HouseworkLogsController < ApplicationController
     @recent_logs =
       if current_household
         HouseworkLog
-          .where(household_id: [current_household.id, nil])
+          .where(household_id: [ current_household.id, nil ])
           .order(created_at: :desc)
           .limit(5)
       else
@@ -160,5 +160,4 @@ class HouseworkLogsController < ApplicationController
       daily_sorted.first(7).to_h
     end
   end
-
 end

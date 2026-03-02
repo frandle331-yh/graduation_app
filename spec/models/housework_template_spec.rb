@@ -75,7 +75,7 @@ RSpec.describe HouseworkTemplate, type: :model do
         t0 = create(:housework_template, user: user, position: 0)
         t1 = create(:housework_template, user: user, position: 1)
 
-        expect(user.housework_templates.ordered).to eq([t0, t1, t2])
+        expect(user.housework_templates.ordered).to eq([ t0, t1, t2 ])
       end
     end
   end
