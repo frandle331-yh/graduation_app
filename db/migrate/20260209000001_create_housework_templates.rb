@@ -11,6 +11,6 @@ class CreateHouseworkTemplates < ActiveRecord::Migration[8.1]
       t.timestamps
     end
 
-    add_index :housework_templates, [:user_id, :position]
+    add_index :housework_templates, [ :user_id, :position ]
   end
 end

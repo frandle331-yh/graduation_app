@@ -32,7 +32,4 @@ class HouseworkLog < ApplicationRecord
   def self.category_label(category_key)
     I18n.t("enums.housework_log.category.#{category_key}", default: category_key.to_s)
   end
-
-
-
 end

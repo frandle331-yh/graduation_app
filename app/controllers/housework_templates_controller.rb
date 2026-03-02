@@ -1,6 +1,6 @@
 class HouseworkTemplatesController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_template, only: [:edit, :update, :destroy]
+  before_action :set_template, only: [ :edit, :update, :destroy ]
 
   def index
     @templates = current_user.housework_templates.ordered
