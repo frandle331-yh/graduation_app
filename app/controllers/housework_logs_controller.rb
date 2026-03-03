@@ -21,18 +21,6 @@ class HouseworkLogsController < ApplicationController
       .page(params[:page])
       .per(10)
 
-    @recent_logs =
-      if current_household
-        HouseworkLog
-          .where(household_id: [ current_household.id, nil ])
-          .order(created_at: :desc)
-          .limit(5)
-      else
-        current_user.housework_logs.order(created_at: :desc).limit(5)
-      end
-
-
-
     @category_summaries = base_scope.group(:category).sum(:minutes)
     @daily_summaries    = build_daily_summaries(base_scope)
   end
