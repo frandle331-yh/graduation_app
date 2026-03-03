@@ -67,11 +67,13 @@
 <% if user_signed_in? %>
   <nav class="bottom-nav" aria-label="ボトムナビゲーション">
     <div class="bottom-nav__inner">
-      <%= link_to dashboard_path, class: "bottom-nav__item" do %>
+      <%= link_to dashboard_path,
+            class: "bottom-nav__item#{' active' if current_page?(dashboard_path)}" do %>
         <span class="bottom-nav__icon">📊</span>
         <span class="bottom-nav__label">ダッシュ</span>
       <% end %>
-      <%= link_to housework_logs_path, class: "bottom-nav__item" do %>
+      <%= link_to housework_logs_path,
+            class: "bottom-nav__item#{' active' if request.path.start_with?('/housework_logs')}" do %>
         <span class="bottom-nav__icon">📋</span>
         <span class="bottom-nav__label">ログ</span>
       <% end %>
@@ -79,17 +81,20 @@
         <span class="bottom-nav__icon-wrap">＋</span>
         <span class="bottom-nav__label">記録</span>
       <% end %>
-      <%= link_to housework_templates_path, class: "bottom-nav__item" do %>
+      <%= link_to housework_templates_path,
+            class: "bottom-nav__item#{' active' if request.path.start_with?('/housework_templates')}" do %>
         <span class="bottom-nav__icon">⚡</span>
         <span class="bottom-nav__label">テンプレ</span>
       <% end %>
       <% if current_household %>
-        <%= link_to household_path, class: "bottom-nav__item" do %>
+        <%= link_to household_path,
+              class: "bottom-nav__item#{' active' if request.path.start_with?('/household')}" do %>
           <span class="bottom-nav__icon">👫</span>
           <span class="bottom-nav__label">世帯</span>
         <% end %>
       <% else %>
-        <%= link_to new_household_path, class: "bottom-nav__item" do %>
+        <%= link_to new_household_path,
+              class: "bottom-nav__item#{' active' if current_page?(new_household_path)}" do %>
           <span class="bottom-nav__icon">🏠</span>
           <span class="bottom-nav__label">世帯</span>
         <% end %>
