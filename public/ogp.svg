@@ -15,7 +15,7 @@
   <circle cx="980" cy="520" r="100" fill="white" fill-opacity="0.05" />
 
   <!-- ロゴエリア -->
-  <text x="600" y="220" font-family="'Helvetica Neue', Arial, sans-serif" font-size="80" font-weight="700" fill="white" text-anchor="middle" letter-spacing="4">KAJILOG</text>
+  <text x="600" y="220" font-family="'Helvetica Neue', Arial, sans-serif" font-size="80" font-weight="700" fill="white" text-anchor="middle" letter-spacing="4">KajiMate</text>
 
   <!-- サブタイトル -->
   <text x="600" y="310" font-family="'Helvetica Neue', Arial, sans-serif" font-size="32" font-weight="400" fill="white" fill-opacity="0.9" text-anchor="middle">ふたりの家事を、データで見える化する</text>

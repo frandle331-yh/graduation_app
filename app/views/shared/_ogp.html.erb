@@ -1,5 +1,5 @@
 <%
-  ogp_title       = content_for?(:ogp_title)       ? yield(:ogp_title)       : "KAJILOG｜ふたりの家事を、データで見える化する"
+  ogp_title       = content_for?(:ogp_title)       ? yield(:ogp_title)       : "KajiMate｜ふたりの家事を、データで見える化する"
   ogp_description = content_for?(:ogp_description) ? yield(:ogp_description) : "「誰がやった・やってない」の言い争いをデータで解決。共働きカップル・夫婦向けの家事分担管理アプリです。"
   ogp_image       = content_for?(:ogp_image)       ? yield(:ogp_image)       : "#{request.base_url}/ogp.png"
   ogp_url         = content_for?(:ogp_url)         ? yield(:ogp_url)         : request.url
@@ -12,7 +12,7 @@
 <meta property="og:image"       content="<%= ogp_image %>">
 <meta property="og:url"         content="<%= ogp_url %>">
 <meta property="og:type"        content="<%= ogp_type %>">
-<meta property="og:site_name"   content="KAJILOG">
+<meta property="og:site_name"   content="KajiMate">
 <meta property="og:locale"      content="ja_JP">
 
 <%# Twitter Card %>

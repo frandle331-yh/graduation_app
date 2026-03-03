@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh issue list:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(git --version:*)",
+      "Bash(curl:*)",
+      "Bash(sudo dd:*)",
+      "Bash(pacman -Sy:*)",
+      "Bash(export PATH=\"$HOME/bin:$PATH\")",
+      "Bash(gh auth:*)",
+      "Bash(git -C \"C:/Users/81906/app/graduation_app\" config --get remote.origin.url)",
+      "Bash(gh repo view:*)",
+      "Bash(gh issue create:*)",
+      "Bash(git checkout:*)",
+      "Bash(bundle exec rubocop:*)",
+      "Bash(ruby --version:*)",
+      "Bash(cmd.exe /c \"where ruby\")",
+      "Bash(cmd.exe /c \"ruby --version\")",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(gh pr create:*)",
+      "Bash(git pull:*)",
+      "Bash(gh pr view:*)",
+      "Bash(git fetch:*)",
+      "Bash(git merge:*)",
+      "Bash(git rebase:*)",
+      "Bash(cmd.exe /c \"cd C:\\\\Users\\\\81906\\\\app\\\\graduation_app && bundle install 2>&1\")",
+      "Bash(powershell.exe -Command \"Set-Location ''C:\\\\Users\\\\81906\\\\app\\\\graduation_app''; ruby --version; bundle install 2>&1\")",
+      "Bash(wsl:*)",
+      "Bash(wsl.exe -e bash -c:*)",
+      "Bash(git -C \"C:/Users/81906/app/graduation_app\" checkout main)",
+      "Bash(git -C \"C:/Users/81906/app/graduation_app\" pull origin main)",
+      "Bash(cmd /c \"git status 2>&1\")",
+      "Bash(cmd /c \"git status\")",
+      "Bash(cmd /c \"git status && git log --oneline -3\")"
+    ]
+  }
+}
