@@ -117,10 +117,28 @@ class HouseworkLogsController < ApplicationController
     params.require(:housework_log).permit(:title, :category, :performed_on, :minutes, :memo)
   end
 
+  # オートコンプリート用：タイトルのサジェストを JSON で返す
+  def search_titles
+    q = params[:q].to_s.strip
+    titles =
+      if q.present?
+        current_user.housework_logs
+                    .where("title ILIKE ?", "%#{sanitize_sql_like(q)}%")
+                    .distinct
+                    .order(:title)
+                    .limit(8)
+                    .pluck(:title)
+      else
+        []
+      end
+    render json: titles
+  end
+
   def filtered_scope
     scope = current_user.housework_logs
     scope = apply_period(scope)
     scope = apply_category(scope)
+    scope = apply_keyword(scope)
     scope
   end
 
@@ -147,6 +165,19 @@ class HouseworkLogsController < ApplicationController
       @selected_category = ""
       scope
     end
+  end
+
+  def apply_keyword(scope)
+    @keyword = params[:keyword].to_s.strip
+    if @keyword.present?
+      scope.where("title ILIKE ?", "%#{sanitize_sql_like(@keyword)}%")
+    else
+      scope
+    end
+  end
+
+  def sanitize_sql_like(str)
+    str.gsub(/[\\%_]/) { |c| "\\#{c}" }
   end
 
   def build_daily_summaries(scope)
