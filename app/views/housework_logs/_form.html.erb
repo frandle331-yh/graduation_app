@@ -9,7 +9,8 @@
   </div>
 <% end %>
 
-<%= form_with model: housework_log, class: "form-card" do |f| %>
+<%= form_with model: housework_log, class: "form-card",
+      data: { controller: "loading", action: "submit->loading#submit" } do |f| %>
   <div class="form-group">
     <%= f.label :title, class: "form-label" %>
     <%= f.text_field :title, class: "form-input", placeholder: "例：洗濯、掃除機かけ" %>
@@ -44,7 +45,7 @@
   </div>
 
   <div class="form-actions">
-    <%= f.submit class: "btn btn-primary" %>
+    <%= f.submit class: "btn btn-primary", data: { loading_target: "button" } %>
     <%= link_to "キャンセル", housework_logs_path, class: "btn btn-ghost" %>
   </div>
 <% end %>

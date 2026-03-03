@@ -1,36 +1,112 @@
+<% if user_signed_in? %>
+  <% redirect_to dashboard_path %>
+<% end %>
+
+<%# ---- Hero ---- %>
 <section class="hero">
-  <div class="hero__icon">🏠</div>
-  <h1 class="hero__title">KAJILOG</h1>
-  <p class="hero__desc">ふたりの家事を、データで見える化する。<br>記録するだけで、分担の偏りが一目でわかります。</p>
+  <p class="hero__badge">共働きカップル・夫婦向け</p>
+  <h1 class="hero__title">ふたりの家事を、<br>データで見える化する。</h1>
+  <p class="hero__desc">
+    「私ばかりやってる」「そんなことない」の言い争いをなくしたい。<br>
+    KAJILOGは事実をデータで記録して、冷静な話し合いをサポートします。
+  </p>
+  <div class="hero__actions">
+    <%= link_to "無料で始める", new_user_registration_path, class: "btn btn-primary btn-lg" %>
+    <%= link_to "ログイン", new_user_session_path, class: "btn btn-secondary" %>
+  </div>
+  <p class="hero__note">
+    登録不要で試せる →
+    <%= link_to "ゲストログインはこちら", new_user_session_path %>
+  </p>
+</section>
 
-  <% if user_signed_in? %>
-    <div class="hero__actions">
-      <%= link_to "ダッシュボードを見る", dashboard_path, class: "btn btn-primary" %>
-      <%= link_to "家事を記録する", new_housework_log_path, class: "btn btn-secondary" %>
+<%# ---- 課題提起 ---- %>
+<section class="lp-section lp-problems">
+  <div class="lp-section__inner">
+    <h2 class="lp-section__title">こんな悩みありませんか？</h2>
+    <div class="problem-grid">
+      <div class="problem-card">
+        <span class="problem-card__icon">😤</span>
+        <p>「私ばかり家事してる気がする…」</p>
+      </div>
+      <div class="problem-card">
+        <span class="problem-card__icon">🤔</span>
+        <p>「パートナーが何をやってるか把握できない」</p>
+      </div>
+      <div class="problem-card">
+        <span class="problem-card__icon">💬</span>
+        <p>「家事分担の話し合いが感情論になりがち」</p>
+      </div>
+      <div class="problem-card">
+        <span class="problem-card__icon">📝</span>
+        <p>「記録したいけどアプリが複雑で続かない」</p>
+      </div>
     </div>
-  <% else %>
-    <div class="hero__actions">
-      <%= link_to "新規登録", new_user_registration_path, class: "btn btn-primary" %>
-      <%= link_to "ログイン", new_user_session_path, class: "btn btn-secondary" %>
-    </div>
-    <p class="hero__note">登録不要で試せる → ログイン画面の「ゲストとしてログイン」</p>
-  <% end %>
+  </div>
+</section>
 
-  <div class="hero__features">
-    <div class="feature-card">
-      <span class="feature-card__icon">✍️</span>
-      <strong>ワンタップで記録</strong>
-      <p>入力は最小限。タップするだけで家事が記録されます。</p>
+<%# ---- 機能紹介 ---- %>
+<section class="lp-section lp-features">
+  <div class="lp-section__inner">
+    <h2 class="lp-section__title">KAJILOGの主な機能</h2>
+    <div class="hero__features">
+      <div class="feature-card">
+        <span class="feature-card__icon">⚡</span>
+        <strong>ワンタップで記録</strong>
+        <p>よく使う家事をテンプレート登録。タップ1回で今日の家事を記録できます。</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card__icon">📊</span>
+        <strong>グラフで可視化</strong>
+        <p>週・月・全期間の家事量をグラフ表示。誰がどれだけやったかが一目瞭然。</p>
+      </div>
+      <div class="feature-card">
+        <span class="feature-card__icon">👫</span>
+        <strong>パートナーと共有</strong>
+        <p>招待コードで世帯を作成。ふたりの貢献度を比較してフェアな分担を実現。</p>
+      </div>
     </div>
-    <div class="feature-card">
-      <span class="feature-card__icon">📊</span>
-      <strong>グラフで可視化</strong>
-      <p>誰がどれだけやったかを、データで冷静に確認できます。</p>
+  </div>
+</section>
+
+<%# ---- 使い方ステップ ---- %>
+<section class="lp-section lp-steps">
+  <div class="lp-section__inner">
+    <h2 class="lp-section__title">3ステップで始められる</h2>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-item__num">1</div>
+        <div class="step-item__body">
+          <strong>アカウント登録</strong>
+          <p>メールアドレスまたはGoogleアカウントで無料登録。30秒で完了します。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-item__num">2</div>
+        <div class="step-item__body">
+          <strong>パートナーを招待</strong>
+          <p>世帯を作成して招待コードをシェア。ふたりの記録をひとつにまとめます。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-item__num">3</div>
+        <div class="step-item__body">
+          <strong>家事を記録してデータ確認</strong>
+          <p>日々の家事を記録するだけ。ダッシュボードで分担バランスを確認できます。</p>
+        </div>
+      </div>
     </div>
-    <div class="feature-card">
-      <span class="feature-card__icon">👫</span>
-      <strong>パートナーと共有</strong>
-      <p>招待コードで世帯を作成。ふたりの貢献度を比較できます。</p>
+  </div>
+</section>
+
+<%# ---- CTA ---- %>
+<section class="lp-section lp-cta">
+  <div class="lp-section__inner lp-cta__inner">
+    <h2 class="lp-cta__title">さあ、記録を始めよう</h2>
+    <p class="lp-cta__desc">無料・登録不要でゲスト体験もできます</p>
+    <div class="lp-cta__actions">
+      <%= link_to "無料で始める", new_user_registration_path, class: "btn btn-primary btn-lg" %>
+      <%= button_to "ゲストとして試す →", guest_sign_in_path, method: :post, class: "btn btn-secondary" %>
     </div>
   </div>
 </section>
