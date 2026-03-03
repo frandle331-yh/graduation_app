@@ -124,5 +124,21 @@ RSpec.describe "Households", type: :request do
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
+
+    context "すでに世帯に参加している場合" do
+      let(:household) { create(:household, creator: user) }
+
+      before do
+        sign_in user
+        create(:household_member, household: household, user: user, role: :owner)
+      end
+
+      it "世帯ページにリダイレクトし、世帯メンバーを増やさない" do
+        expect {
+          post join_household_path, params: { invitation_code: household.invitation_code }
+        }.not_to change(HouseholdMember, :count)
+        expect(response).to redirect_to(household_path)
+      end
+    end
   end
 end
