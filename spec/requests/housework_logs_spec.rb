@@ -90,9 +90,9 @@ RSpec.describe "HouseworkLogs", type: :request do
 
       before { sign_in user }
 
-      it "リダイレクトする" do
+      it "404を返す" do
         get edit_housework_log_path(log)
-        expect(response).to redirect_to(housework_logs_path)
+        expect(response).to have_http_status(:not_found)
       end
     end
   end
@@ -107,7 +107,7 @@ RSpec.describe "HouseworkLogs", type: :request do
         patch housework_log_path(log), params: {
           housework_log: { title: "更新した掃除" }
         }
-        expect(response).to redirect_to(housework_logs_path)
+        expect(response).to redirect_to(housework_log_path(log))
         expect(log.reload.title).to eq("更新した掃除")
       end
     end
@@ -117,11 +117,11 @@ RSpec.describe "HouseworkLogs", type: :request do
 
       before { sign_in user }
 
-      it "リダイレクトする" do
+      it "404を返し更新されない" do
         patch housework_log_path(log), params: {
           housework_log: { title: "不正な更新" }
         }
-        expect(response).to redirect_to(housework_logs_path)
+        expect(response).to have_http_status(:not_found)
         expect(log.reload.title).not_to eq("不正な更新")
       end
     end
@@ -146,11 +146,11 @@ RSpec.describe "HouseworkLogs", type: :request do
 
       before { sign_in user }
 
-      it "削除されずにリダイレクトする" do
+      it "削除されずに404を返す" do
         expect {
           delete housework_log_path(log)
         }.not_to change(HouseworkLog, :count)
-        expect(response).to redirect_to(housework_logs_path)
+        expect(response).to have_http_status(:not_found)
       end
     end
   end

@@ -85,10 +85,9 @@ RSpec.describe "HouseworkTemplates", type: :request do
 
       before { sign_in user }
 
-      it "404を返す（find が失敗する）" do
-        expect {
-          get edit_housework_template_path(template)
-        }.to raise_error(ActiveRecord::RecordNotFound)
+      it "404を返す" do
+        get edit_housework_template_path(template)
+        expect(response).to have_http_status(:not_found)
       end
     end
   end
