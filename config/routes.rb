@@ -16,6 +16,9 @@ Rails.application.routes.draw do
   end
 
   get "home/index"
+  # 静的ページ（未ログインでもアクセス可）
+  get "terms",          to: "pages#terms",          as: :terms
+  get "privacy_policy", to: "pages#privacy_policy", as: :privacy_policy
   # ゲストログイン
   post "guest_sign_in", to: "guests#create"
 
