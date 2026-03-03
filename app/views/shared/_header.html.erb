@@ -27,7 +27,7 @@
       <% end %>
     </nav>
 
-    <%# ハンバーガーボタン（モバイルのみ表示） %>
+    <%# ハンバーガーボタン（モバイル・ボトムナビが使えない場合のフォールバック） %>
     <button class="nav-hamburger"
             aria-label="メニューを開く"
             data-action="click->hamburger#toggle"
@@ -38,7 +38,7 @@
     </button>
   </div>
 
-  <%# モバイル用ドロワーメニュー %>
+  <%# モバイル用ドロワーメニュー（ハンバーガー時のみ表示） %>
   <nav class="nav-drawer" data-hamburger-target="drawer">
     <% if user_signed_in? %>
       <%= link_to "ダッシュボード", dashboard_path, data: { action: "click->hamburger#close" } %>
@@ -62,3 +62,43 @@
     <% end %>
   </nav>
 </header>
+
+<%# モバイル用ボトムナビゲーション（スマホのみ表示） %>
+<% if user_signed_in? %>
+  <nav class="bottom-nav" aria-label="ボトムナビゲーション">
+    <div class="bottom-nav__inner">
+      <%= link_to dashboard_path,
+            class: "bottom-nav__item#{' active' if current_page?(dashboard_path)}" do %>
+        <span class="bottom-nav__icon">📊</span>
+        <span class="bottom-nav__label">ダッシュ</span>
+      <% end %>
+      <%= link_to housework_logs_path,
+            class: "bottom-nav__item#{' active' if request.path.start_with?('/housework_logs')}" do %>
+        <span class="bottom-nav__icon">📋</span>
+        <span class="bottom-nav__label">ログ</span>
+      <% end %>
+      <%= link_to new_housework_log_path, class: "bottom-nav__item bottom-nav__item--cta" do %>
+        <span class="bottom-nav__icon-wrap">＋</span>
+        <span class="bottom-nav__label">記録</span>
+      <% end %>
+      <%= link_to housework_templates_path,
+            class: "bottom-nav__item#{' active' if request.path.start_with?('/housework_templates')}" do %>
+        <span class="bottom-nav__icon">⚡</span>
+        <span class="bottom-nav__label">テンプレ</span>
+      <% end %>
+      <% if current_household %>
+        <%= link_to household_path,
+              class: "bottom-nav__item#{' active' if request.path.start_with?('/household')}" do %>
+          <span class="bottom-nav__icon">👫</span>
+          <span class="bottom-nav__label">世帯</span>
+        <% end %>
+      <% else %>
+        <%= link_to new_household_path,
+              class: "bottom-nav__item#{' active' if current_page?(new_household_path)}" do %>
+          <span class="bottom-nav__icon">🏠</span>
+          <span class="bottom-nav__label">世帯</span>
+        <% end %>
+      <% end %>
+    </div>
+  </nav>
+<% end %>
