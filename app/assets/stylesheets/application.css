@@ -734,3 +734,54 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   .app-nav-primary { padding: 5px 9px !important; font-size: .76rem !important; }
   .app-user { display: none; } /* モバイルでは名前を非表示 */
 }
+
+/* ---- OmniAuth / Google ボタン ------------------------------------------ */
+.omniauth-buttons {
+  margin: 16px 0;
+}
+
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 16px;
+  background: #fff;
+  border: 1px solid #dadce0;
+  border-radius: 8px;
+  font-size: .95rem;
+  font-weight: 500;
+  color: #3c4043;
+  cursor: pointer;
+  transition: background .15s, box-shadow .15s;
+  text-decoration: none;
+}
+
+.btn-google:hover {
+  background: #f8f9fa;
+  box-shadow: 0 1px 4px rgba(0,0,0,.12);
+}
+
+.btn-google__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.omniauth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+  color: var(--text-muted);
+  font-size: .85rem;
+}
+
+.omniauth-divider::before,
+.omniauth-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
