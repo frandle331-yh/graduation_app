@@ -1110,3 +1110,45 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   .nav-hamburger { display: flex; }
   .app-nav-links { display: none; } /* デスクトップメニューをモバイルで非表示 */
 }
+
+/* ---- オートコンプリート ------------------------------------------ */
+.autocomplete-wrap {
+  position: relative;
+  flex: 1;
+}
+
+.autocomplete-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 12px rgba(0,0,0,.1);
+  z-index: 200;
+  max-height: 220px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 4px 0;
+}
+
+.autocomplete-item {
+  padding: 9px 14px;
+  font-size: .9rem;
+  cursor: pointer;
+  transition: background .1s;
+}
+
+.autocomplete-item:hover,
+.autocomplete-item[aria-selected="true"] {
+  background: var(--primary-light);
+  color: var(--primary);
+}
+
+.autocomplete-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}

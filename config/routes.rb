@@ -7,7 +7,8 @@ Rails.application.routes.draw do
     post :use, on: :member
   end
   resources :housework_logs, only: [ :index, :new, :create, :show, :edit, :update, :destroy ] do
-    post :quick_create, on: :collection
+    post :quick_create,   on: :collection
+    get  :search_titles,  on: :collection
   end
   resource :dashboard, only: [ :show ]
   resource :household, only: [ :new, :create, :show ] do

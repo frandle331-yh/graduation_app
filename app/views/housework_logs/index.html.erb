@@ -41,29 +41,60 @@
 </details>
 
 <%# ---- 絞り込み・並び替え ---- %>
-<details class="accordion">
+<details class="accordion" <%= @keyword.present? ? "open" : "" %>>
   <summary class="accordion__summary">
     <span>🔍 絞り込み・並び替え</span>
-    <% if @period != "all" || @selected_category.present? %>
+    <% if @period != "all" || @selected_category.present? || @keyword.present? %>
       <span class="accordion__badge">適用中</span>
     <% end %>
   </summary>
   <div class="accordion__body">
+    <%# キーワード検索（オートコンプリート） %>
+    <div class="filter-group"
+         data-controller="autocomplete"
+         data-autocomplete-url-value="<%= search_titles_housework_logs_path %>">
+      <p class="filter-label">キーワードで検索</p>
+      <%= form_with url: housework_logs_path, method: :get, local: true, class: "filter-form autocomplete-form" do %>
+        <%= hidden_field_tag :period,   @period %>
+        <%= hidden_field_tag :sort,     @sort %>
+        <%= hidden_field_tag :category, @selected_category.presence %>
+        <div class="autocomplete-wrap">
+          <%= text_field_tag :keyword, @keyword,
+                class: "form-input",
+                placeholder: "例：掃除、洗濯",
+                autocomplete: "off",
+                data: {
+                  autocomplete_target: "input",
+                  action: "input->autocomplete#suggest keydown->autocomplete#keydown"
+                } %>
+          <ul class="autocomplete-list"
+              role="listbox"
+              hidden
+              data-autocomplete-target="list"></ul>
+        </div>
+        <%= submit_tag "検索", class: "btn btn-secondary btn-sm" %>
+        <% if @keyword.present? %>
+          <%= link_to "解除", housework_logs_path(period: @period, category: @selected_category.presence, sort: @sort), class: "link-muted" %>
+        <% end %>
+      <% end %>
+    </div>
+
     <div class="filter-grid">
       <div class="filter-group">
         <p class="filter-label">期間</p>
         <div class="filter-btns">
-          <%= link_to "全期間", housework_logs_path(category: @selected_category.presence, period: "all",   sort: @sort), class: "filter-btn #{"filter-btn--active" if @period == "all"}" %>
-          <%= link_to "今週",   housework_logs_path(category: @selected_category.presence, period: "week",  sort: @sort), class: "filter-btn #{"filter-btn--active" if @period == "week"}" %>
-          <%= link_to "今月",   housework_logs_path(category: @selected_category.presence, period: "month", sort: @sort), class: "filter-btn #{"filter-btn--active" if @period == "month"}" %>
+          <%= link_to "全期間", housework_logs_path(category: @selected_category.presence, keyword: @keyword.presence, period: "all",   sort: @sort), class: "filter-btn #{"filter-btn--active" if @period == "all"}" %>
+          <%= link_to "今週",   housework_logs_path(category: @selected_category.presence, keyword: @keyword.presence, period: "week",  sort: @sort), class: "filter-btn #{"filter-btn--active" if @period == "week"}" %>
+          <%= link_to "今月",   housework_logs_path(category: @selected_category.presence, keyword: @keyword.presence, period: "month", sort: @sort), class: "filter-btn #{"filter-btn--active" if @period == "month"}" %>
         </div>
       </div>
 
       <div class="filter-group">
         <p class="filter-label">カテゴリ</p>
         <%= form_with url: housework_logs_path, method: :get, local: true, class: "filter-form" do %>
-          <%= hidden_field_tag :period, @period %>
-          <%= hidden_field_tag :sort, @sort %>
+          <%= hidden_field_tag :period,  @period %>
+          <%= hidden_field_tag :sort,    @sort %>
+          <%= hidden_field_tag :keyword, @keyword.presence %>
           <%= select_tag :category,
               options_for_select(
                 [["すべて", ""]] + HouseworkLog.categories.keys.map { |k| [t("enums.housework_log.category.#{k}"), k] },
@@ -71,7 +102,7 @@
               ), class: "form-select" %>
           <%= submit_tag "絞り込む", class: "btn btn-secondary btn-sm" %>
           <% if @selected_category.present? %>
-            <%= link_to "解除", housework_logs_path(period: @period, sort: @sort), class: "link-muted" %>
+            <%= link_to "解除", housework_logs_path(period: @period, keyword: @keyword.presence, sort: @sort), class: "link-muted" %>
           <% end %>
         <% end %>
       </div>
@@ -79,8 +110,8 @@
       <div class="filter-group">
         <p class="filter-label">並び替え</p>
         <div class="filter-btns">
-          <%= link_to "新しい順", housework_logs_path(period: @period, category: @selected_category.presence, sort: "performed_desc"), class: "filter-btn #{"filter-btn--active" if @sort == "performed_desc"}" %>
-          <%= link_to "古い順",   housework_logs_path(period: @period, category: @selected_category.presence, sort: "performed_asc"),  class: "filter-btn #{"filter-btn--active" if @sort == "performed_asc"}" %>
+          <%= link_to "新しい順", housework_logs_path(period: @period, category: @selected_category.presence, keyword: @keyword.presence, sort: "performed_desc"), class: "filter-btn #{"filter-btn--active" if @sort == "performed_desc"}" %>
+          <%= link_to "古い順",   housework_logs_path(period: @period, category: @selected_category.presence, keyword: @keyword.presence, sort: "performed_asc"),  class: "filter-btn #{"filter-btn--active" if @sort == "performed_asc"}" %>
         </div>
       </div>
     </div>
