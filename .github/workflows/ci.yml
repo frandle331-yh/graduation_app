@@ -82,3 +82,23 @@ jobs:
 
       - name: Brakemanを実行
         run: bundle exec brakeman -q --no-pager
+
+  bundler_audit:
+    name: bundler-audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Rubyをセットアップ
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: 脆弱性DBを更新
+        run: bundle exec bundler-audit update
+
+      - name: Gemの脆弱性を検査
+        run: bundle exec bundler-audit check
