@@ -131,6 +131,16 @@ class HouseworkLogsController < ApplicationController
     render json: titles
   end
 
+  # カテゴリ別タイトル候補を JSON で返す
+  def suggest_titles
+    cat = params[:category].to_s
+    if HouseworkLog.categories.key?(cat)
+      render json: HouseworkLog.suggest_titles_for(current_user, cat)
+    else
+      render json: []
+    end
+  end
+
   private
 
   # 自分のログ、または同じ世帯のログにアクセスできる

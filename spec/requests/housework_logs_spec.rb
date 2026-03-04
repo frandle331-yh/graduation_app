@@ -72,13 +72,27 @@ RSpec.describe "HouseworkLogs", type: :request do
       end
     end
 
-    context "ログイン済みで無効なパラメータの場合" do
+    context "タイトル未入力の場合" do
       before { sign_in user }
 
-      it "ログを作成せずにフォームを再表示する" do
+      it "カテゴリ名が自動セットされてログが作成される" do
         expect {
           post housework_logs_path, params: {
             housework_log: { title: "", category: "cleaning", performed_on: Time.zone.today, minutes: 30 }
+          }
+        }.to change(HouseworkLog, :count).by(1)
+        expect(HouseworkLog.last.title).to eq("掃除")
+        expect(response).to redirect_to(housework_logs_path)
+      end
+    end
+
+    context "ログイン済みで無効なパラメータの場合" do
+      before { sign_in user }
+
+      it "カテゴリ未選択の場合はログを作成せずにフォームを再表示する" do
+        expect {
+          post housework_logs_path, params: {
+            housework_log: { title: "", category: "", performed_on: Time.zone.today, minutes: 30 }
           }
         }.not_to change(HouseworkLog, :count)
         expect(response).to have_http_status(:unprocessable_entity)
@@ -242,6 +256,27 @@ RSpec.describe "HouseworkLogs", type: :request do
         post thanks_housework_log_path(other_log)
         expect(response).to have_http_status(:not_found)
       end
+    end
+  end
+
+  describe "GET /housework_logs/suggest_titles" do
+    before do
+      sign_in user
+      create(:housework_log, user: user, title: "お風呂掃除", category: :cleaning)
+      create(:housework_log, user: user, title: "お風呂掃除", category: :cleaning)
+    end
+
+    it "カテゴリ別のタイトル候補をJSONで返す" do
+      get suggest_titles_housework_logs_path, params: { category: "cleaning" }
+      expect(response).to have_http_status(:ok)
+      titles = JSON.parse(response.body)
+      expect(titles.first).to eq("お風呂掃除")
+      expect(titles).to include("掃除機かけ")
+    end
+
+    it "不正なカテゴリの場合は空配列を返す" do
+      get suggest_titles_housework_logs_path, params: { category: "invalid" }
+      expect(JSON.parse(response.body)).to eq([])
     end
   end
 
