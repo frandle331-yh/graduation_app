@@ -26,6 +26,8 @@ class DashboardsController < ApplicationController
     end
 
     @period_label      = PERIOD_LABELS[@period]
+    @streak            = current_user.current_streak
+    @weekly_log_days   = current_user.weekly_log_days
     @total_minutes     = period_scope.sum(:minutes)
     @total_count       = period_scope.count
     @category_summaries = period_scope.group(:category).sum(:minutes)

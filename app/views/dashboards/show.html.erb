@@ -17,6 +17,30 @@
     <p class="dashboard-household">🏠 <strong><%= @household.name %></strong></p>
   <% end %>
 
+  <%# ---- ストリーク + 今週の記録 ---- %>
+  <div class="streak-bar">
+    <div class="streak-bar__item">
+      <span class="streak-bar__icon"><%= @streak >= 3 ? "🔥" : (@streak >= 1 ? "✨" : "💤") %></span>
+      <div class="streak-bar__body">
+        <span class="streak-bar__value"><%= @streak %><span class="streak-bar__unit">日</span></span>
+        <span class="streak-bar__label">連続記録中</span>
+      </div>
+    </div>
+    <div class="streak-bar__divider"></div>
+    <div class="streak-bar__item">
+      <span class="streak-bar__icon">📅</span>
+      <div class="streak-bar__body">
+        <span class="streak-bar__value"><%= @weekly_log_days %><span class="streak-bar__unit">日</span></span>
+        <span class="streak-bar__label">今週の記録日</span>
+      </div>
+    </div>
+    <% if @streak >= 7 %>
+      <div class="streak-bar__badge">🏆 7日達成！</div>
+    <% elsif @streak >= 3 %>
+      <div class="streak-bar__badge">⚡ 絶好調！</div>
+    <% end %>
+  </div>
+
   <%# ---- クイック記録（テンプレートから1タップ） ---- %>
   <div class="quick-record">
     <div class="quick-record__header">
@@ -137,35 +161,60 @@
       <% end %>
     </div>
 
-    <%# -- メンバー別 円グラフ（世帯あり） -- %>
+    <%# -- 貢献バランスバー（世帯あり） -- %>
     <% if @household && @minutes_by_user.present? %>
-      <div class="chart-card">
-        <h2 class="chart-card__title">メンバー別の貢献度（分）</h2>
-        <canvas id="memberChart" height="220"></canvas>
-        <script>
-          new Chart(document.getElementById("memberChart"), {
-            type: "doughnut",
-            data: {
-              labels: <%= raw json_escape(@minutes_by_user.keys.map { |u| u.nickname.presence || u.email }.to_json) %>,
-              datasets: [{
-                data: <%= raw json_escape(@minutes_by_user.values.to_json) %>,
-                backgroundColor: ["#6384FF", "#FF6384", "#FFCE56", "#4BC0C0"]
-              }]
-            },
-            options: {
-              responsive: true,
-              plugins: { legend: { position: "bottom" } }
-            }
-          });
-        </script>
-        <ul class="member-list">
-          <% @minutes_by_user.each do |user, minutes| %>
-            <li>
-              <strong><%= user.nickname.presence || user.email %></strong>
-              <%= minutes %>分（<%= @rates_by_user[user] %>%）
-            </li>
-          <% end %>
-        </ul>
+      <div class="chart-card contribution-card">
+        <h2 class="chart-card__title">⚖️ 貢献バランス</h2>
+        <%
+          users_arr  = @minutes_by_user.to_a  # [[user, minutes], ...]
+          colors     = %w[#6384FF #FF6384 #FFCE56 #4BC0C0]
+          me         = users_arr.find { |u, _| u.id == current_user.id }
+          others     = users_arr.reject { |u, _| u.id == current_user.id }
+          my_rate    = me ? @rates_by_user[me.first] : 0
+          total_min  = @total_minutes.to_i
+        %>
+
+        <%# 2人の場合: 左右の分割バー %>
+        <% if users_arr.size == 2 %>
+          <% user_a, min_a = users_arr[0]; user_b, min_b = users_arr[1] %>
+          <% rate_a = @rates_by_user[user_a]; rate_b = @rates_by_user[user_b] %>
+          <div class="balance-names">
+            <span class="balance-names__left"><%= user_a.nickname.presence || user_a.email %></span>
+            <span class="balance-names__right"><%= user_b.nickname.presence || user_b.email %></span>
+          </div>
+          <div class="balance-bar">
+            <div class="balance-bar__fill balance-bar__fill--a" style="width: <%= rate_a %>%"></div>
+            <div class="balance-bar__fill balance-bar__fill--b" style="width: <%= rate_b %>%"></div>
+          </div>
+          <div class="balance-rates">
+            <span class="balance-rates__left"><%= min_a %>分 (<%= rate_a %>%)</span>
+            <span class="balance-rates__right"><%= min_b %>分 (<%= rate_b %>%)</span>
+          </div>
+          <% diff = (rate_a - rate_b).abs.round(1) %>
+          <p class="balance-comment">
+            <% if diff < 5 %>
+              🤝 とてもバランスが取れています！
+            <% elsif rate_a > rate_b %>
+              <%= user_a.nickname.presence || user_a.email %> さんが多く貢献中 💪
+            <% else %>
+              <%= user_b.nickname.presence || user_b.email %> さんが多く貢献中 💪
+            <% end %>
+          </p>
+        <%# 3人以上: リスト形式 %>
+        <% else %>
+          <div class="multi-bar">
+            <% users_arr.each_with_index do |(user, minutes), i| %>
+              <% rate = @rates_by_user[user] %>
+              <div class="multi-bar__row">
+                <span class="multi-bar__name"><%= user.nickname.presence || user.email %></span>
+                <div class="multi-bar__track">
+                  <div class="multi-bar__fill" style="width: <%= rate %>%; background: <%= colors[i % colors.size] %>"></div>
+                </div>
+                <span class="multi-bar__value"><%= minutes %>分 (<%= rate %>%)</span>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
       </div>
     <% end %>
 

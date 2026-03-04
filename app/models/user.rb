@@ -29,4 +29,33 @@ class User < ApplicationRecord
   def inactive_message
     withdrawn_at.present? ? :deleted_account : super
   end
+
+  # 今日まで何日連続で家事を記録しているか（最長連続ストリーク）
+  def current_streak
+    dates = housework_logs
+              .where(performed_on: 90.days.ago..Date.current)
+              .distinct
+              .order(performed_on: :desc)
+              .pluck(:performed_on)
+    return 0 if dates.empty?
+
+    # 今日 or 昨日から始まっていない場合はストリーク 0
+    return 0 unless dates.first >= Date.current - 1
+
+    streak = 1
+    dates.each_cons(2) do |newer, older|
+      break unless newer - older == 1
+      streak += 1
+    end
+    streak
+  end
+
+  # 今週の記録日数（モチベーション表示用）
+  def weekly_log_days
+    today = Date.current
+    housework_logs
+      .where(performed_on: today.beginning_of_week..today.end_of_week)
+      .distinct
+      .count(:performed_on)
+  end
 end
