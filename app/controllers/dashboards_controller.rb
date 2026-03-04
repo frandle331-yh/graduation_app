@@ -46,6 +46,9 @@ class DashboardsController < ApplicationController
     @badges = current_user.achievement_badges
     @earned_count = @badges.count { |b| b[:earned] }
 
+    # カレンダー（今月）
+    build_calendar(current_user, today)
+
     return unless @household
 
     minutes_by_user_id = period_scope.group(:user_id).sum(:minutes)
@@ -83,5 +86,18 @@ class DashboardsController < ApplicationController
     days_elapsed = [ (today - today.beginning_of_week).to_i + 1, 1 ].max
     total = scope.sum(:minutes)
     (total.to_f / days_elapsed).round(0)
+  end
+
+  def build_calendar(user, today)
+    first = today.beginning_of_month
+    last  = today.end_of_month
+    @cal_month_label = today.strftime("%Y年%-m月")
+    @cal_first = first
+    @cal_last  = last
+    @cal_today = today
+    @cal_data  = user.housework_logs
+      .where(performed_on: first..last)
+      .group(:performed_on)
+      .count
   end
 end

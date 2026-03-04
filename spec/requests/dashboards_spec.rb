@@ -54,6 +54,13 @@ RSpec.describe "Dashboards", type: :request do
         get dashboard_path
         expect(response.body).to include("はじめの一歩")
       end
+
+      it "月間カレンダーを表示する" do
+        create(:housework_log, user: user, performed_on: Time.zone.today)
+        get dashboard_path
+        expect(response.body).to include(Time.zone.today.strftime("%Y年%-m月"))
+        expect(response.body).to include("calendar-grid")
+      end
     end
   end
 end
