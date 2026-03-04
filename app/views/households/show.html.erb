@@ -1,11 +1,57 @@
-<h1>世帯</h1>
+<div class="page-header">
+  <h1 class="page-title">世帯</h1>
+</div>
 
-<p><strong>世帯名：</strong><%= @household.name %></p>
-<p><strong>招待コード：</strong><%= @household.invitation_code %></p>
+<%# ---- 世帯情報カード ---- %>
+<div class="card">
+  <div class="card__body">
+    <h2 class="section-title" style="margin-bottom: 12px;">🏠 <%= @household.name %></h2>
 
-<h2>メンバー</h2>
-<ul>
+    <%# 招待コード ---- %>
+    <div class="invite-code-block">
+      <p class="invite-code-block__label">招待コード（パートナーに共有）</p>
+      <div class="invite-code-block__row">
+        <code class="invite-code-block__code" id="invitationCode"><%= @household.invitation_code %></code>
+        <button class="btn btn-secondary btn-sm invite-code-block__copy"
+                type="button"
+                onclick="
+                  navigator.clipboard.writeText('<%= @household.invitation_code %>').then(function() {
+                    var btn = document.querySelector('.invite-code-block__copy');
+                    var orig = btn.textContent;
+                    btn.textContent = 'コピー済 ✓';
+                    btn.disabled = true;
+                    setTimeout(function() { btn.textContent = orig; btn.disabled = false; }, 2000);
+                  });
+                ">
+          コピー
+        </button>
+      </div>
+      <p class="invite-code-block__hint">パートナーがこのコードを「招待コードで参加する」から入力すると世帯が共有されます。</p>
+    </div>
+  </div>
+</div>
+
+<%# ---- メンバー一覧 ---- %>
+<div class="section-header" style="margin-top: 24px;">
+  <h2 class="section-title">メンバー（<%= @household.household_members.count %>人）</h2>
+</div>
+
+<ul class="member-card-list">
   <% @household.household_members.includes(:user).each do |m| %>
-    <li><%= m.user.nickname.presence || m.user.email %>（<%= m.role %>）</li>
+    <li class="member-card">
+      <div class="member-card__avatar">
+        <%= (m.user.nickname.presence || m.user.email).first %>
+      </div>
+      <div class="member-card__info">
+        <strong class="member-card__name"><%= m.user.nickname.presence || m.user.email %></strong>
+        <span class="member-card__role member-card__role--<%= m.role %>">
+          <%= t("enums.household_member.role.#{m.role}") %>
+        </span>
+      </div>
+    </li>
   <% end %>
 </ul>
+
+<p class="page-link-bottom">
+  <%= link_to "ダッシュボードで貢献度を確認 →", dashboard_path %>
+</p>

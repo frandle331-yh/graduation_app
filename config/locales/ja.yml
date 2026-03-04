@@ -18,6 +18,10 @@ ja:
       user:
         nickname: "ニックネーム"
   enums:
+    household_member:
+      role:
+        owner: "オーナー"
+        member: "メンバー"
     housework_log:
       category:
         cleaning: "掃除"
