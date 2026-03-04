@@ -19,7 +19,7 @@
           <span data-theme-target="icon">🌓</span>
         </button>
         <div class="app-nav-user">
-          <span class="app-user"><%= current_user.nickname.presence || "User" %></span>
+          <%= link_to current_user.nickname.presence || "User", profile_path, class: "app-user" %>
           <%= button_to "ログアウト",
                 destroy_user_session_path,
                 method: :delete,

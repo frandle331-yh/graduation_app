@@ -2547,3 +2547,181 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   background: var(--bg);
   color: var(--text);
 }
+
+/* ============================================================
+   Profile Page
+   ============================================================ */
+.profile-page {
+  max-width: 640px;
+  margin: 0 auto;
+}
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.profile-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.4rem;
+  flex-shrink: 0;
+}
+.profile-info { flex: 1; min-width: 0; }
+.profile-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.profile-meta {
+  font-size: .78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* 統計カード */
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.profile-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 8px 12px;
+  text-align: center;
+}
+.profile-stat__value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+}
+.profile-stat__label {
+  font-size: .72rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+@media (min-width: 480px) {
+  .profile-stats { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* セクション */
+.profile-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 16px;
+}
+.profile-section__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+/* ヒートマップ */
+.heatmap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+.heatmap__cell {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+.heatmap__cell--0 { background: var(--border-light); }
+.heatmap__cell--1 { background: #86efac; }
+.heatmap__cell--2 { background: #22c55e; }
+.heatmap__cell--3 { background: #15803d; }
+:root[data-theme="dark"] .heatmap__cell--0 { background: var(--border); }
+:root[data-theme="dark"] .heatmap__cell--1 { background: #166534; }
+:root[data-theme="dark"] .heatmap__cell--2 { background: #22c55e; }
+:root[data-theme="dark"] .heatmap__cell--3 { background: #4ade80; }
+
+.heatmap__legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+  justify-content: flex-end;
+}
+.heatmap__legend-label {
+  font-size: .65rem;
+  color: var(--text-sub);
+}
+
+/* カテゴリ別バー */
+.category-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.category-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.category-bar-row__icon { font-size: 1rem; flex-shrink: 0; }
+.category-bar-row__name {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--text);
+  width: 60px;
+  flex-shrink: 0;
+}
+.category-bar-row__track {
+  flex: 1;
+  height: 8px;
+  background: var(--border-light);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.category-bar-row__fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  border-radius: 4px;
+  min-width: 4px;
+}
+.category-bar-row__count {
+  font-size: .75rem;
+  color: var(--text-muted);
+  width: 40px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* 退会セクション */
+.danger-section {
+  border-color: var(--danger);
+  border-style: dashed;
+}
+.danger-section__text {
+  font-size: .85rem;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}

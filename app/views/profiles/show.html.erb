@@ -1,0 +1,100 @@
+<div class="profile-page">
+
+  <%# ---- プロフィールヘッダー ---- %>
+  <div class="profile-header">
+    <div class="profile-avatar">
+      <%= (@user.nickname.presence || @user.email).first.upcase %>
+    </div>
+    <div class="profile-info">
+      <h1 class="profile-name"><%= @user.nickname %></h1>
+      <p class="profile-meta"><%= @user.email %></p>
+      <p class="profile-meta">📅 <%= @member_since.strftime("%Y年%-m月%-d日") %> から利用中</p>
+    </div>
+    <%= link_to "プロフィール編集", edit_profile_path, class: "btn btn-secondary btn-sm" %>
+  </div>
+
+  <%# ---- 統計カード ---- %>
+  <div class="profile-stats">
+    <div class="profile-stat">
+      <span class="profile-stat__value"><%= @total_logs %></span>
+      <span class="profile-stat__label">累計記録数</span>
+    </div>
+    <div class="profile-stat">
+      <span class="profile-stat__value"><%= @total_minutes %></span>
+      <span class="profile-stat__label">累計時間（分）</span>
+    </div>
+    <div class="profile-stat">
+      <span class="profile-stat__value"><%= @streak %></span>
+      <span class="profile-stat__label">連続記録日</span>
+    </div>
+    <div class="profile-stat">
+      <span class="profile-stat__value"><%= @earned_count %>/<%= @badges.size %></span>
+      <span class="profile-stat__label">バッジ獲得</span>
+    </div>
+  </div>
+
+  <%# ---- 活動ヒートマップ（直近90日） ---- %>
+  <div class="profile-section">
+    <h2 class="profile-section__title">🗓️ 活動ヒートマップ（直近90日）</h2>
+    <div class="heatmap">
+      <% (90.days.ago.to_date..Date.current).each do |date| %>
+        <%
+          count = @heatmap[date] || 0
+          level = case count
+                  when 0 then 0
+                  when 1 then 1
+                  when 2..3 then 2
+                  else 3
+                  end
+        %>
+        <div class="heatmap__cell heatmap__cell--<%= level %>"
+             title="<%= l(date, format: :short) %>: <%= count %>件"></div>
+      <% end %>
+    </div>
+    <div class="heatmap__legend">
+      <span class="heatmap__legend-label">少</span>
+      <div class="heatmap__cell heatmap__cell--0"></div>
+      <div class="heatmap__cell heatmap__cell--1"></div>
+      <div class="heatmap__cell heatmap__cell--2"></div>
+      <div class="heatmap__cell heatmap__cell--3"></div>
+      <span class="heatmap__legend-label">多</span>
+    </div>
+  </div>
+
+  <%# ---- カテゴリ別内訳 ---- %>
+  <% if @category_breakdown.present? %>
+    <div class="profile-section">
+      <h2 class="profile-section__title">📊 カテゴリ別記録数</h2>
+      <div class="category-bars">
+        <% total = @category_breakdown.values.sum.to_f %>
+        <% @category_breakdown.sort_by { |_, v| -v }.each do |cat_key, count| %>
+          <% category_name = cat_key.is_a?(String) ? cat_key : HouseworkLog.categories.key(cat_key) %>
+          <% pct = (count / total * 100).round(1) %>
+          <div class="category-bar-row">
+            <span class="category-bar-row__icon"><%= category_icon(category_name) %></span>
+            <span class="category-bar-row__name"><%= t("enums.housework_log.category.#{category_name}") %></span>
+            <div class="category-bar-row__track">
+              <div class="category-bar-row__fill" style="width: <%= pct %>%"></div>
+            </div>
+            <span class="category-bar-row__count"><%= count %>回</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <%# ---- バッジ一覧 ---- %>
+  <div class="profile-section">
+    <h2 class="profile-section__title">🏅 達成バッジ（<%= @earned_count %>/<%= @badges.size %>）</h2>
+    <div class="badges-grid">
+      <% @badges.each do |badge| %>
+        <div class="badge-item <%= 'badge-item--locked' unless badge[:earned] %>">
+          <span class="badge-item__icon"><%= badge[:earned] ? badge[:icon] : "🔒" %></span>
+          <span class="badge-item__title"><%= badge[:title] %></span>
+          <span class="badge-item__desc"><%= badge[:description] %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+</div>
