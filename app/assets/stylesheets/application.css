@@ -1661,6 +1661,92 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
 }
 
 /* ============================================================
+   週次サマリーカード
+   ============================================================ */
+.weekly-summary {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 4px;
+}
+.weekly-summary__title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text);
+}
+.weekly-summary__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.weekly-summary__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--bg);
+  border-radius: var(--radius);
+  padding: 14px 8px 10px;
+  text-align: center;
+}
+.weekly-summary__stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+}
+.weekly-summary__stat-unit {
+  font-size: .7rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-left: 2px;
+}
+.weekly-summary__stat-label {
+  font-size: .72rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.weekly-summary__stat-sub {
+  font-size: .75rem;
+  color: var(--text);
+  font-weight: 600;
+  margin-top: 2px;
+}
+.weekly-summary__trend {
+  font-size: .7rem;
+  font-weight: 600;
+  margin-top: 4px;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.weekly-summary__trend--up {
+  color: #059669;
+  background: var(--success-light);
+}
+.weekly-summary__trend--down {
+  color: #dc2626;
+  background: var(--danger-light);
+}
+.weekly-summary__message {
+  font-size: .82rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 14px;
+  padding: 10px 12px;
+  background: var(--primary-light);
+  border-radius: var(--radius-sm);
+  line-height: 1.5;
+}
+
+@media (min-width: 600px) {
+  .weekly-summary__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ============================================================
    貢献バランスバー (2人)
    ============================================================ */
 .contribution-card { grid-column: 1 / -1; }

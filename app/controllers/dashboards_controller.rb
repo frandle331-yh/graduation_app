@@ -39,6 +39,9 @@ class DashboardsController < ApplicationController
         .sort_by { |date, _| date }
         .to_h
 
+    # 週次サマリー（常に表示）
+    build_weekly_summary(base_scope, today)
+
     return unless @household
 
     minutes_by_user_id = period_scope.group(:user_id).sum(:minutes)
@@ -51,5 +54,30 @@ class DashboardsController < ApplicationController
     @rates_by_user = @minutes_by_user.transform_values do |minutes|
       total.zero? ? 0 : ((minutes.to_f / total) * 100).round(1)
     end
+  end
+
+  private
+
+  def build_weekly_summary(base_scope, today)
+    this_week = today.beginning_of_week..today.end_of_week
+    last_week = (today.beginning_of_week - 7)..(today.end_of_week - 7)
+
+    this_scope = base_scope.where(performed_on: this_week)
+    last_scope = base_scope.where(performed_on: last_week)
+
+    @weekly = {
+      count: this_scope.count,
+      minutes: this_scope.sum(:minutes),
+      last_count: last_scope.count,
+      last_minutes: last_scope.sum(:minutes),
+      top_category: this_scope.group(:category).count.max_by { |_, v| v }&.first,
+      avg_minutes_per_day: weekly_avg(this_scope, today)
+    }
+  end
+
+  def weekly_avg(scope, today)
+    days_elapsed = [ (today - today.beginning_of_week).to_i + 1, 1 ].max
+    total = scope.sum(:minutes)
+    (total.to_f / days_elapsed).round(0)
   end
 end

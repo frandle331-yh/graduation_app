@@ -18,6 +18,30 @@ RSpec.describe "Dashboards", type: :request do
         get dashboard_path
         expect(response).to have_http_status(:ok)
       end
+
+      it "週次サマリーを表示する" do
+        create(:housework_log, user: user, performed_on: Time.zone.today, minutes: 30, category: :cooking)
+        create(:housework_log, user: user, performed_on: Time.zone.today, minutes: 20, category: :cleaning)
+
+        get dashboard_path
+        expect(response.body).to include("今週のまとめ")
+        expect(response.body).to include("記録数")
+        expect(response.body).to include("1日あたり平均")
+      end
+
+      it "前週比を表示する" do
+        create(:housework_log, user: user, performed_on: Time.zone.today, minutes: 30)
+        create(:housework_log, user: user, performed_on: 1.week.ago.to_date, minutes: 15)
+
+        get dashboard_path
+        expect(response.body).to include("前週比")
+      end
+
+      it "データがない場合でも週次サマリーを表示する" do
+        get dashboard_path
+        expect(response.body).to include("今週のまとめ")
+        expect(response.body).to include("最初の一歩を踏み出しましょう")
+      end
     end
   end
 end
