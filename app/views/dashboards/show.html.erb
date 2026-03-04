@@ -264,6 +264,26 @@
 
   </div>
 
+  <%# ---- 達成バッジ ---- %>
+  <div class="badges-section">
+    <div class="badges-section__header">
+      <h2 class="badges-section__title">🏅 達成バッジ</h2>
+      <span class="badges-section__count"><%= @earned_count %> / <%= @badges.size %> 獲得</span>
+    </div>
+    <div class="badges-section__progress">
+      <div class="badges-section__progress-bar" style="width: <%= (@earned_count.to_f / @badges.size * 100).round %>%"></div>
+    </div>
+    <div class="badges-grid">
+      <% @badges.each do |badge| %>
+        <div class="badge-item <%= 'badge-item--locked' unless badge[:earned] %>">
+          <span class="badge-item__icon"><%= badge[:earned] ? badge[:icon] : "🔒" %></span>
+          <span class="badge-item__title"><%= badge[:title] %></span>
+          <span class="badge-item__desc"><%= badge[:description] %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
   <p class="dashboard-link">
     <%= link_to "家事ログ一覧を見る →", housework_logs_path %>
   </p>

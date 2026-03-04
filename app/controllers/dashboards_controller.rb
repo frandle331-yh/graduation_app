@@ -42,6 +42,10 @@ class DashboardsController < ApplicationController
     # 週次サマリー（常に表示）
     build_weekly_summary(base_scope, today)
 
+    # 達成バッジ
+    @badges = current_user.achievement_badges
+    @earned_count = @badges.count { |b| b[:earned] }
+
     return unless @household
 
     minutes_by_user_id = period_scope.group(:user_id).sum(:minutes)
