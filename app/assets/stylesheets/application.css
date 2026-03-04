@@ -978,6 +978,74 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
 .member-list li { padding: 7px 0; border-top: 1px solid var(--border-light); }
 .dashboard-link { text-align: right; font-size: .875rem; }
 
+/* ---- 月間カレンダー -------------------------------------- */
+.calendar-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 12px;
+}
+.calendar-card__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 14px;
+}
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.calendar-grid__dow {
+  text-align: center;
+  font-size: .65rem;
+  font-weight: 600;
+  color: var(--text-sub);
+  padding-bottom: 6px;
+}
+.calendar-grid__cell {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  position: relative;
+  min-height: 36px;
+}
+.calendar-grid__cell--empty {
+  background: transparent;
+}
+.calendar-grid__cell--today {
+  border: 2px solid var(--primary);
+  background: var(--primary-light);
+}
+.calendar-grid__cell--has-log {
+  background: var(--success-light);
+}
+.calendar-grid__cell--today.calendar-grid__cell--has-log {
+  background: var(--primary-light);
+}
+.calendar-grid__day {
+  font-size: .75rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+.calendar-grid__dot {
+  font-size: .55rem;
+  color: var(--success);
+  font-weight: 700;
+  margin-top: 2px;
+  line-height: 1;
+}
+.calendar-grid__cell--has-log .calendar-grid__dot {
+  color: #059669;
+}
+
 /* ---- 達成バッジ ------------------------------------------ */
 .badges-section {
   background: var(--surface);

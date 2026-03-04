@@ -266,6 +266,32 @@
 
   </div>
 
+  <%# ---- 月間カレンダー ---- %>
+  <div class="calendar-card">
+    <h2 class="calendar-card__title">📅 <%= @cal_month_label %></h2>
+    <div class="calendar-grid">
+      <% %w[月 火 水 木 金 土 日].each do |dow| %>
+        <div class="calendar-grid__dow"><%= dow %></div>
+      <% end %>
+      <%# 月曜始まりで空セルを埋める %>
+      <% wday_offset = (@cal_first.wday + 6) % 7 %>
+      <% wday_offset.times do %>
+        <div class="calendar-grid__cell calendar-grid__cell--empty"></div>
+      <% end %>
+      <% (@cal_first..@cal_last).each do |date| %>
+        <% count = @cal_data[date] || 0 %>
+        <div class="calendar-grid__cell
+                    <%= 'calendar-grid__cell--today' if date == @cal_today %>
+                    <%= 'calendar-grid__cell--has-log' if count > 0 %>">
+          <span class="calendar-grid__day"><%= date.day %></span>
+          <% if count > 0 %>
+            <span class="calendar-grid__dot"><%= count > 1 ? "#{count}" : "●" %></span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
   <%# ---- 達成バッジ ---- %>
   <div class="badges-section">
     <div class="badges-section__header">
