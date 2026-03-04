@@ -1,5 +1,13 @@
-<% flash.each do |type, message| %>
-  <div class="flash <%= type %>">
-    <%= message %>
-  </div>
-<% end %>
+<div id="toast-container">
+  <% flash.each do |type, message| %>
+    <div class="toast toast--<%= type %>"
+         data-controller="toast"
+         data-toast-duration-value="<%= type == 'alert' ? 6000 : 4000 %>">
+      <span class="toast__icon">
+        <% if type == "notice" %>✅<% else %>⚠️<% end %>
+      </span>
+      <span class="toast__message"><%= message %></span>
+      <button class="toast__close" data-action="toast#dismiss" aria-label="閉じる">×</button>
+    </div>
+  <% end %>
+</div>
