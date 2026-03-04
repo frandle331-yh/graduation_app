@@ -99,12 +99,6 @@ class HouseworkLogsController < ApplicationController
   end
 
 
-  private
-
-  def housework_log_params
-    params.require(:housework_log).permit(:title, :category, :performed_on, :minutes, :memo)
-  end
-
   # オートコンプリート用：タイトルのサジェストを JSON で返す
   def search_titles
     q = params[:q].to_s.strip
@@ -120,6 +114,12 @@ class HouseworkLogsController < ApplicationController
         []
       end
     render json: titles
+  end
+
+  private
+
+  def housework_log_params
+    params.require(:housework_log).permit(:title, :category, :performed_on, :minutes, :memo)
   end
 
   def filtered_scope
