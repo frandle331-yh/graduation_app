@@ -41,6 +41,50 @@
     <% end %>
   </div>
 
+  <%# ---- 週次サマリーカード ---- %>
+  <div class="weekly-summary">
+    <h2 class="weekly-summary__title">📊 今週のまとめ</h2>
+    <div class="weekly-summary__grid">
+      <div class="weekly-summary__stat">
+        <span class="weekly-summary__stat-value"><%= @weekly[:count] %><span class="weekly-summary__stat-unit">回</span></span>
+        <span class="weekly-summary__stat-label">記録数</span>
+        <% diff_count = @weekly[:count] - @weekly[:last_count] %>
+        <span class="weekly-summary__trend <%= diff_count >= 0 ? 'weekly-summary__trend--up' : 'weekly-summary__trend--down' %>">
+          <%= diff_count >= 0 ? "+" : "" %><%= diff_count %> 前週比
+        </span>
+      </div>
+      <div class="weekly-summary__stat">
+        <span class="weekly-summary__stat-value"><%= @weekly[:minutes] %><span class="weekly-summary__stat-unit">分</span></span>
+        <span class="weekly-summary__stat-label">合計時間</span>
+        <% diff_min = @weekly[:minutes] - @weekly[:last_minutes] %>
+        <span class="weekly-summary__trend <%= diff_min >= 0 ? 'weekly-summary__trend--up' : 'weekly-summary__trend--down' %>">
+          <%= diff_min >= 0 ? "+" : "" %><%= diff_min %>分 前週比
+        </span>
+      </div>
+      <div class="weekly-summary__stat">
+        <span class="weekly-summary__stat-value"><%= @weekly[:avg_minutes_per_day] %><span class="weekly-summary__stat-unit">分</span></span>
+        <span class="weekly-summary__stat-label">1日あたり平均</span>
+      </div>
+      <div class="weekly-summary__stat">
+        <% if @weekly[:top_category] %>
+          <span class="weekly-summary__stat-value"><%= category_icon(@weekly[:top_category]) %></span>
+          <span class="weekly-summary__stat-label">よくやった家事</span>
+          <span class="weekly-summary__stat-sub"><%= t("enums.housework_log.category.#{@weekly[:top_category]}") %></span>
+        <% else %>
+          <span class="weekly-summary__stat-value">-</span>
+          <span class="weekly-summary__stat-label">よくやった家事</span>
+        <% end %>
+      </div>
+    </div>
+    <% if @weekly[:count] == 0 %>
+      <p class="weekly-summary__message">今週はまだ記録がありません。最初の一歩を踏み出しましょう！</p>
+    <% elsif @weekly[:count] >= 10 %>
+      <p class="weekly-summary__message">🎉 今週もたくさんの家事をこなしています！素晴らしい！</p>
+    <% elsif diff_count > 0 %>
+      <p class="weekly-summary__message">📈 先週より<%= diff_count %>回多く記録しています。この調子！</p>
+    <% end %>
+  </div>
+
   <%# ---- クイック記録（テンプレートから1タップ） ---- %>
   <div class="quick-record">
     <div class="quick-record__header">
