@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_02_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_05_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -46,8 +46,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_02_000001) do
     t.date "performed_on", null: false
     t.string "title", null: false
     t.datetime "updated_at", null: false
+    t.integer "thanks_count", default: 0, null: false
     t.bigint "user_id", null: false
+    t.index ["household_id", "performed_on"], name: "index_housework_logs_on_household_id_and_performed_on"
     t.index ["household_id"], name: "index_housework_logs_on_household_id"
+    t.index ["user_id", "performed_on"], name: "index_housework_logs_on_user_id_and_performed_on"
     t.index ["user_id"], name: "index_housework_logs_on_user_id"
   end
 

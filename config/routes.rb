@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :housework_logs, only: [ :index, :new, :create, :show, :edit, :update, :destroy ] do
     post :quick_create,   on: :collection
     get  :search_titles,  on: :collection
+    post :thanks,         on: :member
   end
   resource :dashboard, only: [ :show ]
   resource :household, only: [ :new, :create, :show ] do
