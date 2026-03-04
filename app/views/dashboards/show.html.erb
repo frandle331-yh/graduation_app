@@ -17,6 +17,41 @@
     <p class="dashboard-household">🏠 <strong><%= @household.name %></strong></p>
   <% end %>
 
+  <%# ---- クイック記録（テンプレートから1タップ） ---- %>
+  <div class="quick-record">
+    <div class="quick-record__header">
+      <span class="quick-record__title">⚡ クイック記録</span>
+      <%= link_to "管理 →", housework_templates_path, class: "quick-record__manage" %>
+    </div>
+    <% if @quick_templates.present? %>
+      <div class="quick-record__grid">
+        <% @quick_templates.each do |tmpl| %>
+          <%= button_to use_housework_template_path(tmpl), method: :post,
+                class: "quick-btn quick-btn--#{tmpl.category}" do %>
+            <span class="quick-btn__icon"><%= category_icon(tmpl.category) %></span>
+            <span class="quick-btn__title"><%= tmpl.title %></span>
+            <% if tmpl.minutes.present? %>
+              <span class="quick-btn__min"><%= tmpl.minutes %>分</span>
+            <% end %>
+          <% end %>
+        <% end %>
+        <%# 新規ログボタン %>
+        <%= link_to new_housework_log_path, class: "quick-btn quick-btn--new" do %>
+          <span class="quick-btn__icon">✏️</span>
+          <span class="quick-btn__title">手動で記録</span>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="quick-record__empty">
+        <p>テンプレートを登録すると、ここから1タップで記録できます。</p>
+        <div class="quick-record__empty-actions">
+          <%= link_to "テンプレートを追加する", new_housework_template_path, class: "btn btn-primary btn-sm" %>
+          <%= link_to "手動で記録", new_housework_log_path, class: "btn btn-secondary btn-sm" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
   <%# ---- 期間切り替え ---- %>
   <nav class="period-nav">
     <% [["week", "今週"], ["month", "今月"], ["all", "全期間"]].each do |value, label| %>
