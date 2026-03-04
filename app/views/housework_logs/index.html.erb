@@ -3,6 +3,28 @@
   <%= link_to "＋ 家事を記録", new_housework_log_path, class: "btn btn-primary btn-sm" %>
 </div>
 
+<%# ---- ミニ統計ヘッダー ---- %>
+<% if @stats_total_count > 0 %>
+  <div class="log-stats">
+    <div class="log-stats__item">
+      <span class="log-stats__value"><%= @stats_total_count %></span>
+      <span class="log-stats__label">件</span>
+    </div>
+    <div class="log-stats__divider"></div>
+    <div class="log-stats__item">
+      <span class="log-stats__value"><%= @stats_total_minutes %></span>
+      <span class="log-stats__label">分</span>
+    </div>
+    <% if @stats_top_category %>
+      <div class="log-stats__divider"></div>
+      <div class="log-stats__item">
+        <span class="log-stats__value"><%= category_icon(@stats_top_category) %></span>
+        <span class="log-stats__label"><%= t("enums.housework_log.category.#{@stats_top_category}") %>が最多</span>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
 <%# ---- テンプレートからワンタップ記録 ---- %>
 <%
   templates = current_user.housework_templates.ordered

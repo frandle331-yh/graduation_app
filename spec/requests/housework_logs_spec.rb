@@ -19,6 +19,19 @@ RSpec.describe "HouseworkLogs", type: :request do
         get housework_logs_path
         expect(response).to have_http_status(:ok)
       end
+
+      it "家事ログがあるとミニ統計ヘッダーを表示する" do
+        create(:housework_log, user: user, minutes: 45, category: :cooking)
+        create(:housework_log, user: user, minutes: 30, category: :cooking)
+        get housework_logs_path
+        expect(response.body).to include("75")      # 合計分数
+        expect(response.body).to include("が最多")
+      end
+
+      it "家事ログがないとミニ統計ヘッダーを表示しない" do
+        get housework_logs_path
+        expect(response.body).not_to include("が最多")
+      end
     end
   end
 

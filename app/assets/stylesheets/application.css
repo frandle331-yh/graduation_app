@@ -633,6 +633,40 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
 .filter-form .form-select { width: auto; }
 .link-muted { font-size: .8rem; color: var(--text-muted); }
 
+/* ---- Log Stats Header ------------------------------------ */
+.log-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: linear-gradient(135deg, var(--primary-light), #fff);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 20px;
+  margin-bottom: 12px;
+}
+.log-stats__item {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.log-stats__value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+.log-stats__label {
+  font-size: .75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+.log-stats__divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
 /* ---- Log List -------------------------------------------- */
 .log-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 .log-item {
