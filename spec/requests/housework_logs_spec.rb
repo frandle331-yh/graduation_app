@@ -154,4 +154,59 @@ RSpec.describe "HouseworkLogs", type: :request do
       end
     end
   end
+
+  describe "POST /housework_logs/quick_create" do
+    context "自分のログを複製する場合" do
+      let!(:log) { create(:housework_log, user: user) }
+
+      before { sign_in user }
+
+      it "新しいログを1件作成してリダイレクトする" do
+        expect {
+          post quick_create_housework_logs_path, params: { source_id: log.id }
+        }.to change(HouseworkLog, :count).by(1)
+        expect(response).to redirect_to(housework_logs_path)
+      end
+
+      it "作成されたログの日付は今日になる" do
+        post quick_create_housework_logs_path, params: { source_id: log.id }
+        expect(HouseworkLog.last.performed_on).to eq(Time.zone.today)
+      end
+    end
+
+    context "他ユーザーのログ（世帯なし）を複製しようとする場合" do
+      let!(:other_log) { create(:housework_log, user: other_user) }
+
+      before { sign_in user }
+
+      it "作成せずにリダイレクトしアラートを表示する" do
+        expect {
+          post quick_create_housework_logs_path, params: { source_id: other_log.id }
+        }.not_to change(HouseworkLog, :count)
+        expect(response).to redirect_to(housework_logs_path)
+      end
+    end
+  end
+
+  describe "GET /housework_logs/search_titles" do
+    before do
+      sign_in user
+      create(:housework_log, user: user, title: "掃除機かけ")
+      create(:housework_log, user: user, title: "風呂掃除")
+      create(:housework_log, user: other_user, title: "他ユーザーの掃除")
+    end
+
+    it "自分のログのタイトルのみをJSONで返す" do
+      get search_titles_housework_logs_path, params: { q: "掃除" }
+      expect(response).to have_http_status(:ok)
+      titles = JSON.parse(response.body)
+      expect(titles).to include("掃除機かけ", "風呂掃除")
+      expect(titles).not_to include("他ユーザーの掃除")
+    end
+
+    it "クエリが空の場合は空配列を返す" do
+      get search_titles_housework_logs_path, params: { q: "" }
+      expect(JSON.parse(response.body)).to eq([])
+    end
+  end
 end
