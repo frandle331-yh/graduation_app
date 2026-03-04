@@ -188,6 +188,50 @@ RSpec.describe "HouseworkLogs", type: :request do
     end
   end
 
+  describe "POST /housework_logs/:id/thanks" do
+    let(:household)       { create(:household) }
+    let(:partner)         { create(:user) }
+    let(:partner_log) do
+      create(:housework_log, user: partner, household: household)
+    end
+
+    before do
+      create(:household_member, household: household, user: user,    role: :owner)
+      create(:household_member, household: household, user: partner, role: :member)
+      sign_in user
+    end
+
+    context "パートナーのログにありがとうを送る場合" do
+      it "thanks_countが1増えてJSONを返す" do
+        expect {
+          post thanks_housework_log_path(partner_log)
+        }.to change { partner_log.reload.thanks_count }.by(1)
+        expect(response).to have_http_status(:ok)
+        expect(JSON.parse(response.body)["thanks_count"]).to eq(1)
+      end
+    end
+
+    context "自分のログにありがとうを送ろうとする場合" do
+      let(:own_log) { create(:housework_log, user: user, household: household) }
+
+      it "422を返してthanks_countが変わらない" do
+        expect {
+          post thanks_housework_log_path(own_log)
+        }.not_to change { own_log.reload.thanks_count }
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
+    end
+
+    context "世帯が異なるログにありがとうを送ろうとする場合" do
+      let(:other_log) { create(:housework_log, user: other_user) }
+
+      it "404を返す" do
+        post thanks_housework_log_path(other_log)
+        expect(response).to have_http_status(:not_found)
+      end
+    end
+  end
+
   describe "GET /housework_logs/search_titles" do
     before do
       sign_in user

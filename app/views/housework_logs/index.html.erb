@@ -131,6 +131,9 @@
         <div class="log-item__main">
           <span class="badge badge--<%= log.category %>"><%= t("enums.housework_log.category.#{log.category}") %></span>
           <strong class="log-item__title"><%= log.title %></strong>
+          <% if log.thanks_count > 0 %>
+            <span class="log-item__thanks">💜 × <%= log.thanks_count %></span>
+          <% end %>
         </div>
         <div class="log-item__meta">
           <span class="log-item__minutes"><%= log.minutes %>分</span>

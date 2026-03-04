@@ -42,7 +42,19 @@ class HouseworkLogsController < ApplicationController
   end
 
   def show
-    @housework_log = current_user.housework_logs.find(params[:id])
+    # 自分のログ + 同じ世帯のログを表示可能にする
+    @housework_log = accessible_log(params[:id])
+  end
+
+  # パートナーのログには「ありがとう」を送れる
+  def thanks
+    log = accessible_log(params[:id])
+    if log.user_id == current_user.id
+      render json: { error: "自分のログには「ありがとう」できません" }, status: :unprocessable_entity
+      return
+    end
+    log.increment!(:thanks_count)
+    render json: { thanks_count: log.thanks_count }
   end
 
   def edit
@@ -117,6 +129,15 @@ class HouseworkLogsController < ApplicationController
   end
 
   private
+
+  # 自分のログ、または同じ世帯のログにアクセスできる
+  def accessible_log(id)
+    if current_household
+      HouseworkLog.where(household_id: current_household.id).find(id)
+    else
+      current_user.housework_logs.find(id)
+    end
+  end
 
   def housework_log_params
     params.require(:housework_log).permit(:title, :category, :performed_on, :minutes, :memo)
