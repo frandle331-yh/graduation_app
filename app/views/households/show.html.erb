@@ -14,9 +14,10 @@
         <code class="invite-code-block__code" id="invitationCode"><%= @household.invitation_code %></code>
         <button class="btn btn-secondary btn-sm invite-code-block__copy"
                 type="button"
+                id="copyBtn"
                 onclick="
                   navigator.clipboard.writeText('<%= @household.invitation_code %>').then(function() {
-                    var btn = document.querySelector('.invite-code-block__copy');
+                    var btn = document.getElementById('copyBtn');
                     var orig = btn.textContent;
                     btn.textContent = 'コピー済 ✓';
                     btn.disabled = true;
@@ -28,6 +29,34 @@
       </div>
       <p class="invite-code-block__hint">パートナーがこのコードを「招待コードで参加する」から入力すると世帯が共有されます。</p>
     </div>
+
+    <%# 共有ボタン %>
+    <div class="share-buttons">
+      <% share_text = "KajiMateで一緒に家事を記録しよう！招待コード: #{@household.invitation_code}" %>
+      <a href="https://line.me/R/msg/text/?<%= ERB::Util.url_encode(share_text) %>"
+         target="_blank" rel="noopener noreferrer"
+         class="share-btn share-btn--line">
+        <span class="share-btn__icon">💬</span>
+        LINEで送る
+      </a>
+      <button type="button" class="share-btn share-btn--native" id="webShareBtn" style="display:none;"
+              data-share-text="<%= share_text %>">
+        <span class="share-btn__icon">📤</span>
+        共有する
+      </button>
+    </div>
+    <script>
+      // Web Share API が使える場合はボタンを表示
+      if (navigator.share) {
+        document.getElementById('webShareBtn').style.display = '';
+        document.getElementById('webShareBtn').addEventListener('click', function() {
+          navigator.share({
+            title: 'KajiMate 招待',
+            text: this.dataset.shareText
+          }).catch(function() {});
+        });
+      }
+    </script>
   </div>
 </div>
 
