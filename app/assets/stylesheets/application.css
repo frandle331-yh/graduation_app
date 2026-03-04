@@ -1597,3 +1597,153 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   margin-bottom: 4px;
 }
 .page-back:hover { color: var(--primary); }
+
+/* ============================================================
+   ストリークバー
+   ============================================================ */
+.streak-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 4px;
+}
+.streak-bar__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+.streak-bar__icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+.streak-bar__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.streak-bar__value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+}
+.streak-bar__unit {
+  font-size: .75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+  margin-left: 2px;
+}
+.streak-bar__label {
+  font-size: .72rem;
+  color: var(--text-muted);
+}
+.streak-bar__divider {
+  width: 1px;
+  height: 36px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+.streak-bar__badge {
+  font-size: .8rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #ff9f0a, #ff6b35);
+  color: #fff;
+  border-radius: 20px;
+  padding: 4px 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   貢献バランスバー (2人)
+   ============================================================ */
+.contribution-card { grid-column: 1 / -1; }
+
+.balance-names {
+  display: flex;
+  justify-content: space-between;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.balance-bar {
+  display: flex;
+  height: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--border-light);
+}
+.balance-bar__fill {
+  transition: width .6s cubic-bezier(.4,0,.2,1);
+}
+.balance-bar__fill--a { background: #6384FF; }
+.balance-bar__fill--b { background: #FF6384; }
+
+.balance-rates {
+  display: flex;
+  justify-content: space-between;
+  font-size: .82rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+.balance-rates__left  { color: #6384FF; font-weight: 600; }
+.balance-rates__right { color: #FF6384; font-weight: 600; }
+
+.balance-comment {
+  text-align: center;
+  font-size: .88rem;
+  color: var(--text-muted);
+  margin-top: 12px;
+  padding: 8px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+}
+
+/* 3人以上の貢献バー */
+.multi-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.multi-bar__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.multi-bar__name {
+  font-size: .82rem;
+  font-weight: 500;
+  width: 80px;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.multi-bar__track {
+  flex: 1;
+  height: 12px;
+  background: var(--border-light);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.multi-bar__fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width .6s cubic-bezier(.4,0,.2,1);
+}
+.multi-bar__value {
+  font-size: .78rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  width: 90px;
+  text-align: right;
+  flex-shrink: 0;
+}
