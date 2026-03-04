@@ -42,6 +42,18 @@ RSpec.describe "Dashboards", type: :request do
         expect(response.body).to include("今週のまとめ")
         expect(response.body).to include("最初の一歩を踏み出しましょう")
       end
+
+      it "達成バッジセクションを表示する" do
+        get dashboard_path
+        expect(response.body).to include("達成バッジ")
+        expect(response.body).to include("獲得")
+      end
+
+      it "家事ログがあると対応するバッジが解放される" do
+        create(:housework_log, user: user, performed_on: Time.zone.today)
+        get dashboard_path
+        expect(response.body).to include("はじめの一歩")
+      end
     end
   end
 end
