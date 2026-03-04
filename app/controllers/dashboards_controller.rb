@@ -6,6 +6,7 @@ class DashboardsController < ApplicationController
   def show
     @household = current_household
     @period = params[:period].presence_in(%w[week month all]) || "week"
+    @quick_templates = current_user.housework_templates.ordered.limit(5)
 
     base_scope =
       if @household
