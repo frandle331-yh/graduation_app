@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   resource :household, only: [ :new, :create, :show ] do
     get  :join,  on: :collection
     post :join,  on: :collection
+    get  :timeline, on: :member
   end
 
   get "home/index"
