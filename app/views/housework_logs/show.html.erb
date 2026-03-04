@@ -1,14 +1,73 @@
-<h2>家事ログ詳細</h2>
+<% content_for :title, "#{@housework_log.title} — KajiMate" %>
 
-<p>タイトル：<%= @housework_log.title %></p>
-<p>カテゴリ：<%= t("enums.housework_log.category.#{@housework_log.category}") %></p>
-<p>実施日：<%= @housework_log.performed_on %></p>
-<p>時間：<%= @housework_log.minutes %>分</p>
-<p>メモ：<%= @housework_log.memo %></p>
+<div class="page-header">
+  <%= link_to housework_logs_path, class: "page-back" do %>
+    ← 一覧に戻る
+  <% end %>
+  <h1 class="page-title">家事ログ詳細</h1>
+  <div class="page-header__actions">
+    <%= link_to "編集", edit_housework_log_path(@housework_log), class: "btn btn-secondary btn-sm" %>
+  </div>
+</div>
 
-<%= link_to "編集", edit_housework_log_path(@housework_log) %>
-<%= link_to "一覧に戻る", housework_logs_path %>
-<%= button_to "削除",
-      housework_log_path(@housework_log),
-      method: :delete,
-      data: { turbo_confirm: "削除しますか？" } %>
+<div class="log-detail">
+  <%# ---- カテゴリ + タイトル ---- %>
+  <div class="log-detail__hero">
+    <span class="log-detail__category-icon"><%= category_icon(@housework_log.category) %></span>
+    <div class="log-detail__title-block">
+      <span class="badge badge--<%= @housework_log.category %> badge--lg">
+        <%= t("enums.housework_log.category.#{@housework_log.category}") %>
+      </span>
+      <h2 class="log-detail__title"><%= @housework_log.title %></h2>
+    </div>
+  </div>
+
+  <%# ---- メタ情報 ---- %>
+  <div class="log-detail__meta-grid">
+    <div class="log-detail__meta-item">
+      <span class="log-detail__meta-label">📅 実施日</span>
+      <span class="log-detail__meta-value"><%= l(@housework_log.performed_on, format: :long) %></span>
+    </div>
+    <div class="log-detail__meta-item">
+      <span class="log-detail__meta-label">⏱ 所要時間</span>
+      <span class="log-detail__meta-value log-detail__meta-value--highlight"><%= @housework_log.minutes %><small>分</small></span>
+    </div>
+    <div class="log-detail__meta-item">
+      <span class="log-detail__meta-label">👤 記録者</span>
+      <span class="log-detail__meta-value"><%= @housework_log.user.nickname.presence || @housework_log.user.email %></span>
+    </div>
+    <% if @housework_log.household.present? %>
+      <div class="log-detail__meta-item">
+        <span class="log-detail__meta-label">🏠 世帯</span>
+        <span class="log-detail__meta-value"><%= @housework_log.household.name %></span>
+      </div>
+    <% end %>
+  </div>
+
+  <%# ---- メモ ---- %>
+  <% if @housework_log.memo.present? %>
+    <div class="log-detail__memo">
+      <p class="log-detail__memo-label">📝 メモ</p>
+      <p class="log-detail__memo-text"><%= @housework_log.memo %></p>
+    </div>
+  <% end %>
+
+  <%# ---- 再記録ボタン ---- %>
+  <div class="log-detail__rerecord">
+    <%= button_to quick_create_housework_logs_path(original_id: @housework_log.id),
+          method: :post,
+          class: "btn btn-primary btn-block",
+          form: { data: { turbo: false } } do %>
+      ⚡ 今日もこれをやった（再記録）
+    <% end %>
+  </div>
+
+  <%# ---- 削除 ---- %>
+  <div class="log-detail__danger">
+    <%= button_to "このログを削除",
+          housework_log_path(@housework_log),
+          method: :delete,
+          class: "btn btn-ghost btn-sm text-danger",
+          data: { turbo_confirm: "「#{@housework_log.title}」のログを削除しますか？" } %>
+  </div>
+</div>
