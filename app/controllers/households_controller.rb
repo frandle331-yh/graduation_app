@@ -6,6 +6,21 @@ class HouseholdsController < ApplicationController
     redirect_to new_household_path, alert: "まず世帯を作成してください" unless @household
   end
 
+  def timeline
+    @household = current_household
+    unless @household
+      redirect_to new_household_path, alert: "まず世帯を作成してください"
+      return
+    end
+
+    @timeline_logs = HouseworkLog
+      .where(household_id: @household.id)
+      .includes(:user)
+      .order(performed_on: :desc, created_at: :desc)
+      .page(params[:page])
+      .per(20)
+  end
+
   def new
     if current_household
       redirect_to household_path, notice: "すでに世帯に参加しています"

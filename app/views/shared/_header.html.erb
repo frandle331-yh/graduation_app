@@ -9,6 +9,7 @@
         <%= link_to "家事ログ", housework_logs_path %>
         <%= link_to "テンプレート", housework_templates_path %>
         <% if current_household %>
+          <%= link_to "タイムライン", timeline_household_path %>
           <%= link_to "世帯", household_path %>
         <% else %>
           <%= link_to "世帯", new_household_path %>
@@ -45,6 +46,7 @@
       <%= link_to "家事ログ", housework_logs_path, data: { action: "click->hamburger#close" } %>
       <%= link_to "テンプレート", housework_templates_path, data: { action: "click->hamburger#close" } %>
       <% if current_household %>
+        <%= link_to "タイムライン", timeline_household_path, data: { action: "click->hamburger#close" } %>
         <%= link_to "世帯", household_path, data: { action: "click->hamburger#close" } %>
       <% else %>
         <%= link_to "世帯を作成", new_household_path, data: { action: "click->hamburger#close" } %>

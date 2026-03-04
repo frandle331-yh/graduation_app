@@ -141,4 +141,42 @@ RSpec.describe "Households", type: :request do
       end
     end
   end
+
+  describe "GET /household/timeline" do
+    context "未ログインの場合" do
+      it "ログインページにリダイレクトする" do
+        get timeline_household_path
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context "世帯未参加の場合" do
+      before { sign_in user }
+
+      it "世帯作成ページにリダイレクトする" do
+        get timeline_household_path
+        expect(response).to redirect_to(new_household_path)
+      end
+    end
+
+    context "世帯参加済みの場合" do
+      let(:household) { create(:household, creator: user) }
+
+      before do
+        sign_in user
+        create(:household_member, household: household, user: user, role: :owner)
+      end
+
+      it "正常にレスポンスを返す" do
+        get timeline_household_path
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "世帯メンバーのログを表示する" do
+        create(:housework_log, user: user, household: household, title: "掃除した")
+        get timeline_household_path
+        expect(response.body).to include("掃除した")
+      end
+    end
+  end
 end

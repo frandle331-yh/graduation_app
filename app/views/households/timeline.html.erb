@@ -1,0 +1,67 @@
+<div class="page-header">
+  <h1 class="page-title">家族タイムライン</h1>
+  <span class="page-header__sub">🏠 <%= @household.name %></span>
+</div>
+
+<% if @timeline_logs.present? %>
+  <%
+    grouped = @timeline_logs.group_by(&:performed_on)
+  %>
+  <div class="timeline">
+    <% grouped.each do |date, logs| %>
+      <div class="timeline__date-header">
+        <span class="timeline__date"><%= l(date, format: :short) %></span>
+        <span class="timeline__date-count"><%= logs.size %>件</span>
+      </div>
+
+      <% logs.each do |log| %>
+        <div class="timeline__item">
+          <div class="timeline__avatar">
+            <%= (log.user.nickname.presence || log.user.email).first %>
+          </div>
+          <div class="timeline__content">
+            <div class="timeline__header">
+              <strong class="timeline__user"><%= log.user.nickname.presence || log.user.email %></strong>
+              <span class="badge badge--<%= log.category %> badge--sm"><%= t("enums.housework_log.category.#{log.category}") %></span>
+            </div>
+            <p class="timeline__title"><%= log.title %></p>
+            <div class="timeline__meta">
+              <span class="timeline__minutes"><%= log.minutes %>分</span>
+              <% if log.thanks_count > 0 %>
+                <span class="timeline__thanks">💜 × <%= log.thanks_count %></span>
+              <% end %>
+            </div>
+            <% if log.user_id != current_user.id %>
+              <div class="timeline__actions"
+                   data-controller="thanks"
+                   data-thanks-url-value="<%= thanks_housework_log_path(log) %>">
+                <button class="timeline__thanks-btn"
+                        data-thanks-target="button"
+                        data-action="thanks#send">
+                  <span data-thanks-target="heart">💜</span>
+                  <span data-thanks-target="count"><%= log.thanks_count %></span>
+                  <span class="thanks-btn__text">ありがとう</span>
+                </button>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="pagination">
+    <%= paginate @timeline_logs %>
+  </div>
+<% else %>
+  <div class="empty-state">
+    <span class="empty-state__icon">📝</span>
+    <p class="empty-state__text">まだ家事ログがありません</p>
+    <p class="empty-state__sub">家事を記録して、家族のタイムラインを始めましょう</p>
+    <%= link_to "家事を記録する", new_housework_log_path, class: "btn btn-primary btn-sm" %>
+  </div>
+<% end %>
+
+<p class="page-link-bottom">
+  <%= link_to "ダッシュボード →", dashboard_path %>
+</p>

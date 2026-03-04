@@ -1725,6 +1725,137 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
 .btn-lg { padding: 14px 24px; font-size: 1rem; }
 .btn-full { width: 100%; }
 
+/* ---- Timeline -------------------------------------------- */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.timeline__date-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 0 6px;
+  border-bottom: 1px solid var(--border-light);
+  margin-bottom: 4px;
+}
+.timeline__date {
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.timeline__date-count {
+  font-size: .7rem;
+  color: var(--text-sub);
+  background: var(--border-light);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+.timeline__item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.timeline__avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: .85rem;
+  flex-shrink: 0;
+}
+.timeline__content {
+  flex: 1;
+  min-width: 0;
+}
+.timeline__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.timeline__user {
+  font-size: .82rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.badge--sm {
+  font-size: .65rem;
+  padding: 1px 6px;
+}
+.timeline__title {
+  font-size: .9rem;
+  color: var(--text);
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+.timeline__meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: .75rem;
+  color: var(--text-muted);
+}
+.timeline__minutes {
+  font-weight: 600;
+}
+.timeline__thanks {
+  font-size: .75rem;
+}
+.timeline__actions {
+  margin-top: 6px;
+}
+.timeline__thanks-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border: 1px solid #e9d5ff;
+  border-radius: 16px;
+  background: #faf5ff;
+  font-size: .75rem;
+  cursor: pointer;
+  color: var(--accent);
+  transition: background var(--duration) var(--ease);
+}
+.timeline__thanks-btn:hover {
+  background: #f3e8ff;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+}
+.empty-state__icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 12px;
+}
+.empty-state__text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.empty-state__sub {
+  font-size: .85rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.page-header__sub {
+  font-size: .85rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
 /* ---- Member Card List ------------------------------------ */
 .member-card-list {
   list-style: none;
