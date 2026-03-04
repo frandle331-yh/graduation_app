@@ -23,6 +23,9 @@ class HouseworkLogsController < ApplicationController
 
     @category_summaries = base_scope.group(:category).sum(:minutes)
     @daily_summaries    = build_daily_summaries(base_scope)
+    @stats_total_count  = base_scope.count
+    @stats_total_minutes = base_scope.sum(:minutes)
+    @stats_top_category = base_scope.group(:category).count.max_by { |_, v| v }&.first
   end
 
 
