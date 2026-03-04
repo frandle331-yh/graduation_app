@@ -1,0 +1,49 @@
+{
+  "name": "KajiMate — ふたりの家事を見える化",
+  "short_name": "KajiMate",
+  "description": "カップル・パートナーで家事の記録・分析・感謝を共有できるアプリ",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#f7f8fc",
+  "theme_color": "#5b6ef5",
+  "orientation": "portrait-primary",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "家事を記録",
+      "short_name": "記録",
+      "description": "新しい家事ログを記録する",
+      "url": "/housework_logs/new",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "ダッシュボード",
+      "short_name": "ダッシュ",
+      "description": "家事の分析ダッシュボードを見る",
+      "url": "/dashboard",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    }
+  ],
+  "categories": ["lifestyle", "utilities"],
+  "screenshots": [
+    {
+      "src": "/ogp.png",
+      "sizes": "1200x630",
+      "type": "image/png"
+    }
+  ]
+}
