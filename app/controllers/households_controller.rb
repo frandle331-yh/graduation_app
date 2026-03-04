@@ -7,7 +7,10 @@ class HouseholdsController < ApplicationController
   end
 
   def new
-    redirect_to household_path, notice: "すでに世帯に参加しています" if current_household
+    if current_household
+      redirect_to household_path, notice: "すでに世帯に参加しています"
+      return
+    end
     @household = Household.new
   end
 
@@ -40,13 +43,12 @@ class HouseholdsController < ApplicationController
   end
 
   def join
-    redirect_to household_path, notice: "すでに世帯に参加しています" if current_household
-    return if request.get? || request.head?
-
     if current_household
       redirect_to household_path, notice: "すでに世帯に参加しています"
       return
     end
+
+    return if request.get? || request.head?
 
     code = params.require(:invitation_code).to_s.strip
     household = Household.find_by(invitation_code: code)
