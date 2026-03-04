@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users, controllers: {
     omniauth_callbacks: "users/omniauth_callbacks"
   }
-  resource :profile, only: [ :edit, :update, :destroy ]
+  resource :profile, only: [ :show, :edit, :update, :destroy ]
   resources :housework_templates, only: [ :index, :new, :create, :edit, :update, :destroy ] do
     post :use, on: :member
   end

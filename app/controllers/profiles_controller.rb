@@ -1,6 +1,23 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
 
+  def show
+    @user = current_user
+    @total_logs = @user.housework_logs.count
+    @total_minutes = @user.housework_logs.sum(:minutes)
+    @streak = @user.current_streak
+    @badges = @user.achievement_badges
+    @earned_count = @badges.count { |b| b[:earned] }
+    @category_breakdown = @user.housework_logs.group(:category).count
+    @member_since = @user.created_at
+
+    # 直近90日のヒートマップデータ
+    @heatmap = @user.housework_logs
+      .where(performed_on: 90.days.ago.to_date..Date.current)
+      .group(:performed_on)
+      .count
+  end
+
   def edit
     @user = current_user
   end

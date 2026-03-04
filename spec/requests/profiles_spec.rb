@@ -3,6 +3,32 @@ require "rails_helper"
 RSpec.describe "Profiles", type: :request do
   let(:user) { create(:user) }
 
+  describe "GET /profile" do
+    context "未ログインの場合" do
+      it "ログインページにリダイレクトする" do
+        get profile_path
+        expect(response).to redirect_to(new_user_session_path)
+      end
+    end
+
+    context "ログイン済みの場合" do
+      before { sign_in user }
+
+      it "正常にレスポンスを返す" do
+        get profile_path
+        expect(response).to have_http_status(:ok)
+      end
+
+      it "統計とバッジを表示する" do
+        create(:housework_log, user: user, performed_on: Time.zone.today)
+        get profile_path
+        expect(response.body).to include("累計記録数")
+        expect(response.body).to include("達成バッジ")
+        expect(response.body).to include("活動ヒートマップ")
+      end
+    end
+  end
+
   describe "GET /profile/edit" do
     context "未ログインの場合" do
       it "ログインページにリダイレクトする" do
