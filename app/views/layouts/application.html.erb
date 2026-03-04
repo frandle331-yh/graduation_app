@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja">
   <head>
+    <script>
+      // ちらつき防止: CSS読み込み前にテーマを適用
+      (function(){var t=localStorage.getItem("theme");if(t)document.documentElement.setAttribute("data-theme",t)})();
+    </script>
     <title><%= content_for(:title) || "KajiMate" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%# PWA / ネイティブアプリ感 %>

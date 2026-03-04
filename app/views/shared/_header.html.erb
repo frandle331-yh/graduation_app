@@ -1,4 +1,4 @@
-<header class="app-header" data-controller="hamburger">
+<header class="app-header" data-controller="hamburger theme">
   <div class="app-nav">
     <%= link_to "KajiMate", root_path, class: "app-logo" %>
 
@@ -15,6 +15,9 @@
           <%= link_to "世帯", new_household_path %>
         <% end %>
         <%= link_to "家事を記録", new_housework_log_path, class: "app-nav-primary" %>
+        <button class="theme-toggle" data-action="theme#toggle" aria-label="テーマ切替">
+          <span data-theme-target="icon">🌓</span>
+        </button>
         <div class="app-nav-user">
           <span class="app-user"><%= current_user.nickname.presence || "User" %></span>
           <%= button_to "ログアウト",
@@ -53,6 +56,9 @@
       <% end %>
       <%= link_to "家事を記録", new_housework_log_path, class: "nav-drawer__cta",
             data: { action: "click->hamburger#close" } %>
+      <button class="theme-toggle" data-action="theme#toggle" style="margin: 8px 0;">
+        <span data-theme-target="icon">🌓</span> テーマ切替
+      </button>
       <%= button_to "ログアウト",
             destroy_user_session_path,
             method: :delete,
