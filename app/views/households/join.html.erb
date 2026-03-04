@@ -1,19 +1,35 @@
-<div class="page-header">
-  <h1 class="page-title">招待コードで参加する</h1>
-  <p class="page-desc">パートナーから受け取った8桁の招待コードを入力してください。</p>
+<div class="onboarding-page">
+  <div class="onboarding-hero">
+    <span class="onboarding-hero__icon">🔗</span>
+    <h1 class="onboarding-hero__title">招待コードで参加</h1>
+    <p class="onboarding-hero__desc">パートナーから受け取った8桁のコードを入力してください</p>
+  </div>
+
+  <%= form_with url: join_household_path, method: :post, class: "form-card" do |f| %>
+    <div class="form-group">
+      <%= label_tag :invitation_code, "招待コード", class: "form-label" %>
+      <%= text_field_tag :invitation_code, params[:invitation_code],
+            required: true,
+            class: "form-input form-input--code",
+            placeholder: "AbCd1234",
+            maxlength: 8,
+            autocomplete: "off",
+            spellcheck: false %>
+      <p class="form-hint">半角英数字8文字のコードです</p>
+    </div>
+    <div class="form-actions">
+      <%= submit_tag "参加する", class: "btn btn-primary btn-lg btn-full" %>
+    </div>
+  <% end %>
+
+  <div class="onboarding-alt">
+    <span class="onboarding-alt__line"></span>
+    <span class="onboarding-alt__text">または</span>
+    <span class="onboarding-alt__line"></span>
+  </div>
+
+  <p class="onboarding-link">
+    世帯をお持ちでない方は
+    <%= link_to "世帯を作成する →", new_household_path, class: "link-accent" %>
+  </p>
 </div>
-
-<%= form_with url: join_household_path, method: :post, class: "form-card" do |f| %>
-  <div class="form-group">
-    <%= label_tag :invitation_code, "招待コード", class: "form-label" %>
-    <%= text_field_tag :invitation_code, params[:invitation_code],
-          required: true, class: "form-input", placeholder: "例：AbCd1234" %>
-  </div>
-  <div class="form-actions">
-    <%= submit_tag "参加する", class: "btn btn-primary" %>
-  </div>
-<% end %>
-
-<p class="page-link-bottom">
-  世帯をお持ちでない方は <%= link_to "世帯を作成する →", new_household_path %>
-</p>

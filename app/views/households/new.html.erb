@@ -1,18 +1,48 @@
-<div class="page-header">
-  <h1 class="page-title">世帯を作成する</h1>
-  <p class="page-desc">世帯を作成してパートナーを招待すると、ふたりの貢献度を比較できます。</p>
+<div class="onboarding-page">
+  <div class="onboarding-hero">
+    <span class="onboarding-hero__icon">👨‍👩‍👧‍👦</span>
+    <h1 class="onboarding-hero__title">世帯を作成する</h1>
+    <p class="onboarding-hero__desc">パートナーを招待して、ふたりの家事を見える化しましょう</p>
+  </div>
+
+  <%# ステップガイド %>
+  <div class="onboarding-steps">
+    <div class="onboarding-step onboarding-step--active">
+      <span class="onboarding-step__num">1</span>
+      <span class="onboarding-step__text">世帯名を決める</span>
+    </div>
+    <div class="onboarding-step__arrow">→</div>
+    <div class="onboarding-step">
+      <span class="onboarding-step__num">2</span>
+      <span class="onboarding-step__text">招待コードを共有</span>
+    </div>
+    <div class="onboarding-step__arrow">→</div>
+    <div class="onboarding-step">
+      <span class="onboarding-step__num">3</span>
+      <span class="onboarding-step__text">一緒に家事を記録!</span>
+    </div>
+  </div>
+
+  <%= form_with model: @household, url: household_path, class: "form-card" do |f| %>
+    <div class="form-group">
+      <%= f.label :name, "世帯名", class: "form-label" %>
+      <%= f.text_field :name, required: true, class: "form-input form-input--lg",
+            placeholder: "例：田中家、私たちの家" %>
+      <p class="form-hint">あとから変更できます</p>
+    </div>
+    <div class="form-actions">
+      <%= f.submit "世帯を作成する", class: "btn btn-primary btn-lg btn-full" %>
+    </div>
+  <% end %>
+
+  <div class="onboarding-alt">
+    <span class="onboarding-alt__line"></span>
+    <span class="onboarding-alt__text">または</span>
+    <span class="onboarding-alt__line"></span>
+  </div>
+
+  <p class="onboarding-link">
+    招待コードをお持ちの方は
+    <%= link_to "コードで参加 →", join_household_path, class: "link-accent" %>
+  </p>
 </div>
-
-<%= form_with model: @household, url: household_path, class: "form-card" do |f| %>
-  <div class="form-group">
-    <%= f.label :name, "世帯名", class: "form-label" %>
-    <%= f.text_field :name, required: true, class: "form-input", placeholder: "例：田中家、私たちの家" %>
-  </div>
-  <div class="form-actions">
-    <%= f.submit "世帯を作成する", class: "btn btn-primary" %>
-  </div>
-<% end %>
-
-<p class="page-link-bottom">
-  招待コードをお持ちの方は <%= link_to "こちらから参加 →", join_household_path %>
-</p>

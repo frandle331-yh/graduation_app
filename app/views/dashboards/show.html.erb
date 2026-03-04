@@ -6,11 +6,13 @@
 
   <%# ---- 世帯なしの案内 ---- %>
   <% if @household.nil? %>
-    <div class="dashboard-notice">
-      <p>世帯を作成またはパートナーの招待コードで参加すると、<strong>ふたりの貢献度比較</strong>が使えます。</p>
-      <div class="dashboard-notice__actions">
-        <%= link_to "世帯を作成する", new_household_path %>
-        <%= link_to "招待コードで参加する", join_household_path %>
+    <div class="household-cta">
+      <div class="household-cta__icon">👨‍👩‍👧‍👦</div>
+      <h2 class="household-cta__title">パートナーと一緒に使おう</h2>
+      <p class="household-cta__desc">世帯を作成すると、<strong>貢献度の比較</strong>や<strong>ありがとうリアクション</strong>が使えます</p>
+      <div class="household-cta__actions">
+        <%= link_to "世帯を作成する", new_household_path, class: "btn btn-primary btn-sm" %>
+        <%= link_to "招待コードで参加", join_household_path, class: "btn btn-secondary btn-sm" %>
       </div>
     </div>
   <% else %>
