@@ -21,6 +21,9 @@ KajiMateは **「誰が・いつ・何をやったか」という事実を記録
 
 ## 🖼️ スクリーンショット
 
+> スクリーンショットは準備中です。[ゲストログイン](https://kajimate.com)から実際の画面をお試しいただけます。
+
+<!-- 画像を docs/images/ に配置後、以下のコメントを外してください
 | トップページ | ダッシュボード | 家事ログ一覧 |
 |---|---|---|
 | ![トップページ](docs/images/top.png) | ![ダッシュボード](docs/images/dashboard.png) | ![家事ログ一覧](docs/images/logs.png) |
@@ -28,6 +31,7 @@ KajiMateは **「誰が・いつ・何をやったか」という事実を記録
 | 記録フォーム | マイページ | ダークモード |
 |---|---|---|
 | ![記録フォーム](docs/images/form.png) | ![マイページ](docs/images/profile.png) | ![ダークモード](docs/images/dark.png) |
+-->
 
 ---
 
@@ -99,6 +103,15 @@ KajiMateは **「誰が・いつ・何をやったか」という事実を記録
 - **Googleログイン**（OmniAuth）
 - **ゲストログイン**（登録不要で即体験）
 
+### 🔌 REST API（V1）
+- Bearerトークン認証による **JSON API**
+- 家事ログの一覧・詳細・作成（カテゴリ/日付フィルタ、ページネーション）
+- ダッシュボードデータの取得
+
+### ⚙️ バックグラウンドジョブ
+- **週次レポートメール**：1週間の家事サマリーを自動送信（Action Mailer + Solid Queue）
+- **ゲスト自動クリーンアップ**：7日経過したゲストユーザーを自動ソフトデリート
+
 ---
 
 ## 🛠️ 技術スタック
@@ -114,7 +127,7 @@ KajiMateは **「誰が・いつ・何をやったか」という事実を記録
 | ページネーション | Kaminari |
 | インフラ | Docker / Kamal（VPSデプロイ）|
 | CI/CD | GitHub Actions（RSpec / Rubocop / Brakeman / bundler-audit）|
-| テスト | RSpec（132テスト）/ FactoryBot / shoulda-matchers |
+| テスト | RSpec（170テスト・カバレッジ87%）/ SimpleCov / FactoryBot / shoulda-matchers |
 
 ### Stimulus コントローラー一覧
 
@@ -127,7 +140,10 @@ KajiMateは **「誰が・いつ・何をやったか」という事実を記録
 | `celebration` | 記録完了時のパーティクルアニメーション |
 | `toast` | 自動消去付きトースト通知 |
 | `theme` | ダークモード切替（auto/light/dark）|
+| `chart` | Chart.jsラッパー（bar/doughnut汎用）|
 | `thanks` | ありがとうリアクション（Ajax）|
+| `clipboard` | 招待コードのクリップボードコピー |
+| `web_share` | Web Share APIによるシェア |
 | `loading` | フォーム送信時のスピナー表示 |
 | `hamburger` | モバイルメニュー開閉 |
 
@@ -208,7 +224,7 @@ GoogleログインボタンのみTurboを無効化（`data: { turbo: false }`）
 
 ### 6. Stimulusコントローラーによるインタラクション
 
-SPAフレームワークを使わず、**10個のStimulusコントローラー**でリッチなインタラクションを実現。
+SPAフレームワークを使わず、**13個のStimulusコントローラー**でリッチなインタラクションを実現。
 `eagerLoadControllersFrom` による自動登録で、新規コントローラー追加時の設定コストをゼロにしています。
 
 ### 7. モバイルファーストのレスポンシブ設計
@@ -218,10 +234,40 @@ SPAフレームワークを使わず、**10個のStimulusコントローラー**
 - `env(safe-area-inset-bottom)` でiPhoneのノッチ対応
 - PWAマニフェストでネイティブアプリ風の体験
 
-### 8. GitHub Actions による4重CI
+### 8. サービスオブジェクトによる責務分離
+
+コントローラの肥大化を防ぐため、複雑なビジネスロジックをサービスオブジェクトに抽出しました：
+
+- **`DashboardPresenter`**：ダッシュボードの全集計ロジック（週次サマリー・カレンダー・貢献バランス等）をコントローラから分離
+- **`StreakCalculator`**：連続記録日数の算出ロジックを単一責務に
+- **`BadgeCalculator`**：10種類のバッジ判定をラムダベースで宣言的に定義
+
+### 9. REST API（API::V1）
+
+外部連携やモバイルアプリ対応を見据えた JSON API を提供：
+
+```ruby
+namespace :api do
+  namespace :v1 do
+    resources :housework_logs, only: [:index, :show, :create]
+    resource :dashboard, only: [:show]
+  end
+end
+```
+
+Bearerトークン認証（`ActionController::API`）で、退会済みユーザーのアクセスを遮断しています。
+
+### 10. バックグラウンドジョブ・定期実行
+
+- **Solid Queue** による非同期ジョブ処理
+- **`GuestCleanupJob`**：7日経過したゲストユーザーを自動ソフトデリート
+- **`WeeklyReportJob`** + **`WeeklyReportMailer`**：週次の家事レポートメールを自動送信
+
+### 11. GitHub Actions による4重CI
 
 すべてのPRに対して以下を自動実行：
-- **RSpec**：132テストで機能の正常動作を担保
+- **RSpec**：170テスト（モデル・リクエスト・システム・サービス・ジョブ・メーラー）で機能の正常動作を担保
+- **SimpleCov**：ライン87%・ブランチ72%のカバレッジを維持
 - **Rubocop**：コードスタイルの統一
 - **Brakeman**：セキュリティ脆弱性の静的解析
 - **bundler-audit**：依存gemの既知脆弱性チェック
@@ -267,10 +313,11 @@ bin/rails server
 
 ## 🗺️ 今後の実装予定
 
-- [ ] **リマインド通知** — 未記録の家事をメールでリマインド（Action Mailer / Solid Queue）
+- [ ] **リマインド通知** — 未記録の家事をプッシュ通知でリマインド
 - [ ] **月次レポート** — 月ごとの分担推移をグラフで振り返り
 - [ ] **世帯共有テンプレート** — パートナーとテンプレートを共有
 - [ ] **テンプレートの並び替え** — ドラッグ&ドロップで並び順を変更
+- [ ] **Turbo Frames** — フィルタ操作のページ部分更新
 
 ---
 
