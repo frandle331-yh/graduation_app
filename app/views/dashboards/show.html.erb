@@ -22,9 +22,9 @@
   <%# ---- ストリーク + 今週の記録 ---- %>
   <div class="streak-bar">
     <div class="streak-bar__item">
-      <span class="streak-bar__icon"><%= @streak >= 3 ? "🔥" : (@streak >= 1 ? "✨" : "💤") %></span>
+      <span class="streak-bar__icon"><%= @presenter.streak >= 3 ? "🔥" : (@presenter.streak >= 1 ? "✨" : "💤") %></span>
       <div class="streak-bar__body">
-        <span class="streak-bar__value"><%= @streak %><span class="streak-bar__unit">日</span></span>
+        <span class="streak-bar__value"><%= @presenter.streak %><span class="streak-bar__unit">日</span></span>
         <span class="streak-bar__label">連続記録中</span>
       </div>
     </div>
@@ -32,55 +32,56 @@
     <div class="streak-bar__item">
       <span class="streak-bar__icon">📅</span>
       <div class="streak-bar__body">
-        <span class="streak-bar__value"><%= @weekly_log_days %><span class="streak-bar__unit">日</span></span>
+        <span class="streak-bar__value"><%= @presenter.weekly_log_days %><span class="streak-bar__unit">日</span></span>
         <span class="streak-bar__label">今週の記録日</span>
       </div>
     </div>
-    <% if @streak >= 7 %>
+    <% if @presenter.streak >= 7 %>
       <div class="streak-bar__badge">🏆 7日達成！</div>
-    <% elsif @streak >= 3 %>
+    <% elsif @presenter.streak >= 3 %>
       <div class="streak-bar__badge">⚡ 絶好調！</div>
     <% end %>
   </div>
 
   <%# ---- 週次サマリーカード ---- %>
+  <% weekly = @presenter.weekly_summary %>
   <div class="weekly-summary">
     <h2 class="weekly-summary__title">📊 今週のまとめ</h2>
     <div class="weekly-summary__grid">
       <div class="weekly-summary__stat">
-        <span class="weekly-summary__stat-value"><%= @weekly[:count] %><span class="weekly-summary__stat-unit">回</span></span>
+        <span class="weekly-summary__stat-value"><%= weekly[:count] %><span class="weekly-summary__stat-unit">回</span></span>
         <span class="weekly-summary__stat-label">記録数</span>
-        <% diff_count = @weekly[:count] - @weekly[:last_count] %>
+        <% diff_count = weekly[:count] - weekly[:last_count] %>
         <span class="weekly-summary__trend <%= diff_count >= 0 ? 'weekly-summary__trend--up' : 'weekly-summary__trend--down' %>">
           <%= diff_count >= 0 ? "+" : "" %><%= diff_count %> 前週比
         </span>
       </div>
       <div class="weekly-summary__stat">
-        <span class="weekly-summary__stat-value"><%= @weekly[:minutes] %><span class="weekly-summary__stat-unit">分</span></span>
+        <span class="weekly-summary__stat-value"><%= weekly[:minutes] %><span class="weekly-summary__stat-unit">分</span></span>
         <span class="weekly-summary__stat-label">合計時間</span>
-        <% diff_min = @weekly[:minutes] - @weekly[:last_minutes] %>
+        <% diff_min = weekly[:minutes] - weekly[:last_minutes] %>
         <span class="weekly-summary__trend <%= diff_min >= 0 ? 'weekly-summary__trend--up' : 'weekly-summary__trend--down' %>">
           <%= diff_min >= 0 ? "+" : "" %><%= diff_min %>分 前週比
         </span>
       </div>
       <div class="weekly-summary__stat">
-        <span class="weekly-summary__stat-value"><%= @weekly[:avg_minutes_per_day] %><span class="weekly-summary__stat-unit">分</span></span>
+        <span class="weekly-summary__stat-value"><%= weekly[:avg_minutes_per_day] %><span class="weekly-summary__stat-unit">分</span></span>
         <span class="weekly-summary__stat-label">1日あたり平均</span>
       </div>
       <div class="weekly-summary__stat">
-        <% if @weekly[:top_category] %>
-          <span class="weekly-summary__stat-value"><%= category_icon(@weekly[:top_category]) %></span>
+        <% if weekly[:top_category] %>
+          <span class="weekly-summary__stat-value"><%= category_icon(weekly[:top_category]) %></span>
           <span class="weekly-summary__stat-label">よくやった家事</span>
-          <span class="weekly-summary__stat-sub"><%= t("enums.housework_log.category.#{@weekly[:top_category]}") %></span>
+          <span class="weekly-summary__stat-sub"><%= t("enums.housework_log.category.#{weekly[:top_category]}") %></span>
         <% else %>
           <span class="weekly-summary__stat-value">-</span>
           <span class="weekly-summary__stat-label">よくやった家事</span>
         <% end %>
       </div>
     </div>
-    <% if @weekly[:count] == 0 %>
+    <% if weekly[:count] == 0 %>
       <p class="weekly-summary__message">今週はまだ記録がありません。最初の一歩を踏み出しましょう！</p>
-    <% elsif @weekly[:count] >= 10 %>
+    <% elsif weekly[:count] >= 10 %>
       <p class="weekly-summary__message">🎉 今週もたくさんの家事をこなしています！素晴らしい！</p>
     <% elsif diff_count > 0 %>
       <p class="weekly-summary__message">📈 先週より<%= diff_count %>回多く記録しています。この調子！</p>
@@ -149,7 +150,7 @@
   <nav class="period-nav">
     <% [["week", "今週"], ["month", "今月"], ["all", "全期間"]].each do |value, label| %>
       <%= link_to label, dashboard_path(period: value),
-            class: "period-nav__btn #{"period-nav__btn--active" if @period == value}" %>
+            class: "period-nav__btn #{"period-nav__btn--active" if @presenter.period == value}" %>
     <% end %>
   </nav>
 
@@ -157,11 +158,11 @@
   <div class="dashboard-summary">
     <div class="summary-card">
       <span class="summary-card__label">合計時間</span>
-      <span class="summary-card__value"><%= @total_minutes %><span class="summary-card__unit">分</span></span>
+      <span class="summary-card__value"><%= @presenter.total_minutes %><span class="summary-card__unit">分</span></span>
     </div>
     <div class="summary-card">
       <span class="summary-card__label">記録回数</span>
-      <span class="summary-card__value"><%= @total_count %><span class="summary-card__unit">回</span></span>
+      <span class="summary-card__value"><%= @presenter.total_count %><span class="summary-card__unit">回</span></span>
     </div>
   </div>
 
@@ -171,16 +172,16 @@
     <%# -- 日別棒グラフ -- %>
     <div class="chart-card">
       <h2 class="chart-card__title">日別推移（分）</h2>
-      <% if @daily_summaries.present? %>
+      <% if @presenter.daily_summaries.present? %>
         <canvas id="dailyChart" height="220"></canvas>
         <script>
           new Chart(document.getElementById("dailyChart"), {
             type: "bar",
             data: {
-              labels: <%= raw json_escape(@daily_summaries.keys.map { |d| l(d, format: :short) rescue d.to_s }.to_json) %>,
+              labels: <%= raw json_escape(@presenter.daily_summaries.keys.map { |d| l(d, format: :short) rescue d.to_s }.to_json) %>,
               datasets: [{
                 label: "所要時間（分）",
-                data: <%= raw json_escape(@daily_summaries.values.to_json) %>,
+                data: <%= raw json_escape(@presenter.daily_summaries.values.to_json) %>,
                 backgroundColor: "rgba(99, 132, 255, 0.7)",
                 borderRadius: 4
               }]
@@ -200,18 +201,18 @@
     <%# -- カテゴリ円グラフ -- %>
     <div class="chart-card">
       <h2 class="chart-card__title">カテゴリ別（分）</h2>
-      <% if @category_summaries.present? %>
+      <% if @presenter.category_summaries.present? %>
         <canvas id="categoryChart" height="220"></canvas>
         <script>
           new Chart(document.getElementById("categoryChart"), {
             type: "doughnut",
             data: {
-              labels: <%= raw json_escape(@category_summaries.map { |k, _|
+              labels: <%= raw json_escape(@presenter.category_summaries.map { |k, _|
                 category_key = k.is_a?(String) ? k : HouseworkLog.categories.key(k)
                 t("enums.housework_log.category.#{category_key}")
               }.to_json) %>,
               datasets: [{
-                data: <%= raw json_escape(@category_summaries.values.to_json) %>,
+                data: <%= raw json_escape(@presenter.category_summaries.values.to_json) %>,
                 backgroundColor: [
                   "#6384FF","#FF6384","#FFCE56","#4BC0C0","#9966FF","#FF9F40","#C9CBCF"
                 ]
@@ -231,22 +232,19 @@
     </div>
 
     <%# -- 貢献バランスバー（世帯あり） -- %>
-    <% if @household && @minutes_by_user.present? %>
+    <% contrib = @presenter.contribution %>
+    <% if contrib %>
       <div class="chart-card contribution-card">
         <h2 class="chart-card__title">⚖️ 貢献バランス</h2>
         <%
-          users_arr  = @minutes_by_user.to_a  # [[user, minutes], ...]
+          users_arr  = contrib[:minutes_by_user].to_a
           colors     = %w[#6384FF #FF6384 #FFCE56 #4BC0C0]
-          me         = users_arr.find { |u, _| u.id == current_user.id }
-          others     = users_arr.reject { |u, _| u.id == current_user.id }
-          my_rate    = me ? @rates_by_user[me.first] : 0
-          total_min  = @total_minutes.to_i
         %>
 
         <%# 2人の場合: 左右の分割バー %>
         <% if users_arr.size == 2 %>
           <% user_a, min_a = users_arr[0]; user_b, min_b = users_arr[1] %>
-          <% rate_a = @rates_by_user[user_a]; rate_b = @rates_by_user[user_b] %>
+          <% rate_a = contrib[:rates_by_user][user_a]; rate_b = contrib[:rates_by_user][user_b] %>
           <div class="balance-names">
             <span class="balance-names__left"><%= user_a&.nickname.presence || user_a&.email || "メンバー" %></span>
             <span class="balance-names__right"><%= user_b&.nickname.presence || user_b&.email || "メンバー" %></span>
@@ -273,7 +271,7 @@
         <% else %>
           <div class="multi-bar">
             <% users_arr.each_with_index do |(user, minutes), i| %>
-              <% rate = @rates_by_user[user] %>
+              <% rate = contrib[:rates_by_user][user] %>
               <div class="multi-bar__row">
                 <span class="multi-bar__name"><%= user&.nickname.presence || user&.email || "メンバー" %></span>
                 <div class="multi-bar__track">
@@ -290,21 +288,22 @@
   </div>
 
   <%# ---- 月間カレンダー ---- %>
+  <% cal = @presenter.calendar %>
   <div class="calendar-card">
-    <h2 class="calendar-card__title">📅 <%= @cal_month_label %></h2>
+    <h2 class="calendar-card__title">📅 <%= cal[:month_label] %></h2>
     <div class="calendar-grid">
       <% %w[月 火 水 木 金 土 日].each do |dow| %>
         <div class="calendar-grid__dow"><%= dow %></div>
       <% end %>
       <%# 月曜始まりで空セルを埋める %>
-      <% wday_offset = (@cal_first.wday + 6) % 7 %>
+      <% wday_offset = (cal[:first].wday + 6) % 7 %>
       <% wday_offset.times do %>
         <div class="calendar-grid__cell calendar-grid__cell--empty"></div>
       <% end %>
-      <% (@cal_first..@cal_last).each do |date| %>
-        <% count = @cal_data[date] || 0 %>
+      <% (cal[:first]..cal[:last]).each do |date| %>
+        <% count = cal[:data][date] || 0 %>
         <div class="calendar-grid__cell
-                    <%= 'calendar-grid__cell--today' if date == @cal_today %>
+                    <%= 'calendar-grid__cell--today' if date == cal[:today] %>
                     <%= 'calendar-grid__cell--has-log' if count > 0 %>">
           <span class="calendar-grid__day"><%= date.day %></span>
           <% if count > 0 %>
@@ -319,13 +318,13 @@
   <div class="badges-section">
     <div class="badges-section__header">
       <h2 class="badges-section__title">🏅 達成バッジ</h2>
-      <span class="badges-section__count"><%= @earned_count %> / <%= @badges.size %> 獲得</span>
+      <span class="badges-section__count"><%= @presenter.earned_badge_count %> / <%= @presenter.badges.size %> 獲得</span>
     </div>
     <div class="badges-section__progress">
-      <div class="badges-section__progress-bar" style="width: <%= (@earned_count.to_f / @badges.size * 100).round %>%"></div>
+      <div class="badges-section__progress-bar" style="width: <%= (@presenter.earned_badge_count.to_f / @presenter.badges.size * 100).round %>%"></div>
     </div>
     <div class="badges-grid">
-      <% @badges.each do |badge| %>
+      <% @presenter.badges.each do |badge| %>
         <div class="badge-item <%= 'badge-item--locked' unless badge[:earned] %>">
           <span class="badge-item__icon"><%= badge[:earned] ? badge[:icon] : "🔒" %></span>
           <span class="badge-item__title"><%= badge[:title] %></span>
@@ -340,4 +339,3 @@
   </p>
 
 </div>
-
