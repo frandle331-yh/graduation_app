@@ -78,7 +78,7 @@
       <%= link_to dashboard_path,
             class: "bottom-nav__item#{' active' if current_page?(dashboard_path)}" do %>
         <span class="bottom-nav__icon">📊</span>
-        <span class="bottom-nav__label">ダッシュ</span>
+        <span class="bottom-nav__label">ホーム</span>
       <% end %>
       <%= link_to housework_logs_path,
             class: "bottom-nav__item#{' active' if request.path.start_with?('/housework_logs')}" do %>
@@ -94,18 +94,10 @@
         <span class="bottom-nav__icon">⚡</span>
         <span class="bottom-nav__label">テンプレ</span>
       <% end %>
-      <% if current_household %>
-        <%= link_to household_path,
-              class: "bottom-nav__item#{' active' if request.path.start_with?('/household')}" do %>
-          <span class="bottom-nav__icon">👫</span>
-          <span class="bottom-nav__label">世帯</span>
-        <% end %>
-      <% else %>
-        <%= link_to new_household_path,
-              class: "bottom-nav__item#{' active' if current_page?(new_household_path)}" do %>
-          <span class="bottom-nav__icon">🏠</span>
-          <span class="bottom-nav__label">世帯</span>
-        <% end %>
+      <%= link_to profile_path,
+            class: "bottom-nav__item#{' active' if request.path.start_with?('/profile')}" do %>
+        <span class="bottom-nav__icon">👤</span>
+        <span class="bottom-nav__label">マイページ</span>
       <% end %>
     </div>
   </nav>

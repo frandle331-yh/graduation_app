@@ -349,8 +349,12 @@ img { max-width: 100%; }
 }
 .bottom-nav__inner {
   display: flex;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
   height: 100%;
   align-items: stretch;
+  justify-content: space-around;
 }
 .bottom-nav__item {
   flex: 1;
@@ -3019,4 +3023,61 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
     transform: translate(var(--x, 0), var(--y, -100px)) rotate(var(--rotation, 360deg)) scale(1);
     opacity: 0;
   }
+}
+
+/* ---- Profile Menu (マイページ設定メニュー) ---- */
+.profile-menu {
+  margin-top: 24px;
+}
+.profile-menu__list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.profile-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  text-decoration: none;
+  color: var(--text);
+  border-bottom: 1px solid var(--border-light);
+  transition: background .15s ease;
+}
+.profile-menu__item:last-child {
+  border-bottom: none;
+}
+.profile-menu__item:hover {
+  background: var(--bg);
+  text-decoration: none;
+}
+.profile-menu__icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+.profile-menu__text {
+  flex: 1;
+  font-size: .9rem;
+  font-weight: 500;
+}
+.profile-menu__arrow {
+  color: var(--text-sub);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.btn-block {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+.profile-logout {
+  color: var(--danger);
+  border-color: var(--danger);
+  margin-top: 8px;
+}
+.profile-logout:hover {
+  background: var(--danger-light);
 }
