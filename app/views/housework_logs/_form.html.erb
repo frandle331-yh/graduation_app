@@ -29,10 +29,13 @@
           category_grid_target: "select",
           action: "change->title-suggest#categoryChanged"
         } %>
-    <div class="category-grid">
+    <div class="category-grid" role="radiogroup" aria-label="カテゴリ選択">
       <% HouseworkLog.categories.keys.each do |key| %>
         <button type="button"
                 class="category-grid__btn"
+                role="radio"
+                aria-checked="false"
+                aria-label="<%= t("enums.housework_log.category.#{key}") %>"
                 data-category="<%= key %>"
                 data-action="category-grid#pick"
                 data-category-grid-target="btn">
@@ -72,10 +75,11 @@
             data: { time_preset_target: "input" } %>
         <span class="form-suffix">分</span>
       </div>
-      <div class="time-presets">
+      <div class="time-presets" role="group" aria-label="時間プリセット">
         <% [5, 10, 15, 30, 60].each do |min| %>
           <button type="button"
                   class="time-preset"
+                  aria-label="<%= min %>分にセット"
                   data-minutes="<%= min %>"
                   data-action="time-preset#pick"
                   data-time-preset-target="btn"><%= min %>分</button>

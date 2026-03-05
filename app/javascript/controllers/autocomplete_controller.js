@@ -8,6 +8,8 @@ export default class extends Controller {
   #debounceTimer = null
 
   connect() {
+    // 重複リスナー防止
+    this.disconnect()
     // クリックで候補を閉じる
     this._outsideClick = (e) => {
       if (!this.element.contains(e.target)) this.#close()
@@ -16,7 +18,11 @@ export default class extends Controller {
   }
 
   disconnect() {
-    document.removeEventListener("click", this._outsideClick)
+    clearTimeout(this.#debounceTimer)
+    if (this._outsideClick) {
+      document.removeEventListener("click", this._outsideClick)
+      this._outsideClick = null
+    }
   }
 
   // input イベントでデバウンスしてサジェストを取得

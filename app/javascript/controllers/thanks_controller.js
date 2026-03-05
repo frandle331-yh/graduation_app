@@ -52,11 +52,22 @@ export default class extends Controller {
     toast.className = `toast toast--${type}`
     toast.dataset.controller = "toast"
     toast.dataset.toastDurationValue = "3000"
-    toast.innerHTML = `
-      <span class="toast__icon">${type === "notice" ? "✅" : "⚠️"}</span>
-      <span class="toast__message">${message}</span>
-      <button class="toast__close" data-action="toast#dismiss" aria-label="閉じる">×</button>
-    `
+
+    const icon = document.createElement("span")
+    icon.className = "toast__icon"
+    icon.textContent = type === "notice" ? "\u2705" : "\u26a0\ufe0f"
+
+    const msg = document.createElement("span")
+    msg.className = "toast__message"
+    msg.textContent = message
+
+    const close = document.createElement("button")
+    close.className = "toast__close"
+    close.dataset.action = "toast#dismiss"
+    close.setAttribute("aria-label", "閉じる")
+    close.textContent = "\u00d7"
+
+    toast.append(icon, msg, close)
     container.appendChild(toast)
   }
 }
