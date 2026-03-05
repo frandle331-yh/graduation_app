@@ -97,4 +97,42 @@
     </div>
   </div>
 
+  <%# ---- メニュー ---- %>
+  <div class="profile-section profile-menu">
+    <h2 class="profile-section__title">設定・その他</h2>
+    <div class="profile-menu__list">
+      <%= link_to edit_profile_path, class: "profile-menu__item" do %>
+        <span class="profile-menu__icon">✏️</span>
+        <span class="profile-menu__text">プロフィール編集</span>
+        <span class="profile-menu__arrow">›</span>
+      <% end %>
+      <% if current_household %>
+        <%= link_to household_path, class: "profile-menu__item" do %>
+          <span class="profile-menu__icon">👫</span>
+          <span class="profile-menu__text">世帯</span>
+          <span class="profile-menu__arrow">›</span>
+        <% end %>
+      <% else %>
+        <%= link_to new_household_path, class: "profile-menu__item" do %>
+          <span class="profile-menu__icon">🏠</span>
+          <span class="profile-menu__text">世帯を作成</span>
+          <span class="profile-menu__arrow">›</span>
+        <% end %>
+      <% end %>
+      <%= link_to terms_path, class: "profile-menu__item" do %>
+        <span class="profile-menu__icon">📄</span>
+        <span class="profile-menu__text">利用規約</span>
+        <span class="profile-menu__arrow">›</span>
+      <% end %>
+      <%= link_to privacy_policy_path, class: "profile-menu__item" do %>
+        <span class="profile-menu__icon">🔒</span>
+        <span class="profile-menu__text">プライバシーポリシー</span>
+        <span class="profile-menu__arrow">›</span>
+      <% end %>
+    </div>
+    <%= button_to "ログアウト", destroy_user_session_path,
+          method: :delete,
+          class: "btn btn-ghost btn-block profile-logout" %>
+  </div>
+
 </div>
