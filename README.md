@@ -21,17 +21,17 @@ KajiMateは **「誰が・いつ・何をやったか」という事実を記録
 
 ## 🖼️ スクリーンショット
 
-> スクリーンショットは準備中です。[ゲストログイン](https://kajimate.com)から実際の画面をお試しいただけます。
-
-<!-- 画像を docs/images/ に配置後、以下のコメントを外してください
-| トップページ | ダッシュボード | 家事ログ一覧 |
+| ダッシュボード（上部） | 家事ログ一覧 | マイページ |
 |---|---|---|
-| ![トップページ](docs/images/top.png) | ![ダッシュボード](docs/images/dashboard.png) | ![家事ログ一覧](docs/images/logs.png) |
+| ![ダッシュボード](docs/images/dashboard_top.jpg) | ![家事ログ](docs/images/logs.jpg) | ![マイページ](docs/images/profile.jpg) |
 
-| 記録フォーム | マイページ | ダークモード |
+| グラフ・貢献バランス | フィルタ・絞り込み | ダークモード |
 |---|---|---|
-| ![記録フォーム](docs/images/form.png) | ![マイページ](docs/images/profile.png) | ![ダークモード](docs/images/dark.png) |
--->
+| ![グラフ](docs/images/dashboard_charts.jpg) | ![フィルタ](docs/images/logs_filter.jpg) | ![ダークモード](docs/images/dark_mode.jpg) |
+
+| スマホ表示（実機・ダークモード） |
+|---|
+| <img src="docs/images/mobile.jpg" width="320"> |
 
 ---
 
@@ -125,7 +125,7 @@ KajiMateは **「誰が・いつ・何をやったか」という事実を記録
 | データベース | PostgreSQL |
 | グラフ描画 | Chart.js |
 | ページネーション | Kaminari |
-| インフラ | Docker / Kamal（VPSデプロイ）|
+| インフラ | Render（PaaS） |
 | CI/CD | GitHub Actions（RSpec / Rubocop / Brakeman / bundler-audit）|
 | テスト | RSpec（170テスト・カバレッジ87%）/ SimpleCov / FactoryBot / shoulda-matchers |
 
@@ -317,7 +317,6 @@ bin/rails server
 - [ ] **月次レポート** — 月ごとの分担推移をグラフで振り返り
 - [ ] **世帯共有テンプレート** — パートナーとテンプレートを共有
 - [ ] **テンプレートの並び替え** — ドラッグ&ドロップで並び順を変更
-- [ ] **Turbo Frames** — フィルタ操作のページ部分更新
 
 ---
 
