@@ -1,0 +1,53 @@
+<h1 style="color: #6366f1; font-size: 20px; margin-bottom: 16px;">
+  <%= @user.nickname %>さん、今週もお疲れさまでした!
+</h1>
+
+<p style="font-size: 14px; color: #374151; margin-bottom: 24px;">
+  <%= l(@week_range.first, format: :short) %> - <%= l(@week_range.last, format: :short) %> のまとめです。
+</p>
+
+<table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+  <tr>
+    <td style="padding: 12px; background: #f3f4f6; border-radius: 8px; text-align: center; width: 33%;">
+      <div style="font-size: 24px; font-weight: bold; color: #6366f1;"><%= @total_count %></div>
+      <div style="font-size: 12px; color: #6b7280;">記録回数</div>
+    </td>
+    <td style="width: 8px;"></td>
+    <td style="padding: 12px; background: #f3f4f6; border-radius: 8px; text-align: center; width: 33%;">
+      <div style="font-size: 24px; font-weight: bold; color: #6366f1;"><%= @total_minutes %></div>
+      <div style="font-size: 12px; color: #6b7280;">合計時間（分）</div>
+    </td>
+    <td style="width: 8px;"></td>
+    <td style="padding: 12px; background: #f3f4f6; border-radius: 8px; text-align: center; width: 33%;">
+      <div style="font-size: 24px; font-weight: bold; color: #6366f1;"><%= @streak %></div>
+      <div style="font-size: 12px; color: #6b7280;">連続日数</div>
+    </td>
+  </tr>
+</table>
+
+<% if @top_category %>
+  <p style="font-size: 14px; color: #374151;">
+    今週一番がんばったカテゴリ: <strong><%= t("enums.housework_log.category.#{@top_category}") %></strong>
+  </p>
+<% end %>
+
+<% if @total_count == 0 %>
+  <p style="font-size: 14px; color: #6b7280;">
+    今週はまだ記録がありません。来週は最初の一歩を踏み出してみましょう!
+  </p>
+<% elsif @streak >= 7 %>
+  <p style="font-size: 14px; color: #059669;">
+    7日連続達成! すごい継続力です!
+  </p>
+<% end %>
+
+<p style="margin-top: 24px;">
+  <a href="<%= dashboard_url %>"
+     style="display: inline-block; padding: 10px 24px; background: #6366f1; color: white; text-decoration: none; border-radius: 8px; font-weight: 600;">
+    ダッシュボードを見る
+  </a>
+</p>
+
+<p style="font-size: 12px; color: #9ca3af; margin-top: 32px;">
+  このメールは KajiMate から自動送信されています。
+</p>
