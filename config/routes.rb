@@ -29,6 +29,14 @@ Rails.application.routes.draw do
   # アプリのトップページ
   root "home#index"
 
+  # API
+  namespace :api do
+    namespace :v1 do
+      resources :housework_logs, only: [ :index, :show, :create ]
+      resource :dashboard, only: [ :show ]
+    end
+  end
+
   # Railsのヘルスチェック（Rails7〜8のデフォルト）
   get "up" => "rails/health#show", as: :rails_health_check
 end
