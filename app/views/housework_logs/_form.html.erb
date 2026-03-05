@@ -1,6 +1,6 @@
 <% if housework_log.errors.any? %>
   <div class="form-errors">
-    <p class="form-errors__title">⚠️ <%= housework_log.errors.count %>件のエラーがあります</p>
+    <p class="form-errors__title"><%= housework_log.errors.count %>件のエラーがあります</p>
     <ul>
       <% housework_log.errors.full_messages.each do |m| %>
         <li><%= m %></li>
@@ -10,18 +10,37 @@
 <% end %>
 
 <%= form_with model: housework_log, class: "form-card",
-      data: { controller: "loading", action: "submit->loading#submit" } do |f| %>
-  <div class="form-group">
-    <%= f.label :title, class: "form-label" %>
-    <%= f.text_field :title, class: "form-input", placeholder: "例：洗濯、掃除機かけ" %>
-  </div>
+      data: {
+        controller: "loading title-suggest",
+        action: "submit->loading#submit",
+        title_suggest_url_value: suggest_titles_housework_logs_path
+      } do |f| %>
 
+  <%# カテゴリを先に表示（カテゴリ→タイトル候補の流れ） %>
   <div class="form-group">
     <%= f.label :category, class: "form-label" %>
     <%= f.select :category,
         HouseworkLog.categories.keys.map { |k| [t("enums.housework_log.category.#{k}"), k] },
         { include_blank: "選択してください" },
-        class: "form-select" %>
+        class: "form-select",
+        data: {
+          title_suggest_target: "categorySelect",
+          action: "change->title-suggest#categoryChanged"
+        } %>
+  </div>
+
+  <%# タイトル候補チップ（カテゴリ選択後に表示される） %>
+  <div class="title-suggestions" data-title-suggest-target="suggestions" hidden></div>
+
+  <div class="form-group">
+    <%= f.label :title, class: "form-label" %>
+    <span class="form-label-optional">任意</span>
+    <%= f.text_field :title, class: "form-input",
+        placeholder: "空欄ならカテゴリ名が自動セット",
+        data: { title_suggest_target: "titleInput" } %>
+    <p class="form-hint" data-title-suggest-target="hint" hidden>
+      上の候補をタップするか、自由入力できます
+    </p>
   </div>
 
   <div class="form-row">

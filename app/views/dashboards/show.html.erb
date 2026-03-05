@@ -122,6 +122,29 @@
     <% end %>
   </div>
 
+  <%# ---- 直近の記録からワンタップ再記録 ---- %>
+  <% if @recent_logs.present? %>
+    <div class="recent-record">
+      <div class="recent-record__header">
+        <span class="recent-record__title">🕐 最近の記録をもう一度</span>
+        <%= link_to "一覧 →", housework_logs_path, class: "recent-record__link" %>
+      </div>
+      <div class="recent-record__list">
+        <% @recent_logs.each do |log| %>
+          <%= button_to quick_create_housework_logs_path(source_id: log.id), method: :post,
+                class: "recent-btn" do %>
+            <span class="recent-btn__icon"><%= category_icon(log.category) %></span>
+            <span class="recent-btn__body">
+              <span class="recent-btn__title"><%= log.title %></span>
+              <span class="recent-btn__meta"><%= log.minutes %>分</span>
+            </span>
+            <span class="recent-btn__action">+</span>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
   <%# ---- 期間切り替え ---- %>
   <nav class="period-nav">
     <% [["week", "今週"], ["month", "今月"], ["all", "全期間"]].each do |value, label| %>

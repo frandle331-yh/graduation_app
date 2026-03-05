@@ -61,6 +61,13 @@ RSpec.describe "Dashboards", type: :request do
         expect(response.body).to include(Time.zone.today.strftime("%Y年%-m月"))
         expect(response.body).to include("calendar-grid")
       end
+
+      it "直近の記録からワンタップ再記録セクションを表示する" do
+        log = create(:housework_log, user: user, title: "掃除機かけ", performed_on: Time.zone.today)
+        get dashboard_path
+        expect(response.body).to include("最近の記録をもう一度")
+        expect(response.body).to include("掃除機かけ")
+      end
     end
   end
 end

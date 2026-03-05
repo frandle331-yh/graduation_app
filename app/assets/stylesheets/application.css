@@ -2793,3 +2793,124 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   margin-bottom: 12px;
   line-height: 1.5;
 }
+
+/* ---- Title Suggestion Chips ---- */
+.title-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.title-chip {
+  display: inline-block;
+  padding: 6px 14px;
+  font-size: .85rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: all .15s ease;
+}
+.title-chip:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+.title-chip--active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+}
+
+.form-label-optional {
+  font-size: .75rem;
+  color: var(--text-sub);
+  margin-left: 6px;
+  font-weight: 400;
+}
+.form-hint {
+  font-size: .75rem;
+  color: var(--text-sub);
+  margin-top: 4px;
+}
+
+/* ---- Recent Record (Dashboard) ---- */
+.recent-record {
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 16px;
+  margin-bottom: 20px;
+}
+.recent-record__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.recent-record__title {
+  font-weight: 700;
+  font-size: .95rem;
+}
+.recent-record__link {
+  font-size: .8rem;
+  color: var(--primary);
+  text-decoration: none;
+}
+.recent-record__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.recent-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  cursor: pointer;
+  transition: all .15s ease;
+  text-align: left;
+}
+.recent-btn:hover {
+  border-color: var(--primary);
+  background: var(--primary-light);
+}
+.recent-btn__icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.recent-btn__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.recent-btn__title {
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.recent-btn__meta {
+  font-size: .75rem;
+  color: var(--text-muted);
+}
+.recent-btn__action {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary);
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--primary-light);
+}
