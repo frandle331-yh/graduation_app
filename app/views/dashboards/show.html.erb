@@ -248,8 +248,8 @@
           <% user_a, min_a = users_arr[0]; user_b, min_b = users_arr[1] %>
           <% rate_a = @rates_by_user[user_a]; rate_b = @rates_by_user[user_b] %>
           <div class="balance-names">
-            <span class="balance-names__left"><%= user_a.nickname.presence || user_a.email %></span>
-            <span class="balance-names__right"><%= user_b.nickname.presence || user_b.email %></span>
+            <span class="balance-names__left"><%= user_a&.nickname.presence || user_a&.email || "メンバー" %></span>
+            <span class="balance-names__right"><%= user_b&.nickname.presence || user_b&.email || "メンバー" %></span>
           </div>
           <div class="balance-bar">
             <div class="balance-bar__fill balance-bar__fill--a" style="width: <%= rate_a %>%"></div>
@@ -264,9 +264,9 @@
             <% if diff < 5 %>
               🤝 とてもバランスが取れています！
             <% elsif rate_a > rate_b %>
-              <%= user_a.nickname.presence || user_a.email %> さんが多く貢献中 💪
+              <%= user_a&.nickname.presence || user_a&.email || "メンバー" %> さんが多く貢献中 💪
             <% else %>
-              <%= user_b.nickname.presence || user_b.email %> さんが多く貢献中 💪
+              <%= user_b&.nickname.presence || user_b&.email || "メンバー" %> さんが多く貢献中 💪
             <% end %>
           </p>
         <%# 3人以上: リスト形式 %>
@@ -275,7 +275,7 @@
             <% users_arr.each_with_index do |(user, minutes), i| %>
               <% rate = @rates_by_user[user] %>
               <div class="multi-bar__row">
-                <span class="multi-bar__name"><%= user.nickname.presence || user.email %></span>
+                <span class="multi-bar__name"><%= user&.nickname.presence || user&.email || "メンバー" %></span>
                 <div class="multi-bar__track">
                   <div class="multi-bar__fill" style="width: <%= rate %>%; background: <%= colors[i % colors.size] %>"></div>
                 </div>

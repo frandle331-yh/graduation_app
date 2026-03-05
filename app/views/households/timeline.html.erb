@@ -17,11 +17,11 @@
       <% logs.each do |log| %>
         <div class="timeline__item">
           <div class="timeline__avatar">
-            <%= (log.user.nickname.presence || log.user.email).first %>
+            <%= (log.user&.nickname.presence || log.user&.email || "?").first %>
           </div>
           <div class="timeline__content">
             <div class="timeline__header">
-              <strong class="timeline__user"><%= log.user.nickname.presence || log.user.email %></strong>
+              <strong class="timeline__user"><%= log.user&.nickname.presence || log.user&.email || "メンバー" %></strong>
               <span class="badge badge--<%= log.category %> badge--sm"><%= t("enums.housework_log.category.#{log.category}") %></span>
             </div>
             <p class="timeline__title"><%= log.title %></p>
