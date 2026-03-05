@@ -33,7 +33,13 @@
 # Ignore key files for decrypting credentials and more.
 /config/*.key
 
+# SimpleCov coverage reports
+/coverage/
+
 # Claude Code local settings (machine-specific)
 .claude/settings.local.json
 .claude/worktrees/**/.claude/settings.local.json
 
+
+# SimpleCov coverage reports
+/coverage/
