@@ -69,7 +69,7 @@ RSpec.describe User, type: :model do
     it "全バッジの一覧を返す" do
       badges = user.achievement_badges
       expect(badges).to be_an(Array)
-      expect(badges.size).to eq(User::BADGES.size)
+      expect(badges.size).to eq(BadgeCalculator::BADGES.size)
       expect(badges.first).to include(:key, :icon, :title, :description, :earned)
     end
 
