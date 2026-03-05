@@ -218,8 +218,8 @@
             <span class="balance-names__right"><%= user_b&.nickname.presence || user_b&.email || "メンバー" %></span>
           </div>
           <div class="balance-bar">
-            <div class="balance-bar__fill balance-bar__fill--a" style="width: <%= rate_a %>%"></div>
-            <div class="balance-bar__fill balance-bar__fill--b" style="width: <%= rate_b %>%"></div>
+            <div class="balance-bar__fill balance-bar__fill--a" style="flex: <%= rate_a %>"></div>
+            <div class="balance-bar__fill balance-bar__fill--b" style="flex: <%= rate_b %>"></div>
           </div>
           <div class="balance-rates">
             <span class="balance-rates__left"><%= min_a %>分 (<%= rate_a %>%)</span>
