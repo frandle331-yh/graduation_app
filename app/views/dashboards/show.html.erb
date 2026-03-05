@@ -1,7 +1,3 @@
-<% content_for :head do %>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<% end %>
-
 <div class="dashboard">
 
   <%# ---- 世帯なしの案内 ---- %>
@@ -173,26 +169,12 @@
     <div class="chart-card">
       <h2 class="chart-card__title">日別推移（分）</h2>
       <% if @presenter.daily_summaries.present? %>
-        <canvas id="dailyChart" height="220"></canvas>
-        <script>
-          new Chart(document.getElementById("dailyChart"), {
-            type: "bar",
-            data: {
-              labels: <%= raw json_escape(@presenter.daily_summaries.keys.map { |d| l(d, format: :short) rescue d.to_s }.to_json) %>,
-              datasets: [{
-                label: "所要時間（分）",
-                data: <%= raw json_escape(@presenter.daily_summaries.values.to_json) %>,
-                backgroundColor: "rgba(99, 132, 255, 0.7)",
-                borderRadius: 4
-              }]
-            },
-            options: {
-              responsive: true,
-              plugins: { legend: { display: false } },
-              scales: { y: { beginAtZero: true } }
-            }
-          });
-        </script>
+        <div data-controller="chart"
+             data-chart-type-value="bar"
+             data-chart-labels-value="<%= @presenter.daily_summaries.keys.map { |d| l(d, format: :short) rescue d.to_s }.to_json %>"
+             data-chart-data-value="<%= @presenter.daily_summaries.values.to_json %>">
+          <canvas data-chart-target="canvas" height="220"></canvas>
+        </div>
       <% else %>
         <p class="chart-empty">データがありません</p>
       <% end %>
@@ -202,30 +184,16 @@
     <div class="chart-card">
       <h2 class="chart-card__title">カテゴリ別（分）</h2>
       <% if @presenter.category_summaries.present? %>
-        <canvas id="categoryChart" height="220"></canvas>
-        <script>
-          new Chart(document.getElementById("categoryChart"), {
-            type: "doughnut",
-            data: {
-              labels: <%= raw json_escape(@presenter.category_summaries.map { |k, _|
-                category_key = k.is_a?(String) ? k : HouseworkLog.categories.key(k)
-                t("enums.housework_log.category.#{category_key}")
-              }.to_json) %>,
-              datasets: [{
-                data: <%= raw json_escape(@presenter.category_summaries.values.to_json) %>,
-                backgroundColor: [
-                  "#6384FF","#FF6384","#FFCE56","#4BC0C0","#9966FF","#FF9F40","#C9CBCF"
-                ]
-              }]
-            },
-            options: {
-              responsive: true,
-              plugins: {
-                legend: { position: "bottom" }
-              }
-            }
-          });
-        </script>
+        <div data-controller="chart"
+             data-chart-type-value="doughnut"
+             data-chart-labels-value="<%= @presenter.category_summaries.map { |k, _|
+               category_key = k.is_a?(String) ? k : HouseworkLog.categories.key(k)
+               t("enums.housework_log.category.#{category_key}")
+             }.to_json %>"
+             data-chart-data-value="<%= @presenter.category_summaries.values.to_json %>"
+             data-chart-legend-value="true">
+          <canvas data-chart-target="canvas" height="220"></canvas>
+        </div>
       <% else %>
         <p class="chart-empty">データがありません</p>
       <% end %>
