@@ -22,6 +22,12 @@ class User < ApplicationRecord
 
   scope :active, -> { where(withdrawn_at: nil) }
 
+  # APIトークンを生成（未設定の場合のみ）
+  def generate_api_token!
+    update!(api_token: SecureRandom.hex(32)) if api_token.blank?
+    api_token
+  end
+
   def active_for_authentication?
     super && withdrawn_at.nil?
   end
