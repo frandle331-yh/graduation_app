@@ -2636,6 +2636,36 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   border-color: rgba(168,85,247,.3);
   color: #e9d5ff;
 }
+:root[data-theme="dark"] .thanks-block,
+:root:not([data-theme="light"]) .thanks-block {
+  background: rgba(236, 72, 153, .07);
+  border-color: rgba(236, 72, 153, .2);
+}
+:root[data-theme="dark"] .thanks-block--sent,
+:root:not([data-theme="light"]) .thanks-block--sent {
+  background: linear-gradient(135deg, rgba(236,72,153,.15) 0%, rgba(168,85,247,.15) 100%);
+  border-color: rgba(236, 72, 153, .4);
+}
+:root[data-theme="dark"] .thanks-block__note,
+:root:not([data-theme="light"]) .thanks-block__note {
+  color: rgba(249, 168, 212, .6);
+}
+:root[data-theme="dark"] .thanks-btn,
+:root:not([data-theme="light"]) .thanks-btn {
+  background: rgba(30, 41, 59, .9);
+  border-color: rgba(236, 72, 153, .4);
+  color: #f9a8d4;
+}
+:root[data-theme="dark"] .thanks-btn:hover:not(:disabled),
+:root:not([data-theme="light"]) .thanks-btn:hover:not(:disabled) {
+  background: rgba(236, 72, 153, .12);
+  border-color: rgba(236, 72, 153, .65);
+}
+:root[data-theme="dark"] .thanks-btn__count,
+:root:not([data-theme="light"]) .thanks-btn__count {
+  background: rgba(236, 72, 153, .2);
+  color: #f9a8d4;
+}
 :root[data-theme="dark"] .household-cta,
 :root:not([data-theme="light"]) .household-cta {
   background: linear-gradient(135deg, var(--primary-light), #1e1535);
