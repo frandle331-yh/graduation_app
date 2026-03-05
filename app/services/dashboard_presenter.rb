@@ -125,14 +125,15 @@ class DashboardPresenter
   def build_contribution
     return nil unless household
 
+    members = household.users.to_a
+    return nil if members.size < 2
+
     minutes_by_user_id = period_scope.group(:user_id).sum(:minutes)
-    users_by_id = household.users.where(id: minutes_by_user_id.keys).index_by(&:id)
 
-    minutes_by_user = minutes_by_user_id
-      .transform_keys { |uid| users_by_id[uid] }
-      .compact
+    # 全メンバーを含め、ログ0件のメンバーは0分とする
+    minutes_by_user = members.index_with { |u| minutes_by_user_id[u.id] || 0 }
 
-    total = total_minutes.to_i
+    total = minutes_by_user.values.sum
     rates_by_user = minutes_by_user.transform_values do |minutes|
       total.zero? ? 0 : ((minutes.to_f / total) * 100).round(1)
     end

@@ -279,13 +279,13 @@ img { max-width: 100%; }
 }
 .toast--notice {
   background: var(--surface);
-  color: #065f46;
-  border: 1px solid #a7f3d0;
+  color: var(--success);
+  border: 1px solid var(--success);
 }
 .toast--alert {
   background: var(--surface);
-  color: #991b1b;
-  border: 1px solid #fecaca;
+  color: var(--danger);
+  border: 1px solid var(--danger);
 }
 .toast__icon {
   font-size: 1.1rem;
@@ -755,7 +755,7 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   align-items: center;
   justify-content: center;
   gap: 16px;
-  background: linear-gradient(135deg, var(--primary-light), #fff);
+  background: linear-gradient(135deg, var(--primary-light), var(--bg));
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 14px 20px;

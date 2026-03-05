@@ -54,13 +54,27 @@ RSpec.describe "HouseworkTemplates", type: :request do
       end
     end
 
-    context "ログイン済みで無効なパラメータの場合" do
+    context "タイトル空でもカテゴリから自動補完される場合" do
+      before { sign_in user }
+
+      it "カテゴリ名がタイトルに設定されて作成される" do
+        expect {
+          post housework_templates_path, params: {
+            housework_template: { title: "", category: "cleaning", minutes: 20 }
+          }
+        }.to change(HouseworkTemplate, :count).by(1)
+        expect(HouseworkTemplate.last.title).to eq(I18n.t("enums.housework_log.category.cleaning"))
+        expect(response).to redirect_to(housework_templates_path)
+      end
+    end
+
+    context "カテゴリも未選択の場合" do
       before { sign_in user }
 
       it "テンプレートを作成せずにフォームを再表示する" do
         expect {
           post housework_templates_path, params: {
-            housework_template: { title: "", category: "cleaning", minutes: 20 }
+            housework_template: { title: "", category: "", minutes: 20 }
           }
         }.not_to change(HouseworkTemplate, :count)
         expect(response).to have_http_status(:unprocessable_entity)

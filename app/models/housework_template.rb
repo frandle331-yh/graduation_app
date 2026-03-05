@@ -4,7 +4,9 @@ class HouseworkTemplate < ApplicationRecord
   belongs_to :user
   belongs_to :household, optional: true
 
-  validates :title,    presence: true, length: { maximum: 50 }
+  before_validation :auto_fill_title
+
+  validates :title, length: { maximum: 50 }
   validates :category, presence: true
   validates :position, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :minutes,
@@ -26,5 +28,15 @@ class HouseworkTemplate < ApplicationRecord
       user:         user,
       household:    household
     )
+  end
+
+  private
+
+  # タイトル未入力時にカテゴリ名を自動セット
+  def auto_fill_title
+    return if title.present?
+    return if category.blank?
+
+    self.title = HouseworkLog.category_label(category)
   end
 end

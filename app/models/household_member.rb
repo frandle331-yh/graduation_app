@@ -4,6 +4,6 @@ class HouseholdMember < ApplicationRecord
 
   enum :role, { owner: 0, member: 1 }
 
-
   validates :role, presence: true
+  validates :user_id, uniqueness: { scope: :household_id, message: "はすでにこの世帯に参加しています" }
 end

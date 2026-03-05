@@ -30,7 +30,8 @@ RSpec.describe HouseholdMember, type: :model do
 
     it "同じhousehold + userの組み合わせは保存できない" do
       duplicate = build(:household_member, household: household, user: user)
-      expect { duplicate.save! }.to raise_error(ActiveRecord::RecordNotUnique)
+      expect(duplicate).not_to be_valid
+      expect(duplicate.errors[:user_id]).to be_present
     end
   end
 end

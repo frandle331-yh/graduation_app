@@ -225,9 +225,11 @@
             <span class="balance-rates__left"><%= min_a %>分 (<%= rate_a %>%)</span>
             <span class="balance-rates__right"><%= min_b %>分 (<%= rate_b %>%)</span>
           </div>
-          <% diff = (rate_a - rate_b).abs.round(1) %>
+          <% total_min = min_a + min_b %>
           <p class="balance-comment">
-            <% if diff < 5 %>
+            <% if total_min.zero? %>
+              📝 この期間の記録はまだありません
+            <% elsif (rate_a - rate_b).abs.round(1) < 5 %>
               🤝 とてもバランスが取れています！
             <% elsif rate_a > rate_b %>
               <%= user_a&.nickname.presence || user_a&.email || "メンバー" %> さんが多く貢献中 💪
