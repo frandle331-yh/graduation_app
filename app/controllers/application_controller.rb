@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  rescue_from ActiveRecord::RecordNotFound, with: :render_not_found
+
   protected
 
   def configure_permitted_parameters
@@ -21,5 +23,14 @@ class ApplicationController < ActionController::Base
   def current_household
     return nil unless current_user
     @current_household ||= current_user.households.order(:id).first
+  end
+
+  private
+
+  def render_not_found
+    respond_to do |format|
+      format.html { render file: Rails.root.join("public/404.html"), status: :not_found, layout: false }
+      format.json { render json: { error: "not_found" }, status: :not_found }
+    end
   end
 end

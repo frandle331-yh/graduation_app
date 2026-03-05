@@ -60,7 +60,8 @@ class DashboardsController < ApplicationController
     return unless @household
 
     minutes_by_user_id = period_scope.group(:user_id).sum(:minutes)
-    users_by_id = User.where(id: minutes_by_user_id.keys).index_by(&:id)
+    # N+1 防止: ユーザーを一括取得してID→ユーザーのマッピングを作成
+    users_by_id = @household.users.where(id: minutes_by_user_id.keys).index_by(&:id)
 
     @minutes_by_user =
       minutes_by_user_id.transform_keys { |uid| users_by_id[uid] }.compact
