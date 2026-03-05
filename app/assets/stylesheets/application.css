@@ -2143,9 +2143,10 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   /* Filter form */
   .filter-form { flex-wrap: wrap; gap: 6px; }
 
-  /* Balance bar */
-  .balance-names { font-size: .8rem; }
-  .balance-rates { font-size: .75rem; }
+  /* Contribution cards */
+  .contrib-cards { gap: 8px; }
+  .contrib-card { padding: 12px; }
+  .contrib-card__minutes { font-size: 1.3rem; }
 }
 
 /* ============================================================
@@ -2431,30 +2432,52 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
    ============================================================ */
 .contribution-card { grid-column: 1 / -1; }
 
-.balance-names {
-  display: flex;
-  justify-content: space-between;
+/* ---- 貢献バランス: 2人カード ---- */
+.contrib-cards { display: flex; gap: 12px; }
+.contrib-card {
+  flex: 1;
+  padding: 16px;
+  border-radius: 12px;
+  text-align: center;
+}
+.contrib-card--a {
+  border: 2px solid #4f6ef7;
+  background: rgba(99,132,255,.05);
+}
+.contrib-card--b {
+  border: 2px solid #f06292;
+  background: rgba(255,99,132,.05);
+}
+.contrib-card__name {
   font-size: .85rem;
   font-weight: 700;
-  margin-bottom: 10px;
+  color: var(--text-muted);
 }
-.balance-names__left  { color: #6384FF; }
-.balance-names__right { color: #FF6384; }
-
-.balance-bar {
-  height: 28px;
-  border-radius: 14px;
+.contrib-card__minutes {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 8px 0 2px;
+}
+.contrib-card--a .contrib-card__minutes { color: #4f6ef7; }
+.contrib-card--b .contrib-card__minutes { color: #f06292; }
+.contrib-card__rate {
+  font-size: .8rem;
+  color: var(--text-muted);
+}
+.contrib-card__bar {
+  height: 6px;
+  background: var(--border-light);
+  border-radius: 3px;
+  margin-top: 12px;
   overflow: hidden;
 }
-
-.balance-rates {
-  display: flex;
-  justify-content: space-between;
-  font-size: .82rem;
-  margin-top: 8px;
+.contrib-card__bar div {
+  display: block;
+  height: 6px;
+  border-radius: 3px;
 }
-.balance-rates__left  { color: #6384FF; font-weight: 700; }
-.balance-rates__right { color: #FF6384; font-weight: 700; }
+.contrib-card--a .contrib-card__bar div { background: #4f6ef7; }
+.contrib-card--b .contrib-card__bar div { background: #f06292; }
 
 .balance-comment {
   text-align: center;
@@ -2463,17 +2486,8 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   margin-top: 14px;
   padding: 10px 16px;
   border-radius: var(--radius);
-  border-left: 4px solid #6384FF;
   background: rgba(99,132,255,.08);
   color: var(--text);
-}
-.balance-comment--b {
-  border-left-color: #FF6384;
-  background: rgba(255,99,132,.08);
-}
-.balance-comment--equal {
-  border-left-color: #4ade80;
-  background: rgba(74,222,128,.08);
 }
 
 /* 3人以上の貢献バー */
