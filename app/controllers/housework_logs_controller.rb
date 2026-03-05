@@ -31,7 +31,7 @@ class HouseworkLogsController < ApplicationController
 
 
   def new
-    @housework_log = HouseworkLog.new
+    @housework_log = HouseworkLog.new(performed_on: Time.zone.today)
   end
 
   def create

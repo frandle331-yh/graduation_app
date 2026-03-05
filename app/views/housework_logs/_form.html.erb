@@ -16,17 +16,31 @@
         title_suggest_url_value: suggest_titles_housework_logs_path
       } do |f| %>
 
-  <%# カテゴリを先に表示（カテゴリ→タイトル候補の流れ） %>
-  <div class="form-group">
+  <%# カテゴリ：アイコングリッド選択 %>
+  <div class="form-group" data-controller="category-grid">
     <%= f.label :category, class: "form-label" %>
+    <%# hidden select（バリデーション＋title-suggest連携用） %>
     <%= f.select :category,
         HouseworkLog.categories.keys.map { |k| [t("enums.housework_log.category.#{k}"), k] },
         { include_blank: "選択してください" },
-        class: "form-select",
+        class: "form-select form-select--hidden",
         data: {
           title_suggest_target: "categorySelect",
+          category_grid_target: "select",
           action: "change->title-suggest#categoryChanged"
         } %>
+    <div class="category-grid">
+      <% HouseworkLog.categories.keys.each do |key| %>
+        <button type="button"
+                class="category-grid__btn"
+                data-category="<%= key %>"
+                data-action="category-grid#pick"
+                data-category-grid-target="btn">
+          <span class="category-grid__icon"><%= category_icon(key) %></span>
+          <span class="category-grid__label"><%= t("enums.housework_log.category.#{key}") %></span>
+        </button>
+      <% end %>
+    </div>
   </div>
 
   <%# タイトル候補チップ（カテゴリ選択後に表示される） %>
@@ -49,11 +63,23 @@
       <%= f.date_field :performed_on, class: "form-input" %>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" data-controller="time-preset">
       <%= f.label :minutes, class: "form-label" %>
       <div class="form-input-suffix">
-        <%= f.number_field :minutes, min: 0, max: 1440, step: 1, class: "form-input", placeholder: "30" %>
+        <%= f.number_field :minutes, min: 0, max: 1440, step: 1,
+            class: "form-input",
+            placeholder: "30",
+            data: { time_preset_target: "input" } %>
         <span class="form-suffix">分</span>
+      </div>
+      <div class="time-presets">
+        <% [5, 10, 15, 30, 60].each do |min| %>
+          <button type="button"
+                  class="time-preset"
+                  data-minutes="<%= min %>"
+                  data-action="time-preset#pick"
+                  data-time-preset-target="btn"><%= min %>分</button>
+        <% end %>
       </div>
     </div>
   </div>
