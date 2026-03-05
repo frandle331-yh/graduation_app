@@ -2442,15 +2442,10 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
 .balance-names__right { color: #FF6384; }
 
 .balance-bar {
-  display: flex;
   height: 28px;
   border-radius: 14px;
   overflow: hidden;
-  background: var(--border-light);
 }
-.balance-bar__fill    { transition: width .6s cubic-bezier(.4,0,.2,1); }
-.balance-bar__fill--a { background: linear-gradient(90deg, #4f6ef7, #818cf8); }
-.balance-bar__fill--b { background: linear-gradient(270deg, #f06292, #f48fb1); }
 
 .balance-rates {
   display: flex;
