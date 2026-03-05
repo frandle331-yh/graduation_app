@@ -13,7 +13,8 @@
       data: { controller: "loading", action: "submit->loading#submit" } do |f| %>
   <div class="form-group">
     <%= f.label :title, class: "form-label" %>
-    <%= f.text_field :title, class: "form-input", placeholder: "例：洗濯、掃除機かけ、ゴミ出し" %>
+    <%= f.text_field :title, class: "form-input", placeholder: "空欄ならカテゴリ名が自動設定されます" %>
+    <p class="form-hint">未入力の場合、カテゴリ名がタイトルになります</p>
   </div>
 
   <div class="form-row">
@@ -22,7 +23,7 @@
       <%= f.select :category,
           HouseworkTemplate.categories.keys.map { |k| [t("enums.housework_log.category.#{k}"), k] },
           { prompt: "選択してください" },
-          class: "form-select" %>
+          class: "form-select", required: true %>
     </div>
 
     <div class="form-group">

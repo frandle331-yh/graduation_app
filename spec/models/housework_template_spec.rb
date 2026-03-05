@@ -2,10 +2,25 @@ require 'rails_helper'
 
 RSpec.describe HouseworkTemplate, type: :model do
   describe "バリデーション" do
-    it { should validate_presence_of(:title) }
     it { should validate_length_of(:title).is_at_most(50) }
     it { should validate_presence_of(:category) }
     it { should validate_numericality_of(:position).only_integer.is_greater_than_or_equal_to(0) }
+  end
+
+  describe "auto_fill_title" do
+    let(:user) { create(:user) }
+
+    it "タイトル未入力時にカテゴリ名が自動設定される" do
+      template = build(:housework_template, user: user, title: "", category: :cleaning)
+      template.valid?
+      expect(template.title).to eq(I18n.t("enums.housework_log.category.cleaning"))
+    end
+
+    it "タイトル入力済みならそのまま" do
+      template = build(:housework_template, user: user, title: "カスタム名", category: :cleaning)
+      template.valid?
+      expect(template.title).to eq("カスタム名")
+    end
   end
 
   describe "minutesのバリデーション" do
