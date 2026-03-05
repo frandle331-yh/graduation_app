@@ -74,4 +74,5 @@ group :test do
   gem "selenium-webdriver"
   gem "shoulda-matchers"
   gem "rspec_junit_formatter"
+  gem "simplecov", require: false
 end
