@@ -17,6 +17,12 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::IntegrationHelpers, type: :request
+
+  # System specs: Warden helpers + rack_test driver (CI対応)
+  config.include Warden::Test::Helpers, type: :system
+  config.before(:each, type: :system) do
+    driven_by :rack_test
+  end
 end
 
 Shoulda::Matchers.configure do |config|
