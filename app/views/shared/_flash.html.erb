@@ -9,5 +9,8 @@
       <span class="toast__message"><%= message %></span>
       <button class="toast__close" data-action="toast#dismiss" aria-label="閉じる">×</button>
     </div>
+    <% if type == "notice" && message.to_s.include?("記録しました") %>
+      <div class="celebration" data-controller="celebration" aria-hidden="true"></div>
+    <% end %>
   <% end %>
 </div>
