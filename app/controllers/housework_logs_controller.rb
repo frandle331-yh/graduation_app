@@ -82,17 +82,17 @@ class HouseworkLogsController < ApplicationController
   def quick_create
     source = HouseworkLog.find(params.require(:source_id))
 
-    # 自分のログ or 同じ世帯のログのみ複製可
-    if current_household
-      unless source.household_id == current_household.id
-        redirect_to housework_logs_path, alert: "この家事ログは複製できません"
-        return
+    # 自分のログ or 同じ世帯のログのみ複製可（世帯参加前のログも許可）
+    authorized =
+      if current_household
+        source.user_id == current_user.id || source.household_id == current_household.id
+      else
+        source.user_id == current_user.id
       end
-    else
-      unless source.user_id == current_user.id
-        redirect_to housework_logs_path, alert: "この家事ログは複製できません"
-        return
-      end
+
+    unless authorized
+      redirect_to housework_logs_path, alert: "この家事ログは複製できません"
+      return
     end
 
     new_log = HouseworkLog.new(
@@ -146,7 +146,11 @@ class HouseworkLogsController < ApplicationController
   # 自分のログ、または同じ世帯のログにアクセスできる
   def accessible_log(id)
     if current_household
-      HouseworkLog.where(household_id: current_household.id).find(id)
+      HouseworkLog.where(
+        "user_id = ? OR household_id = ?",
+        current_user.id,
+        current_household.id
+      ).find(id)
     else
       current_user.housework_logs.find(id)
     end
@@ -157,7 +161,17 @@ class HouseworkLogsController < ApplicationController
   end
 
   def filtered_scope
-    scope = current_user.housework_logs
+    # 自分のログと世帯ログを両方表示する
+    scope =
+      if current_household
+        HouseworkLog.where(
+          "user_id = ? OR household_id = ?",
+          current_user.id,
+          current_household.id
+        )
+      else
+        current_user.housework_logs
+      end
     scope = apply_period(scope)
     scope = apply_category(scope)
     scope = apply_keyword(scope)
