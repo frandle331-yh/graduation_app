@@ -45,11 +45,11 @@
 
 <%# ---- メンバー一覧 ---- %>
 <div class="section-header" style="margin-top: 24px;">
-  <h2 class="section-title">メンバー（<%= @household.household_members.count %>人）</h2>
+  <h2 class="section-title">メンバー（<%= @members.size %>人）</h2>
 </div>
 
 <ul class="member-card-list">
-  <% @household.household_members.includes(:user).each do |m| %>
+  <% @members.each do |m| %>
     <li class="member-card">
       <div class="member-card__avatar">
         <%= (m.user.nickname.presence || m.user.email).first %>

@@ -1,4 +1,6 @@
 class HouseworkLog < ApplicationRecord
+  include Categorizable
+
   belongs_to :user
   belongs_to :household, optional: true
 
@@ -14,15 +16,13 @@ class HouseworkLog < ApplicationRecord
     less_than_or_equal_to: 1440
   }, allow_blank: true
 
-  enum :category, {
-  cleaning: 0,
-  laundry: 1,
-  cooking: 2,
-  dishwashing: 3,
-  shopping: 4,
-  childcare: 5,
-  other: 99
-}
+  scope :accessible_by, ->(user, household) {
+    if household
+      where("user_id = ? OR household_id = ?", user.id, household.id)
+    else
+      where(user: user)
+    end
+  }
 
   # カテゴリごとのデフォルトタイトル候補
   TITLE_SUGGESTIONS = {
