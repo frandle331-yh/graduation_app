@@ -13,7 +13,12 @@ class DashboardsController < ApplicationController
 
     base_scope =
       if @household
-        HouseworkLog.where(household_id: @household.id)
+        # 世帯参加前のログ（household_id: nil）も含める
+        HouseworkLog.where(
+          "user_id = ? OR household_id = ?",
+          current_user.id,
+          @household.id
+        )
       else
         current_user.housework_logs
       end

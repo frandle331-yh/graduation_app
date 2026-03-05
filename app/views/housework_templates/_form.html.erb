@@ -21,7 +21,7 @@
       <%= f.label :category, class: "form-label" %>
       <%= f.select :category,
           HouseworkTemplate.categories.keys.map { |k| [t("enums.housework_log.category.#{k}"), k] },
-          { include_blank: "選択してください" },
+          { prompt: "選択してください" },
           class: "form-select" %>
     </div>
 

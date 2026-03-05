@@ -19,6 +19,10 @@ class HouseworkTemplatesController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
+  rescue ArgumentError
+    # 無効な enum 値（カテゴリ未選択など）が送られた場合
+    @template.errors.add(:category, :blank)
+    render :new, status: :unprocessable_entity
   end
 
   def edit; end
@@ -29,6 +33,10 @@ class HouseworkTemplatesController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  rescue ArgumentError
+    # 無効な enum 値（カテゴリ未選択など）が送られた場合
+    @template.errors.add(:category, :blank)
+    render :edit, status: :unprocessable_entity
   end
 
   def destroy
