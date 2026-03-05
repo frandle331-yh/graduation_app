@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   # 静的ページ（未ログインでもアクセス可）
   get "terms",          to: "pages#terms",          as: :terms
   get "privacy_policy", to: "pages#privacy_policy", as: :privacy_policy
+  get "how_to_use",     to: "pages#how_to_use",     as: :how_to_use
   # ゲストログイン
   post "guest_sign_in", to: "guests#create"
 

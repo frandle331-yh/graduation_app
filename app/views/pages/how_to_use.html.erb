@@ -1,0 +1,71 @@
+<section class="lp-section">
+  <div class="lp-section__inner">
+    <h1 class="lp-section__title">KajiMateの使い方</h1>
+    <p class="lp-section__desc">家事の記録から分析まで、シンプルな4つの機能で家事分担を見える化します。</p>
+
+    <div class="hero__features">
+      <div class="feature-card">
+        <span class="feature-card__icon">📊</span>
+        <strong>ダッシュボード</strong>
+        <p>今週の家事回数・合計時間・カテゴリ別グラフをひと目で確認。ストリーク表示でモチベーションもアップします。</p>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-card__icon">📝</span>
+        <strong>家事ログ</strong>
+        <p>カテゴリ・タイトル・所要時間を記録。キーワード検索や期間フィルタで過去の記録をすぐに振り返れます。</p>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-card__icon">⚡</span>
+        <strong>テンプレート</strong>
+        <p>よくやる家事を登録しておけば、ワンタップで記録完了。毎日の記録がもっと手軽になります。</p>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-card__icon">⚖️</span>
+        <strong>貢献バランス</strong>
+        <p>パートナーと世帯を作成すると、ふたりの家事量を比較。データに基づいた公平な話し合いができます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lp-section lp-steps">
+  <div class="lp-section__inner">
+    <h2 class="lp-section__title">始め方</h2>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-item__num">1</div>
+        <div class="step-item__body">
+          <strong>アカウント登録</strong>
+          <p>メールアドレスまたはGoogleアカウントで無料登録。すぐに使い始められます。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-item__num">2</div>
+        <div class="step-item__body">
+          <strong>家事を記録</strong>
+          <p>テンプレートを登録してワンタップ記録、または手動で詳細に入力。カテゴリ名が自動でタイトルになるので手間いらずです。</p>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-item__num">3</div>
+        <div class="step-item__body">
+          <strong>パートナーと共有</strong>
+          <p>世帯を作成して招待コードをシェア。ふたりの貢献バランスをダッシュボードで確認できます。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lp-section lp-cta">
+  <div class="lp-section__inner lp-cta__inner">
+    <h2 class="lp-cta__title">さっそく始めてみよう</h2>
+    <div class="lp-cta__actions">
+      <%= link_to "新規登録して始める", new_user_registration_path, class: "btn btn-primary btn-lg" %>
+      <%= link_to "ログインする", new_user_session_path, class: "btn btn-secondary" %>
+    </div>
+  </div>
+</section>
