@@ -97,6 +97,6 @@ class User < ApplicationRecord
     { key: :time_500,      icon: "⏰", title: "500分の壁",     description: "累計500分以上の家事をこなした",
       condition: ->(_, _, _, mins) { mins >= 500 } },
     { key: :time_2000,     icon: "🚀", title: "2000分突破",    description: "累計2000分以上の家事をこなした",
-      condition: ->(_, _, _, mins) { mins >= 2000 } },
+      condition: ->(_, _, _, mins) { mins >= 2000 } }
   ].freeze
 end
