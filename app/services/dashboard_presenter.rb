@@ -71,16 +71,7 @@ class DashboardPresenter
   end
 
   def base_scope
-    @base_scope ||=
-      if household
-        HouseworkLog.where(
-          "user_id = ? OR household_id = ?",
-          user.id,
-          household.id
-        )
-      else
-        user.housework_logs
-      end
+    @base_scope ||= HouseworkLog.accessible_by(user, household)
   end
 
   def period_scope

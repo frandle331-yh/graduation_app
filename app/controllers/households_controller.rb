@@ -3,7 +3,11 @@ class HouseholdsController < ApplicationController
 
   def show
     @household = current_household
-    redirect_to new_household_path, alert: "まず世帯を作成してください" unless @household
+    unless @household
+      redirect_to new_household_path, alert: "まず世帯を作成してください"
+      return
+    end
+    @members = @household.household_members.includes(:user)
   end
 
   def timeline
