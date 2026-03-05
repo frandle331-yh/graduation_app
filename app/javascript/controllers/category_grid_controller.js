@@ -25,7 +25,9 @@ export default class extends Controller {
 
   #highlight(value) {
     this.btnTargets.forEach(btn => {
-      btn.classList.toggle("category-grid__btn--active", btn.dataset.category === value)
+      const active = btn.dataset.category === value
+      btn.classList.toggle("category-grid__btn--active", active)
+      btn.setAttribute("aria-checked", active)
     })
   }
 }

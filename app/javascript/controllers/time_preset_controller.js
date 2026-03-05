@@ -10,7 +10,11 @@ export default class extends Controller {
     this.inputTarget.value = minutes
 
     // 選択状態の反映
-    this.btnTargets.forEach(btn => btn.classList.remove("time-preset--active"))
+    this.btnTargets.forEach(btn => {
+      btn.classList.remove("time-preset--active")
+      btn.setAttribute("aria-pressed", "false")
+    })
     event.currentTarget.classList.add("time-preset--active")
+    event.currentTarget.setAttribute("aria-pressed", "true")
   }
 }

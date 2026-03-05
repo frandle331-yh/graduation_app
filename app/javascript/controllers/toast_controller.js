@@ -19,12 +19,13 @@ export default class extends Controller {
   }
 
   dismiss() {
-    this.element.classList.remove("toast--visible")
-    this.element.classList.add("toast--hiding")
-    this.element.addEventListener("transitionend", () => {
-      this.element.remove()
+    const el = this.element
+    el.classList.remove("toast--visible")
+    el.classList.add("toast--hiding")
+    el.addEventListener("transitionend", () => {
+      el.remove()
     }, { once: true })
-    // フォールバック: transition が発火しなかった場合
-    setTimeout(() => this.element.remove(), 500)
+    // フォールバック: transition が発火しなかった場合（CSS 300ms + 余裕）
+    setTimeout(() => { if (el.parentNode) el.remove() }, 350)
   }
 }

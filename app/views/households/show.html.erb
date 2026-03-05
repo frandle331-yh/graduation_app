@@ -8,22 +8,14 @@
     <h2 class="section-title" style="margin-bottom: 12px;">🏠 <%= @household.name %></h2>
 
     <%# 招待コード ---- %>
-    <div class="invite-code-block">
+    <div class="invite-code-block" data-controller="clipboard">
       <p class="invite-code-block__label">招待コード（パートナーに共有）</p>
       <div class="invite-code-block__row">
-        <code class="invite-code-block__code" id="invitationCode"><%= @household.invitation_code %></code>
+        <code class="invite-code-block__code" data-clipboard-target="source"><%= @household.invitation_code %></code>
         <button class="btn btn-secondary btn-sm invite-code-block__copy"
                 type="button"
-                id="copyBtn"
-                onclick="
-                  navigator.clipboard.writeText('<%= @household.invitation_code %>').then(function() {
-                    var btn = document.getElementById('copyBtn');
-                    var orig = btn.textContent;
-                    btn.textContent = 'コピー済 ✓';
-                    btn.disabled = true;
-                    setTimeout(function() { btn.textContent = orig; btn.disabled = false; }, 2000);
-                  });
-                ">
+                data-clipboard-target="button"
+                data-action="clipboard#copy">
           コピー
         </button>
       </div>
@@ -31,32 +23,23 @@
     </div>
 
     <%# 共有ボタン %>
+    <% share_text = "KajiMateで一緒に家事を記録しよう！招待コード: #{@household.invitation_code}" %>
     <div class="share-buttons">
-      <% share_text = "KajiMateで一緒に家事を記録しよう！招待コード: #{@household.invitation_code}" %>
       <a href="https://line.me/R/msg/text/?<%= ERB::Util.url_encode(share_text) %>"
          target="_blank" rel="noopener noreferrer"
          class="share-btn share-btn--line">
         <span class="share-btn__icon">💬</span>
         LINEで送る
       </a>
-      <button type="button" class="share-btn share-btn--native" id="webShareBtn" style="display:none;"
-              data-share-text="<%= share_text %>">
+      <button type="button" class="share-btn share-btn--native" style="display:none;"
+              data-controller="web-share"
+              data-web-share-title-value="KajiMate 招待"
+              data-web-share-text-value="<%= share_text %>"
+              data-action="web-share#share">
         <span class="share-btn__icon">📤</span>
         共有する
       </button>
     </div>
-    <script>
-      // Web Share API が使える場合はボタンを表示
-      if (navigator.share) {
-        document.getElementById('webShareBtn').style.display = '';
-        document.getElementById('webShareBtn').addEventListener('click', function() {
-          navigator.share({
-            title: 'KajiMate 招待',
-            text: this.dataset.shareText
-          }).catch(function() {});
-        });
-      }
-    </script>
   </div>
 </div>
 

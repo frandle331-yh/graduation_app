@@ -735,7 +735,7 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   font-weight: 500;
   color: var(--text-muted);
   text-decoration: none;
-  transition: all var(--duration) var(--ease);
+  transition: background-color var(--duration) var(--ease), border-color var(--duration) var(--ease), color var(--duration) var(--ease);
   -webkit-tap-highlight-color: transparent;
 }
 .filter-btn:hover { border-color: var(--primary); color: var(--primary); text-decoration: none; }
@@ -837,7 +837,7 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   text-decoration: none;
   color: var(--text-muted);
   font-weight: 500;
-  transition: all var(--duration) var(--ease);
+  transition: background-color var(--duration) var(--ease), border-color var(--duration) var(--ease), color var(--duration) var(--ease);
 }
 .pagination a:hover { border-color: var(--primary); color: var(--primary); }
 .pagination .current {
@@ -2536,7 +2536,7 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
 }
 
 .thanks-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
   background: #fff;
@@ -2547,7 +2547,7 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   font-weight: 600;
   color: #be185d;
   cursor: pointer;
-  transition: all .2s var(--ease);
+  transition: border-color .2s var(--ease), color .2s var(--ease), transform .2s var(--ease);
   -webkit-tap-highlight-color: transparent;
 }
 .thanks-btn:hover:not(:disabled) {
@@ -2871,7 +2871,7 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   background: var(--surface);
   color: var(--text);
   cursor: pointer;
-  transition: all .15s ease;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
 }
 .title-chip:hover {
   border-color: var(--primary);
@@ -2933,7 +2933,7 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   border-radius: var(--radius);
   background: var(--bg);
   cursor: pointer;
-  transition: all .15s ease;
+  transition: background-color .15s ease, border-color .15s ease;
   text-align: left;
 }
 .recent-btn:hover {
@@ -3005,7 +3005,7 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   border-radius: var(--radius);
   background: var(--surface);
   cursor: pointer;
-  transition: all .15s ease;
+  transition: background-color .15s ease, border-color .15s ease;
 }
 .category-grid__btn:hover {
   border-color: var(--primary-mid);
@@ -3041,7 +3041,7 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   background: var(--surface);
   color: var(--text);
   cursor: pointer;
-  transition: all .15s ease;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
 }
 .time-preset:hover {
   border-color: var(--primary);
