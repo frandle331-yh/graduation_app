@@ -2083,12 +2083,69 @@ details[open] .accordion__summary::after { transform: rotate(270deg); }
   /* Template grid */
   .template-buttons { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); }
 
-  /* Touch targets */
-  .filter-btn { padding: 8px 16px; }
+  /* Touch targets - 44px minimum */
+  .filter-btn { padding: 10px 16px; min-height: 44px; }
   .btn { min-height: 44px; }
+  .time-preset { padding: 10px 14px; min-height: 44px; }
+  .category-grid__btn { padding: 12px 4px; min-height: 56px; }
+  .title-chip { padding: 10px 16px; min-height: 44px; }
+
+  /* App main - tighter padding for 375px */
+  .app-main { padding: 20px 16px 80px; }
+
+  /* Form card - reduce padding */
+  .form-card { padding: 20px 16px; }
+
+  /* Weekly summary - tighter */
+  .weekly-summary { padding: 16px; }
+  .weekly-summary__stat-value { font-size: 1.3rem; }
+
+  /* Profile */
+  .profile-header { padding: 16px; gap: 12px; }
+  .profile-stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .profile-stat { padding: 12px 6px 10px; }
+  .profile-stat__value { font-size: 1.2rem; }
+
+  /* Category bar row - tighter */
+  .category-bar-row__name { width: 48px; font-size: .72rem; }
+  .category-bar-row__count { width: 36px; font-size: .72rem; }
+
+  /* Log item - stack layout on mobile */
+  .log-item { flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px 14px; }
+  .log-item__main { width: 100%; }
+  .log-item__meta { width: 100%; justify-content: flex-start; }
+
+  /* Streak bar - tighter */
+  .streak-bar { padding: 12px; gap: 12px; }
+  .streak-bar__value { font-size: 1.2rem; }
+
+  /* Quick record grid */
+  .quick-record { padding: 12px; }
+  .quick-btn { padding: 10px 8px; }
+
+  /* Recent record */
+  .recent-record { padding: 12px; }
+  .recent-btn { padding: 8px 10px; }
+
+  /* Calendar */
+  .calendar-card { padding: 12px; }
+  .calendar-grid__cell { min-height: 36px; }
+  .calendar-grid__day { font-size: .7rem; }
+  .calendar-grid__dot { font-size: .6rem; }
+
+  /* Badges */
+  .badges-section { padding: 16px; }
+  .badges-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
 
   /* Log detail */
   .log-detail__meta-grid { grid-template-columns: 1fr 1fr; }
+
+  /* Filter form */
+  .filter-form { flex-wrap: wrap; gap: 6px; }
+
+  /* Balance bar */
+  .balance-names { font-size: .8rem; }
+  .balance-rates { font-size: .75rem; }
 }
 
 /* ============================================================
