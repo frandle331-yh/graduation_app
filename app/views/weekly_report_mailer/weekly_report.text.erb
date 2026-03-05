@@ -1,0 +1,15 @@
+<%= @user.nickname %>さん、今週もお疲れさまでした!
+
+<%= l(@week_range.first, format: :short) %> - <%= l(@week_range.last, format: :short) %> のまとめ:
+
+  記録回数: <%= @total_count %>回
+  合計時間: <%= @total_minutes %>分
+  連続日数: <%= @streak %>日
+<% if @top_category %>
+  一番がんばったカテゴリ: <%= t("enums.housework_log.category.#{@top_category}") %>
+<% end %>
+
+ダッシュボード: <%= dashboard_url %>
+
+---
+KajiMate - 家事を記録して、家族に感謝を伝えよう
